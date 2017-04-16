@@ -10,7 +10,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.response
     /// </summary>
    public class CalculationResp
     {
-        public Boolean success;
+        public Boolean success = true;
         public string errorMessage;
         public Decimal totalFeeAmount;
         public Decimal totalTaxAmount;

@@ -7,7 +7,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.response
 {
     public class LoginResp
     {
-        public Boolean success;
+        public Boolean success = true;
         public string token;
     }
 }

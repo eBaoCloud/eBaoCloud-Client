@@ -123,17 +123,43 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             try
             {
                 JObject policy = buildPolicy(token, param);
-                JObject responseObj = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
-                Boolean success = (Boolean)responseObj["success"];
-                if(success)
-                {
 
-                } else
+                JObject buyResult = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
+                if(!parseResult(issuedResp, buyResult))
                 {
-                    issuedResp.success = false;
-                    issuedResp.message = (String)responseObj["message"];
+                    return issuedResp;
                 }
 
+                JObject bindResult = NetworkUtils.Post(ApiConsts.API_BIND, buyResult["data"]["policy"], token);
+                if (!parseResult(issuedResp, bindResult))
+                {
+                    return issuedResp;
+                }
+
+                String policyId = (String)bindResult["data"]["policy"]["policyId"];
+                JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
+                if (!parseResult(issuedResp, confirmResult))
+                {
+                    return issuedResp;
+                }
+
+                JObject payResult = NetworkUtils.Post(ApiConsts.API_PAY + policyId, buildPayMode(), token);
+                if (!parseResult(issuedResp, payResult))
+                {
+                    return issuedResp;
+                } 
+            
+                
+                JObject paymentStatusResult = NetworkUtils.Get(ApiConsts.API_PAYMENT_STATUS + policyId, token);
+                if (!parseResult(issuedResp, paymentStatusResult))
+                {
+                    return issuedResp;
+                }
+                else
+                {
+                    issuedResp.policyNo = (String)paymentStatusResult["data"]["policyNos"]["VMI"];
+                    return issuedResp;
+                }
             }
             catch (Exception e)
             {
@@ -142,6 +168,32 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             }
 
             return issuedResp;
+        }
+
+        private static JObject buildPayMode()
+        {
+            JObject payMode = new JObject();
+            payMode["payMode"] = "credit";
+            return payMode;
+        }
+
+        private static Boolean parseResult(IssuedResp result, JObject responseObj)
+        {
+            result.success = (Boolean)responseObj["success"];
+            if(!result.success)
+            {
+                result.message = (String)responseObj["message"];
+                return false;
+            } else
+            {
+                String processStatus = (String)responseObj["data"]["processStatus"];
+                if("FAIL".Equals(processStatus) || "SUSPENDED".Equals(processStatus))
+                {
+                    result.success = false;
+                    result.message = (String)responseObj["data"]["messages"][0]["message"];
+                }
+            }
+            return true;
         }
 
         private static JObject buildPolicy(String token, Policy param)
@@ -208,6 +260,16 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             return simpleFee;
         }
 
+        private static JObject getVechileModel(String token, String makeName, int modelYear, String modelDescription)
+        {
+            if (String.IsNullOrEmpty(token)) throw new Exception("Token is required");
+            if (String.IsNullOrEmpty(makeName)) throw new Exception("MakeNamke is required");
+            if (modelYear == 0) throw new Exception("ModelYear is required");
+            if (String.IsNullOrEmpty(modelDescription)) throw new Exception("ModelDescription is required");
+
+
+        }
+
         private static CalculationParams prepareCalculationParams(Policy param)
         {
             CalculationParams calculationParams = new CalculationParams();
@@ -217,6 +279,10 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             calculationParams.productCode = param.productCode;
             calculationParams.productVersion = param.productVersion;
             calculationParams.proposalDate = param.proposalDate;
+
+
+
+
             calculationParams.vehicleAccessaryValue = param.insured.vehicleAccessaryValue;
             calculationParams.vehicleCapacity = param.insured.vehicleCapacity;
             calculationParams.vehicleCode = param.insured.vehicleCode;
@@ -231,6 +297,10 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             calculationParams.vehicleRegistrationYear = param.insured.vehicleRegYear;
             calculationParams.vehicleTonnage = param.insured.vehicleTonnage;
             calculationParams.vehicleTotalValue = param.insured.vehicleTotalValue;
+
+
+
+
             return calculationParams;
         }
 
@@ -299,9 +369,11 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
         private static JObject buildPayer(Policy param)
         {
+            // TODO - isPayerSameAsPolicyholder
             if (param == null) throw new Exception("param is required");
             JObject payer = new JObject();
             payer["name1"] = param.payer.name;
+            payer["indiOrOrg"] = 1;
             payer["ext"] = new JObject();
             payer["ext"]["sameAsPolicyholder"] = param.isPayerSameAsPolicyholder;
             payer["ext"]["address"] = new JObject();
@@ -313,6 +385,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
                 payer["ext"]["address"]["district"] = param.payer.inThaiAddress.district;
                 payer["ext"]["address"]["subDistrict"] = param.payer.inThaiAddress.subDistrict;
                 payer["ext"]["address"]["postalCode"] = param.payer.inThaiAddress.postalCode;
+                payer["ext"]["address"]["cascadeAddress"] = param.payer.inThaiAddress.subDistrict;
             }
             if (param.payer.outThaiAddress != null)
             {
@@ -328,10 +401,11 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         {
             if (param == null) throw new Exception("param is required");
             JObject policyholder = new JObject();
-            policyholder["indiOrOrg"] = param.indiPolicyholder == null ? 2 : 1;
-            // TODO - indiOrOrg
+            //TODO indiOrOrg
+            if (param.indiPolicyholder == null && param.orgPolicyhodler == null) throw new Exception("PolicyHolder is required");
             if (param.indiPolicyholder != null)
             {
+                policyholder["indiOrOrg"] = 1;
                 policyholder["taxNo"] = param.indiPolicyholder.taxNo;
                 policyholder["name1"] = param.indiPolicyholder.firstName;
                 policyholder["name3"] = param.indiPolicyholder.lastName;
@@ -347,6 +421,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             }
             if (param.orgPolicyhodler != null)
             {
+                policyholder["indiOrOrg"] = 2;
                 policyholder["taxNo"] = param.orgPolicyhodler.taxNo;
                 policyholder["title"] = (int)param.orgPolicyhodler.title;
                 policyholder["name1"] = param.orgPolicyhodler.companyName;
@@ -372,6 +447,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
                 policyholderAddress["district"] = param.indiPolicyholder.inThaiAddress.district;
                 policyholderAddress["subDistrict"] = param.indiPolicyholder.inThaiAddress.subDistrict;
                 policyholderAddress["postalCode"] = param.indiPolicyholder.inThaiAddress.postalCode;
+                policyholderAddress["cascadeAddress"] = param.indiPolicyholder.inThaiAddress.subDistrict;
             }
             if (param.indiPolicyholder.outThaiAddress != null)
             {

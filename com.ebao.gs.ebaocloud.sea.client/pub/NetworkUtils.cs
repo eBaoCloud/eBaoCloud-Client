@@ -83,7 +83,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
         {
             if (resp.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new Exception(resp.StatusDescription);
+               throw new Exception(resp.StatusDescription);
             }
         }
     }

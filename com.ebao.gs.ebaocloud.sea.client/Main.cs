@@ -19,7 +19,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
         public static void Main(string[] args)
         {
             PolicyService service = new PolicyServiceImplement();
-           LoginResp resp = service.Login("1110124560", "eBao1234");
+           LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
            // ////Resp json = JsonConvert.DeserializeObject<Resp>(response.RawText);         
            // Console.WriteLine("{0}", resp);
 
@@ -62,7 +62,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
 
             policyParam.insured = new Insured();
             policyParam.insured.vehicleCapacity = 0;
-            policyParam.insured.vehicleChassisNo = "CN0221D123SD1";
+            policyParam.insured.vehicleChassisNo = "CN022112345123451";
             policyParam.insured.vehicleCode = "110";
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
@@ -74,7 +74,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.insured.vehicleMarket = 1569000;
             policyParam.insured.vehicleNumOfSeats = 4;
             policyParam.insured.vehicleProvince = "THA";
-            policyParam.insured.vehicleRegistrationNo = "CN0221D123SD1";
+            policyParam.insured.vehicleRegistrationNo = "CN01234223451222222345F";
             policyParam.insured.vehicleRegYear = 2016;
             policyParam.insured.vehicleTonnage = 1;
             //policyParam.insured.vehicleType = "620";
@@ -85,22 +85,22 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
            
             policyParam.payer = new Payer();
             policyParam.payer.inThaiAddress = new InThaiAddress();
-            policyParam.payer.inThaiAddress.district = "123";
-            policyParam.payer.inThaiAddress.postalCode = "122222";
-            policyParam.payer.inThaiAddress.province = "shanghai";
+            policyParam.payer.inThaiAddress.district = "1001";
+            policyParam.payer.inThaiAddress.postalCode = "10200";
+            policyParam.payer.inThaiAddress.province = "10";
             policyParam.payer.inThaiAddress.street = "songhu rd.";
-            policyParam.payer.inThaiAddress.subDistrict = "3";
+            policyParam.payer.inThaiAddress.subDistrict = "100101";
             policyParam.payer.name = "leon luo";
 
             policyParam.indiPolicyholder = new IndividualPolicyholder();
             policyParam.indiPolicyholder.idNo = "123456";
             policyParam.indiPolicyholder.idType = "1";
             policyParam.indiPolicyholder.inThaiAddress = new InThaiAddress();
-            policyParam.indiPolicyholder.inThaiAddress.district = "123";
-            policyParam.indiPolicyholder.inThaiAddress.postalCode = "122222";
-            policyParam.indiPolicyholder.inThaiAddress.province = "shanghai";
+            policyParam.indiPolicyholder.inThaiAddress.district = "1001";
+            policyParam.indiPolicyholder.inThaiAddress.postalCode = "10200";
+            policyParam.indiPolicyholder.inThaiAddress.province = "10";
             policyParam.indiPolicyholder.inThaiAddress.street = "songhu rd.";
-            policyParam.indiPolicyholder.inThaiAddress.subDistrict = "3";
+            policyParam.indiPolicyholder.inThaiAddress.subDistrict = "100101";
             policyParam.indiPolicyholder.lastName = "luo";
             policyParam.indiPolicyholder.firstName = "leon";
             policyParam.indiPolicyholder.mobile = "1234999";
