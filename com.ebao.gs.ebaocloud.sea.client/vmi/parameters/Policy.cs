@@ -41,10 +41,17 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
 
     public class Document
     {
-        public String category;
+        public DocumentCategory category;
         public String name;
         public FileInfo file;
     }
+
+
+	public enum DocumentCategory {
+		CAR_REGISTRATION = 1,
+		DRIVING_LICENSE = 3
+	}
+
 
     public class Insured
     {
