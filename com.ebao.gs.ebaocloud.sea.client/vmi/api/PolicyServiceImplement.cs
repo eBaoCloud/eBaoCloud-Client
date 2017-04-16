@@ -144,9 +144,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
 
                 long policyId = (long)bindResult["data"]["policy"]["policyId"];
-                
 
-               // JObject uploadDocResult = NetworkUtils.UploadFile(ApiConsts.API_DOCS, );
+                uploadPolicyDocument(param, policyId, token);
 
                 JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
                 if (!parseResult(issuedResp, confirmResult))
@@ -313,6 +312,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             calculationParams.vehicleMakeName = param.insured.vehicleMakeName;
             calculationParams.vehicleModelDescription = param.insured.vehicleModelDescription;
             calculationParams.vehicleModelYear = param.insured.vehicleModelYear;
+            calculationParams.vehicleUsage = param.insured.vehicleUsage;
 
             return calculationParams;
         }
@@ -480,7 +480,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             return policyholderAddress;
         }
 
-		private static void uploadPolicyDocument(Policy param, long policyId,String token)
+		private static void uploadPolicyDocument(Policy param, long policyId, String token)
 		{
 			if (policyId == 0L) throw new Exception("Policy id is required");
 			if (param.documents.Count() > 0)

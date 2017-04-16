@@ -46,12 +46,20 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             calculationParams.vehicleModelYear = 2016;
             //calculationParams.vehicleNumOfSeats = 5;
             calculationParams.vehicleRegistrationYear = 2016;
+            calculationParams.vehicleUsage = VehicleUsage.PRIVATE;
             //calculationParams.vehicleTonnage = 1;
             //calculationParams.vehicleTotalValue = 200000;
             CalculationResp calcResp = service.Calculate(resp.token, calculationParams);
             
 
             Policy policyParam = new Policy();
+            List<Document> documents = new List<Document>();
+            Document doc = new Document();
+            doc.category = DocumentCategory.DRIVING_LICENSE;
+            doc.name = "test";
+            doc.file = new System.IO.FileInfo("./Main.cs");
+            documents.Add(doc);
+            policyParam.documents = documents;
             policyParam.effectiveDate = DateTime.Now.ToLocalTime();
             policyParam.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
             policyParam.proposalDate = DateTime.Now.ToLocalTime();
@@ -61,14 +69,14 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.isPayerSameAsPolicyholder = true;
 
             policyParam.insured = new Insured();
-            policyParam.insured.vehicleChassisNo = "CN022112345123451";
+            policyParam.insured.vehicleChassisNo = "CN01111124442223451";
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
             policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
             policyParam.insured.vehicleGarageType = VehicleGarageType.GARAGE;
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";
-            policyParam.insured.vehicleRegistrationNo = "CN01234223451222222345F";
+            policyParam.insured.vehicleRegistrationNo = "CN066677244422345F";
             policyParam.insured.vehicleRegistrationYear = 2016;
             policyParam.insured.vehicleUsage = VehicleUsage.PRIVATE;
             policyParam.insured.vehicleModelYear = 2016;
