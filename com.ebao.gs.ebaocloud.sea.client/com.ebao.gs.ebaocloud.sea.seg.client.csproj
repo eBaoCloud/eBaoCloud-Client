@@ -107,6 +107,7 @@
     <Compile Include="vmi\api\PolicyService.cs" />
     <Compile Include="vmi\parameters\CalculationParams.cs" />
     <Compile Include="vmi\parameters\Policy.cs" />
+    <Compile Include="vmi\parameters\UploadFileParams.cs" />
     <Compile Include="vmi\response\CalculationResp.cs" />
     <Compile Include="vmi\response\LoginResp.cs" />
   </ItemGroup>

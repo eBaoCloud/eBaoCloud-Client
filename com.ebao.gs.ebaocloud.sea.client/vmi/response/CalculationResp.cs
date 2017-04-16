@@ -12,8 +12,20 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.response
     {
         public Boolean success;
         public string errorMessage;
-        public Decimal feeAmount;
-        public Decimal taxAmount;
-        public Decimal premium;
+        public Decimal totalFeeAmount;
+        public Decimal totalTaxAmount;
+        public Decimal payablePremium;
+        public Decimal netPremium;
+        public List<ItemDetail> feeDetails;
+        public List<ItemDetail> taxDetails;
+
     }
+
+    public class ItemDetail
+    {
+        public String name;
+        public Decimal amount;
+    }
+
+
 }
