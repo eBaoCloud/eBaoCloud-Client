@@ -144,13 +144,9 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
 
                 long policyId = (long)bindResult["data"]["policy"]["policyId"];
-                JArray<UploadFileParams> docList = buildPolicyDocument(param, policyId);
-                foreach (UploadFileParams updateFileParam in docList)
-                {
+                
 
-                }
-
-                JObject uploadDocResult = NetworkUtils.UploadFile(ApiConsts.API_DOCS, );
+               // JObject uploadDocResult = NetworkUtils.UploadFile(ApiConsts.API_DOCS, );
 
                 JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
                 if (!parseResult(issuedResp, confirmResult))
