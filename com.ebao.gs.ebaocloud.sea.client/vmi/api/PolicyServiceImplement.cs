@@ -461,11 +461,9 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             return policyholderAddress;
         }
 
-		private static JArray buildPolicyDocument(Policy param, long policyId)
+		private static void uploadPolicyDocument(Policy param, long policyId,String token)
 		{
 			if (policyId == 0L) throw new Exception("Policy id is required");
-
-			JArray documents = new JArray();
 			if (param.documents.Count() > 0)
 			{
 				foreach (Document document in param.documents)
@@ -482,10 +480,10 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 					uploadFileParams.uploadExtraData["policyId"] = policyId;
 					uploadFileParams.uploadExtraData["docName"] = document.name;
 					uploadFileParams.uploadExtraData["docType"] = (int)document.category;
-					documents.Add(uploadFileParams);
+
+					NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams, token);
 				}
 			}
-			return documents;
 		}
 	}
 }
