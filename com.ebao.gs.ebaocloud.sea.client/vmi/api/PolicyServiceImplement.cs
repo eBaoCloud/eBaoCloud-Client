@@ -263,9 +263,9 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         private static JObject getVechileModel(String token, String makeName, int modelYear, String modelDescription)
         {
             if (String.IsNullOrEmpty(token)) throw new Exception("Token is required");
-            if (String.IsNullOrEmpty(makeName)) throw new Exception("MakeNamke is required");
-            if (modelYear == 0) throw new Exception("ModelYear is required");
-            if (String.IsNullOrEmpty(modelDescription)) throw new Exception("ModelDescription is required");
+            if (String.IsNullOrEmpty(makeName)) throw new Exception("Vehicle make name is required");
+            if (modelYear == 0) throw new Exception("Vehicle model year is required");
+            if (String.IsNullOrEmpty(modelDescription)) throw new Exception("Vehicle model description is required");
 
 
         }
