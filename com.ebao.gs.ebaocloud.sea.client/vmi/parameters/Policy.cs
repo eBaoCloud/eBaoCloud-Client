@@ -56,21 +56,21 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
     public class Insured
     {
         public String vehicleCountry;
-        public String vehicleGarageType;
+        public VehicleGarageType vehicleGarageType;
         public String vehicleProvince;
-        public String vehicleMake;
-        public String vehicleModel;
-        public String vehicleYear;
-        public int vehicleRegYear;
-        public String vehicleDesc;
-        public String vehicleGroup;
-        public Decimal vehicleMarket;
-        public int vehicleCapacity;
-        public int vehicleNumOfSeats;
-        public int vehicleTonnage;
-        public String vehicleType;
-        public String vehicleCode;
-        public String vehicleUsage;
+        public String vehicleMakeName;
+        //public String vehicleModel;
+        public int vehicleModelYear;
+        public int vehicleRegistrationYear;
+        public String vehicleModelDescription;
+        //public String vehicleGroup;
+        //public Decimal vehicleMarket;
+       // public int vehicleCapacity;
+       // public int vehicleNumOfSeats;
+        //public int vehicleTonnage;
+        //public String vehicleType;
+        //public String vehicleCode;
+        public VehicleUsage vehicleUsage;
         public String vehicleRegistrationNo;
         public String vehicleChassisNo;
         public String vehicleColor;

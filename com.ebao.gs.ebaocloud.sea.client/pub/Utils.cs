@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
 {
@@ -17,6 +17,19 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
         public static string FormatDate(DateTime time)
         {
             return time.ToString("dd/MM/yyyyTHH:mm:ss.fff");
+        }
+
+        public static string ToVehicleGarageType(VehicleGarageType garageType)
+        {
+            switch (garageType)
+            {
+                case VehicleGarageType.GARAGE:
+                    return "Garage";
+                case VehicleGarageType.DEALER:
+                    return "Dealer";
+                default:
+                    return "Garage";
+            }
         }
 
     }

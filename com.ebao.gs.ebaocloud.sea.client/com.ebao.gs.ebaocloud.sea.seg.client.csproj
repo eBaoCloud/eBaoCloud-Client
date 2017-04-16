@@ -101,7 +101,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="pub\ApiConsts.cs" />
     <Compile Include="pub\ApiServiceFactory.cs" />
-    <Compile Include="pub\MimeMapping.cs" />
     <Compile Include="pub\NetworkUtils.cs" />
     <Compile Include="pub\Utils.cs" />
     <Compile Include="vmi\api\PolicyServiceImplement.cs" />

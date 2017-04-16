@@ -38,7 +38,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         {
             if (String.IsNullOrEmpty(token)) throw new Exception("token is required");
             if (param == null) throw new Exception("parameter is required");
-            JObject calculationParams = buildCalculationParams(param);
+            JObject calculationParams = buildCalculationParams(token, param);
 
             JObject responseObj = NetworkUtils.Post(ApiConsts.API_CALCULATE, calculationParams, token);
             CalculationResp calcResp = new CalculationResp();
@@ -78,14 +78,14 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             return calcResp;
         }
 
-        private static JObject buildCalculationParams(CalculationParams param)
+        private static JObject buildCalculationParams(String token, CalculationParams param)
         {
             JObject map = new JObject();
             map["insurerTenantCode"] = "SEG_TH";
             map["effDate"] = Utils.FormatDate(param.effectiveDate);
             map["expDate"] = Utils.FormatDate(param.expireDate);
             map["prdtCode"] = param.productCode;
-            map["prdtVersion"] = param.productVersion;
+            //map["prdtVersion"] = param.productVersion;
             map["policySource"] = 1;
             map["proposalDate"] = Utils.FormatDate(param.proposalDate);
             map["newOrRn"] = 1;
@@ -93,23 +93,25 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             map["ext"] = new JObject();
             map["ext"]["planCode"] = param.planCode;
 
+            JObject vehicle = getVechileModel(token, param.vehicleMakeName, param.vehicleModelYear, param.vehicleModelDescription);
+
             JArray insureds = new JArray();
             map["insureds"] = insureds;
             JObject insured = new JObject();
             insureds.Add(insured);
             insured["ext"] = new JObject();
-            insured["ext"]["vehicleCountry"] = "THA";
-            insured["ext"]["vehicleGarageType"] = param.vehicleGarageType;
+            //insured["ext"]["vehicleCountry"] = "THA";
+            insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.vehicleGarageType);
             insured["ext"]["vehicleYear"] = param.vehicleModelYear;
-            insured["ext"]["vehicleMake"] = param.vehicleMakeCode;
-            insured["ext"]["vehicleModel"] = param.vehicleModelCode;
+            insured["ext"]["vehicleMake"] = param.vehicleMakeName;
+            insured["ext"]["vehicleModel"] = vehicle["modelCode"];
             insured["ext"]["vehicleRegYear"] = param.vehicleRegistrationYear;
             insured["ext"]["vehicleDesc"] = param.vehicleModelDescription;
-            insured["ext"]["vehicleGroup"] = param.vehicleGroup;
-            insured["ext"]["vehicleMarket"] = param.vehicleMarketValue;
-            insured["ext"]["capacity"] = param.vehicleCapacity;
-            insured["ext"]["vehicleCode"] = param.vehicleCode;
-            insured["ext"]["numOfSeats"] = param.vehicleNumOfSeats;
+            insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
+            insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
+            insured["ext"]["capacity"] = vehicle["capacity"];
+            insured["ext"]["vehicleCode"] = (int)param.vehicleUsage;
+            insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
             return map;
         }
 
@@ -267,7 +269,18 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             if (modelYear == 0) throw new Exception("Vehicle model year is required");
             if (String.IsNullOrEmpty(modelDescription)) throw new Exception("Vehicle model description is required");
 
-
+            JObject queryParams = new JObject();
+            queryParams["makeName"] = makeName;
+            queryParams["modelYear"] = modelYear;
+            queryParams["subModelName"] = modelDescription;
+            JObject responseObj = NetworkUtils.Post(ApiConsts.API_VEHICLE, queryParams, token);
+            if ((Boolean)responseObj["success"])
+            {
+                return (JObject)responseObj["data"];
+            } else
+            {
+                throw new Exception("Cannot fetch a vehicle model.");
+            }
         }
 
         private static CalculationParams prepareCalculationParams(Policy param)
@@ -277,36 +290,22 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             calculationParams.expireDate = param.expireDate;
             calculationParams.planCode = param.planCode;
             calculationParams.productCode = param.productCode;
-            calculationParams.productVersion = param.productVersion;
             calculationParams.proposalDate = param.proposalDate;
-
-
-
-
             calculationParams.vehicleAccessaryValue = param.insured.vehicleAccessaryValue;
-            calculationParams.vehicleCapacity = param.insured.vehicleCapacity;
-            calculationParams.vehicleCode = param.insured.vehicleCode;
-            calculationParams.vehicleGarageType = param.insured.vehicleGarageType;
-            calculationParams.vehicleGroup = param.insured.vehicleGroup;
-            calculationParams.vehicleMakeCode = param.insured.vehicleMake;
-            calculationParams.vehicleMarketValue = param.insured.vehicleMarket;
-            calculationParams.vehicleModelCode = param.insured.vehicleModel;
-            calculationParams.vehicleModelDescription = param.insured.vehicleDesc;
-            calculationParams.vehicleModelYear = param.insured.vehicleYear;
-            calculationParams.vehicleNumOfSeats = param.insured.vehicleNumOfSeats;
-            calculationParams.vehicleRegistrationYear = param.insured.vehicleRegYear;
-            calculationParams.vehicleTonnage = param.insured.vehicleTonnage;
             calculationParams.vehicleTotalValue = param.insured.vehicleTotalValue;
+            calculationParams.vehicleRegistrationYear = param.insured.vehicleRegistrationYear;
+            calculationParams.vehicleGarageType = param.insured.vehicleGarageType;
 
-
-
+            calculationParams.vehicleMakeName = param.insured.vehicleMakeName;
+            calculationParams.vehicleModelDescription = param.insured.vehicleModelDescription;
+            calculationParams.vehicleModelYear = param.insured.vehicleModelYear;
 
             return calculationParams;
         }
 
         private static JArray buildCoverages(String token, Policy param)
         {
-            JObject value = buildCalculationParams(prepareCalculationParams(param));
+            JObject value = buildCalculationParams(token, prepareCalculationParams(param));
             JObject responseObj = NetworkUtils.Post(ApiConsts.API_COVERAGES,value , token);
             Boolean result = (Boolean)responseObj["success"];
             if(result)
@@ -322,25 +321,28 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         private static JArray buildInsured(String token, Policy param)
         {
             if (param == null) throw new Exception("param is required");
+
+            JObject vehicle = getVechileModel(token, param.insured.vehicleMakeName, param.insured.vehicleModelYear, param.insured.vehicleModelDescription);
+
             JArray insureds = new JArray();
             JObject insured = new JObject();
             insureds.Add(insured);
             insured["ext"] = new JObject();
             insured["ext"]["vehicleCountry"] = "THA";
-            insured["ext"]["vehicleGarageType"] = param.insured.vehicleGarageType;
+            insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.insured.vehicleGarageType);
             insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
-            insured["ext"]["vehicleMake"] = param.insured.vehicleMake;
-            insured["ext"]["vehicleModel"] = param.insured.vehicleModel;
-            insured["ext"]["vehicleRegYear"] = param.insured.vehicleRegYear;
-            insured["ext"]["vehicleDesc"] = param.insured.vehicleDesc;
-            insured["ext"]["vehicleGroup"] = param.insured.vehicleGroup;
-            insured["ext"]["vehicleMarket"] = param.insured.vehicleMarket;
-            insured["ext"]["capacity"] = param.insured.vehicleCapacity;
-            insured["ext"]["vehicleCode"] = param.insured.vehicleCode;
-            insured["ext"]["numOfSeats"] = param.insured.vehicleNumOfSeats;
+            insured["ext"]["vehicleMake"] = vehicle["makeCode"];
+            insured["ext"]["vehicleModel"] = vehicle["modelCode"];
+            insured["ext"]["vehicleRegYear"] = param.insured.vehicleRegistrationYear;
+            insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
+            insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
+            insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
+            insured["ext"]["capacity"] = vehicle["capacity"];
+            insured["ext"]["vehicleCode"] = (int)param.insured.vehicleUsage;
+            insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
             insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
             insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
-            insured["ext"]["tonnage"] = param.insured.vehicleTonnage;
+            insured["ext"]["tonnage"] = vehicle["tonnage"];
 
             insured["coverages"] = buildCoverages(token, param);
 
@@ -479,7 +481,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 					uploadFileParams.uploadExtraData = new JObject();
 					uploadFileParams.uploadExtraData["policyId"] = policyId;
 					uploadFileParams.uploadExtraData["docName"] = document.name;
-					uploadFileParams.uploadExtraData["docType"] = document.category;
+					uploadFileParams.uploadExtraData["docType"] = (int)document.category;
 					documents.Add(uploadFileParams);
 				}
 			}

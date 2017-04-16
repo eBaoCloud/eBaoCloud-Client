@@ -61,25 +61,17 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.isPayerSameAsPolicyholder = true;
 
             policyParam.insured = new Insured();
-            policyParam.insured.vehicleCapacity = 0;
             policyParam.insured.vehicleChassisNo = "CN022112345123451";
-            policyParam.insured.vehicleCode = "110";
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
-            policyParam.insured.vehicleDesc = "nothing";
-            policyParam.insured.vehicleGarageType = "Garage";
-            policyParam.insured.vehicleGroup = "3";
-            policyParam.insured.vehicleMake = "TOYOTA";
-            policyParam.insured.vehicleModel = "CAMRY";
-            policyParam.insured.vehicleMarket = 1569000;
-            policyParam.insured.vehicleNumOfSeats = 4;
+            policyParam.insured.vehicleModelDescription = "TOYOTA CORONA EXSIOR GXI 1.6 A";
+            policyParam.insured.vehicleGarageType = VehicleGarageType.GARAGE;
+            policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";
             policyParam.insured.vehicleRegistrationNo = "CN01234223451222222345F";
-            policyParam.insured.vehicleRegYear = 2016;
-            policyParam.insured.vehicleTonnage = 1;
-            //policyParam.insured.vehicleType = "620";
-            policyParam.insured.vehicleUsage = "110";
-            policyParam.insured.vehicleYear = "2016";
+            policyParam.insured.vehicleRegistrationYear = 2016;
+            policyParam.insured.vehicleUsage = VehicleUsage.PRIVATE;
+            policyParam.insured.vehicleModelYear = 2016;
         
            
            

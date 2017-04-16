@@ -7,31 +7,33 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
 {
     public class CalculationParams
     {
-        //String tenantCode;
-        //String bizType;
         public String productCode;
-        public String productVersion;
         public String planCode;
-
-        //String policySource;
         public DateTime proposalDate;
         public DateTime effectiveDate;
         public DateTime expireDate;
 
-        public String vehicleCode;
-        //public String vehicleClass;
-        public String vehicleMakeCode;
-        public String vehicleModelCode;
-        public String vehicleModelYear;
+        public String vehicleMakeName;
+        public int vehicleModelYear;
         public String vehicleModelDescription;
         public int vehicleRegistrationYear;
-        public String vehicleGarageType;
-        public String vehicleGroup;
-        public int vehicleCapacity;
-        public int vehicleTonnage;
-        public int vehicleNumOfSeats;
-        public Decimal vehicleMarketValue;
         public Decimal vehicleAccessaryValue;
         public Decimal vehicleTotalValue;
+        public VehicleUsage vehicleUsage;
+        public VehicleGarageType vehicleGarageType;
     }
+
+    public enum VehicleUsage
+    {
+        PRIVATE = 110,
+        COMERCIAL = 120
+    }
+
+    public enum VehicleGarageType
+    {
+        GARAGE,
+        DEALER
+    }
+
+    
 }
