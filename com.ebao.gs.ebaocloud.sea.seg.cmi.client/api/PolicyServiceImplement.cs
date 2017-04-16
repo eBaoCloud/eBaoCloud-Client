@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using com.ebao.gs.ebaocloud.sea.seg.client.pub;
 using com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters;
 using com.ebao.gs.ebaocloud.sea.seg.cmi.client.response;
+using com.ebao.gs.ebaocloud.sea.seg.client.cmi.pub;
+using com.ebao.gs.ebaocloud.sea.seg.cmi.client.pub;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 {
