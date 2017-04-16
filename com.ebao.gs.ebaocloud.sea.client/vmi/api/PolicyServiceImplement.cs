@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using com.ebao.gs.ebaocloud.sea.seg.client.pub;
 using com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters;
-using EasyHttp.Http;
-using Newtonsoft.Json;
 using com.ebao.gs.ebaocloud.sea.seg.client.vmi.response;
-using Newtonsoft.Json.Linq; 
+using Newtonsoft.Json.Linq;
+
 
 namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 {
@@ -40,7 +38,48 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         {
             if (String.IsNullOrEmpty(token)) throw new Exception("token is required");
             if (param == null) throw new Exception("parameter is required");
+            JObject calculationParams = buildCalculationParams(param);
 
+            JObject responseObj = NetworkUtils.Post(ApiConsts.API_CALCULATE, calculationParams, token);
+            CalculationResp calcResp = new CalculationResp();
+            calcResp.success = (Boolean)responseObj["success"];
+            if (calcResp.success)
+            {
+                calcResp.totalFeeAmount = (Decimal)responseObj["data"]["premium"]["totalFeeAmount"];
+                calcResp.payablePremium = (Decimal)responseObj["data"]["premium"]["app"];
+                calcResp.totalTaxAmount = (Decimal)responseObj["data"]["premium"]["totalTaxAmount"];
+                calcResp.netPremium = (Decimal)(Decimal)responseObj["data"]["premium"]["anp"];
+                List<ItemDetail> feeDetails = new List<ItemDetail>();
+                JArray feeArray = (JArray)responseObj["data"]["premium"]["feeAmounts"];
+                foreach (JObject fee in feeArray)
+                {
+                    ItemDetail feeDetail = new ItemDetail();
+                    feeDetail.name = (String)fee["name"];
+                    feeDetail.amount = (Decimal)fee["amount"];
+                    feeDetails.Add(feeDetail);
+                }
+                calcResp.feeDetails = feeDetails;
+
+                List<ItemDetail> taxDetails = new List<ItemDetail>();
+                JArray taxArray = (JArray)responseObj["data"]["premium"]["taxAmounts"];
+                foreach (JObject tax in taxArray)
+                {
+                    ItemDetail taxDetail = new ItemDetail();
+                    taxDetail.name = (String)tax["name"];
+                    taxDetail.amount = (Decimal)tax["amount"];
+                    taxDetails.Add(taxDetail);
+                }
+                calcResp.taxDetails = taxDetails;
+            }
+            else
+            {
+                calcResp.errorMessage = (String)responseObj["message"];
+            }
+            return calcResp;
+        }
+
+        private static JObject buildCalculationParams(CalculationParams param)
+        {
             JObject map = new JObject();
             map["insurerTenantCode"] = "SEG_TH";
             map["effDate"] = Utils.FormatDate(param.effectiveDate);
@@ -61,7 +100,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"] = new JObject();
             insured["ext"]["vehicleCountry"] = "THA";
             insured["ext"]["vehicleGarageType"] = param.vehicleGarageType;
-            insured["ext"] ["vehicleYear"] = param.vehicleModelYear;
+            insured["ext"]["vehicleYear"] = param.vehicleModelYear;
             insured["ext"]["vehicleMake"] = param.vehicleMakeCode;
             insured["ext"]["vehicleModel"] = param.vehicleModelCode;
             insured["ext"]["vehicleRegYear"] = param.vehicleRegistrationYear;
@@ -71,41 +110,41 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["capacity"] = param.vehicleCapacity;
             insured["ext"]["vehicleCode"] = param.vehicleCode;
             insured["ext"]["numOfSeats"] = param.vehicleNumOfSeats;
-
-            JObject responseObj = NetworkUtils.Post(ApiConsts.API_CALCULATE, JsonConvert.SerializeObject(map, Formatting.Indented),token);
-            CalculationResp calcResp = new CalculationResp();
-            calcResp.success = (Boolean)responseObj["success"];
-            if (calcResp.success)
-            {
-                calcResp.totalFeeAmount = (Decimal)responseObj["data"]["premium"]["totalFeeAmount"];
-                calcResp.payablePremium = (Decimal)responseObj["data"]["premium"]["app"];
-                calcResp.totalTaxAmount = (Decimal)responseObj["data"]["premium"]["totalTaxAmount"];
-                calcResp.netPremium = (Decimal)(Decimal)responseObj["data"]["premium"]["anp"];
-                List<ItemDetail> feeDetails = new List<ItemDetail>();
-                JArray feeArray = (JArray)responseObj["data"]["premium"]["feeAmounts"];
-                foreach(JObject fee in feeArray)
-                {
-                    ItemDetail feeDetail = new ItemDetail();
-                }
-                calcResp.feeDetails = new Arr
-            } else
-            {
-                calcResp.errorMessage = (String)responseObj["message"];
-            }
-            return calcResp;
+            return map;
         }
 
-        string PolicyService.Issue(string token, Policy param)
+        IssuedResp PolicyService.Issue(string token, Policy param)
         {
             if (String.IsNullOrEmpty(token)) throw new Exception("token is required");
-            if (param == null) throw new Exception("parameter is required");
-            JObject policy = buildPolicy(param);
+            if (param == null) throw new Exception("policy is required");
 
-            JObject responseObj = NetworkUtils.Post(ApiConsts.API_BUY, JsonConvert.SerializeObject(policy, Formatting.Indented), token);
-            return "";
+            IssuedResp issuedResp = new IssuedResp();
+            
+            try
+            {
+                JObject policy = buildPolicy(token, param);
+                JObject responseObj = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
+                Boolean success = (Boolean)responseObj["success"];
+                if(success)
+                {
+
+                } else
+                {
+                    issuedResp.success = false;
+                    issuedResp.message = (String)responseObj["message"];
+                }
+
+            }
+            catch (Exception e)
+            {
+                issuedResp.success = false;
+                issuedResp.message = e.Message;
+            }
+
+            return issuedResp;
         }
 
-        private static JObject buildPolicy(Policy param)
+        private static JObject buildPolicy(String token, Policy param)
         {
             if (param == null) throw new Exception("param is required");
             JObject policy = new JObject();
@@ -126,37 +165,114 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             policy["ext"]["dirverInfo"] = new JObject();
             policy["ext"]["dirverInfo"]["drivers"] = buildDriver(param);
 
-            policy["insureds"] = buildInsured(param);
+            policy["insureds"] = buildInsured(token, param);
+            policy["simpleFee"] = buildSimpleFee(token, param);
 
             return policy;
         }
 
-        private static JArray buildInsured(Policy param)
+        private static JObject buildSimpleFee(String token, Policy param)
+        {
+
+            PolicyService service = new PolicyServiceImplement();
+            CalculationResp calcResp = service.Calculate(token, prepareCalculationParams(param));
+
+            JObject simpleFee = new JObject();
+            simpleFee["agp"] = calcResp.netPremium;
+            simpleFee["snp"] = calcResp.netPremium;
+            simpleFee["anp"] = calcResp.netPremium;
+            simpleFee["app"] = calcResp.payablePremium;
+            JArray taxDetails = new JArray();
+
+            foreach (ItemDetail detail in calcResp.taxDetails)
+            {
+                JObject tax = new JObject();
+                tax["name"] = detail.name;
+                tax["amount"] = detail.amount;
+                taxDetails.Add(tax);
+
+            }
+            simpleFee["taxAmounts"] = taxDetails;
+
+            JArray feeDetails = new JArray();
+
+            foreach (ItemDetail detail in calcResp.feeDetails)
+            {
+                JObject fee = new JObject();
+                fee["name"] = detail.name;
+                fee["amount"] = detail.amount;
+                feeDetails.Add(fee);
+            }
+            simpleFee["feeAmounts"] = feeDetails;
+
+            return simpleFee;
+        }
+
+        private static CalculationParams prepareCalculationParams(Policy param)
+        {
+            CalculationParams calculationParams = new CalculationParams();
+            calculationParams.effectiveDate = param.effectiveDate;
+            calculationParams.expireDate = param.expireDate;
+            calculationParams.planCode = param.planCode;
+            calculationParams.productCode = param.productCode;
+            calculationParams.productVersion = param.productVersion;
+            calculationParams.proposalDate = param.proposalDate;
+            calculationParams.vehicleAccessaryValue = param.insured.vehicleAccessaryValue;
+            calculationParams.vehicleCapacity = param.insured.vehicleCapacity;
+            calculationParams.vehicleCode = param.insured.vehicleCode;
+            calculationParams.vehicleGarageType = param.insured.vehicleGarageType;
+            calculationParams.vehicleGroup = param.insured.vehicleGroup;
+            calculationParams.vehicleMakeCode = param.insured.vehicleMake;
+            calculationParams.vehicleMarketValue = param.insured.vehicleMarket;
+            calculationParams.vehicleModelCode = param.insured.vehicleModel;
+            calculationParams.vehicleModelDescription = param.insured.vehicleDesc;
+            calculationParams.vehicleModelYear = param.insured.vehicleYear;
+            calculationParams.vehicleNumOfSeats = param.insured.vehicleNumOfSeats;
+            calculationParams.vehicleRegistrationYear = param.insured.vehicleRegYear;
+            calculationParams.vehicleTonnage = param.insured.vehicleTonnage;
+            calculationParams.vehicleTotalValue = param.insured.vehicleTotalValue;
+            return calculationParams;
+        }
+
+        private static JArray buildCoverages(String token, Policy param)
+        {
+            JObject value = buildCalculationParams(prepareCalculationParams(param));
+            JObject responseObj = NetworkUtils.Post(ApiConsts.API_COVERAGES,value , token);
+            Boolean result = (Boolean)responseObj["success"];
+            if(result)
+            {
+                return (JArray)responseObj["data"];
+
+            } else
+            {
+                throw new Exception((String)responseObj["message"]);
+            }
+        }
+
+        private static JArray buildInsured(String token, Policy param)
         {
             if (param == null) throw new Exception("param is required");
             JArray insureds = new JArray();
-            
-
             JObject insured = new JObject();
             insureds.Add(insured);
             insured["ext"] = new JObject();
-           insured["ext"]["vehicleCountry"] = "THA";
-           insured["ext"]["vehicleGarageType"] = param.insured.vehicleGarageType;
-           insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
-           insured["ext"]["vehicleMake"] = param.insured.vehicleMake;
-           insured["ext"]["vehicleModel"] = param.insured.vehicleModel;
-           insured["ext"]["vehicleRegYear"] = param.insured.vehicleRegYear;
-           insured["ext"]["vehicleDesc"] = param.insured.vehicleDesc;
-           insured["ext"]["vehicleGroup"] = param.insured.vehicleGroup;
-           insured["ext"]["vehicleMarket"] = param.insured.vehicleMarket;
-           insured["ext"]["capacity"] = param.insured.vehicleCapacity;
-           insured["ext"]["vehicleCode"] = param.insured.vehicleCode;
-           insured["ext"]["numOfSeats"] = param.insured.vehicleNumOfSeats;
+            insured["ext"]["vehicleCountry"] = "THA";
+            insured["ext"]["vehicleGarageType"] = param.insured.vehicleGarageType;
+            insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
+            insured["ext"]["vehicleMake"] = param.insured.vehicleMake;
+            insured["ext"]["vehicleModel"] = param.insured.vehicleModel;
+            insured["ext"]["vehicleRegYear"] = param.insured.vehicleRegYear;
+            insured["ext"]["vehicleDesc"] = param.insured.vehicleDesc;
+            insured["ext"]["vehicleGroup"] = param.insured.vehicleGroup;
+            insured["ext"]["vehicleMarket"] = param.insured.vehicleMarket;
+            insured["ext"]["capacity"] = param.insured.vehicleCapacity;
+            insured["ext"]["vehicleCode"] = param.insured.vehicleCode;
+            insured["ext"]["numOfSeats"] = param.insured.vehicleNumOfSeats;
             insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
             insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
             insured["ext"]["tonnage"] = param.insured.vehicleTonnage;
 
-
+            insured["coverages"] = buildCoverages(token, param);
 
             return insureds;
         }

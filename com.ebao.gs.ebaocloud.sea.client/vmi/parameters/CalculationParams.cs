@@ -19,14 +19,14 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
         public DateTime expireDate;
 
         public String vehicleCode;
-        public String vehicleClass;
+        //public String vehicleClass;
         public String vehicleMakeCode;
         public String vehicleModelCode;
         public String vehicleModelYear;
         public String vehicleModelDescription;
         public int vehicleRegistrationYear;
         public String vehicleGarageType;
-        public int vehicleGroup;
+        public String vehicleGroup;
         public int vehicleCapacity;
         public int vehicleTonnage;
         public int vehicleNumOfSeats;

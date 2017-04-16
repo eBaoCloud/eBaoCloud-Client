@@ -9,6 +9,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
     public class Policy
     {
         public String productCode;
+        public String planCode;
+        
         public String productVersion;
         public DateTime proposalDate;
         public DateTime effectiveDate;
@@ -52,7 +54,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
         public String vehicleMake;
         public String vehicleModel;
         public String vehicleYear;
-        public String vehicleRegYear;
+        public int vehicleRegYear;
         public String vehicleDesc;
         public String vehicleGroup;
         public Decimal vehicleMarket;
@@ -66,6 +68,10 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
         public String vehicleChassisNo;
         public String vehicleColor;
         public String vehicleEngineNo;
+        public Decimal vehicleAccessaryValue;
+        public Decimal vehicleTotalValue;
+
+
     }
 
     public class InThaiAddress

@@ -6,6 +6,7 @@ using EasyHttp.Http;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Net;
+using Newtonsoft.Json;
 using com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters;
 
 /// <summary>
@@ -44,7 +45,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
             HttpResponse httpResponse;
             try
             {
-                httpResponse = httpClient.Post(path, parameters, HttpContentTypes.ApplicationJson);
+                httpResponse = httpClient.Post(path, JsonConvert.SerializeObject(parameters, Formatting.Indented), HttpContentTypes.ApplicationJson);
             }
             catch (Exception e)
             {
@@ -77,7 +78,6 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
 
      
        }
-
 
         static private void requestSuccess(HttpResponse resp)
         {

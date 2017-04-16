@@ -33,6 +33,6 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         /// <param name="token"></param>
         /// <param name="policy"></param>
         /// <returns></returns>
-        string Issue(string token, Policy policy);
+        IssuedResp Issue(string token, Policy policy);
     }
 }
