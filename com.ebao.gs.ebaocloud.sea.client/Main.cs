@@ -20,35 +20,35 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
         {
             PolicyService service = new PolicyServiceImplement();
            LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
-           // ////Resp json = JsonConvert.DeserializeObject<Resp>(response.RawText);         
-           // Console.WriteLine("{0}", resp);
-
-           // var calculationParams = new CalculationParams();
-           // calculationParams.effectiveDate = DateTime.Now.ToLocalTime();
-           // calculationParams.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
-           // calculationParams.proposalDate = DateTime.Now.ToLocalTime();
-
-           // calculationParams.planCode = "TIB";
-           // calculationParams.productCode = "VMI";
-           // calculationParams.productVersion = "v1";
-           //// calculationParams.vehicleAccessaryValue = 1000;
-           // calculationParams.vehicleCapacity = 0;
-           //// calculationParams.vehicleClass = "";
-           // calculationParams.vehicleCode = "110";
-           // calculationParams.vehicleGarageType = "Garage";
-           // calculationParams.vehicleGroup = "";
-           // calculationParams.vehicleMakeCode = "TOYOTA";
-           // calculationParams.vehicleMarketValue = 1569000;
-           // calculationParams.vehicleModelCode = "CAMRY";
-           //// calculationParams.vehicleModelDescription = "";
-           // calculationParams.vehicleModelYear = "2016";
-           // calculationParams.vehicleNumOfSeats = 5;
-           // calculationParams.vehicleRegistrationYear = 2016;
-           // calculationParams.vehicleTonnage = 1;
-           // //calculationParams.vehicleTotalValue = 200000;
+            // ////Resp json = JsonConvert.DeserializeObject<Resp>(response.RawText);         
+            // Console.WriteLine("{0}", resp);
 
 
-           // CalculationResp calcResp = service.Calculate(resp.token, calculationParams);
+
+            var calculationParams = new CalculationParams();
+            calculationParams.effectiveDate = DateTime.Now.ToLocalTime();
+            calculationParams.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
+            calculationParams.proposalDate = DateTime.Now.ToLocalTime();
+
+            calculationParams.planCode = "TIB";
+            calculationParams.productCode = "VMI";
+            //calculationParams.productVersion = "v1";
+            calculationParams.vehicleAccessaryValue = 1000;
+            //calculationParams.vehicleCapacity = 0;
+            // calculationParams.vehicleClass = "";
+            //calculationParams.vehicleCode = "110";
+            calculationParams.vehicleGarageType = VehicleGarageType.GARAGE;
+            // calculationParams.vehicleGroup = "";
+            calculationParams.vehicleMakeName = "TOYOTA";
+            //calculationParams.vehicleMarketValue = 1569000;
+            calculationParams.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
+            // calculationParams.vehicleModelDescription = "";
+            calculationParams.vehicleModelYear = 2016;
+            //calculationParams.vehicleNumOfSeats = 5;
+            calculationParams.vehicleRegistrationYear = 2016;
+            //calculationParams.vehicleTonnage = 1;
+            //calculationParams.vehicleTotalValue = 200000;
+            CalculationResp calcResp = service.Calculate(resp.token, calculationParams);
             
 
             Policy policyParam = new Policy();
@@ -64,7 +64,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.insured.vehicleChassisNo = "CN022112345123451";
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
-            policyParam.insured.vehicleModelDescription = "TOYOTA CORONA EXSIOR GXI 1.6 A";
+            policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
             policyParam.insured.vehicleGarageType = VehicleGarageType.GARAGE;
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";

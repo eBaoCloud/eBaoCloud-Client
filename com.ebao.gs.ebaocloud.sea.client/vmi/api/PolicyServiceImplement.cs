@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 {
-    class PolicyServiceImplement : PolicyService
+    public class PolicyServiceImplement : PolicyService
     {
         LoginResp PolicyService.Login(string username, string password)
         {
@@ -112,6 +112,10 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["capacity"] = vehicle["capacity"];
             insured["ext"]["vehicleCode"] = (int)param.vehicleUsage;
             insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
+
+            JArray coverages = buildCoverages(token, map);
+
+            insured["coverages"] = coverages;
             return map;
         }
 
@@ -138,7 +142,16 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
                     return issuedResp;
                 }
 
-                String policyId = (String)bindResult["data"]["policy"]["policyId"];
+
+                long policyId = (long)bindResult["data"]["policy"]["policyId"];
+                JArray<UploadFileParams> docList = buildPolicyDocument(param, policyId);
+                foreach (UploadFileParams updateFileParam in docList)
+                {
+
+                }
+
+                JObject uploadDocResult = NetworkUtils.UploadFile(ApiConsts.API_DOCS, );
+
                 JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
                 if (!parseResult(issuedResp, confirmResult))
                 {
@@ -273,9 +286,14 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             queryParams["makeName"] = makeName;
             queryParams["modelYear"] = modelYear;
             queryParams["subModelName"] = modelDescription;
+            queryParams["insurerTenantCode"] = "SEG_TH";
             JObject responseObj = NetworkUtils.Post(ApiConsts.API_VEHICLE, queryParams, token);
             if ((Boolean)responseObj["success"])
             {
+                if(responseObj["data"] == null)
+                {
+                    throw new Exception("Cannot fetch a vehicle model.");
+                }
                 return (JObject)responseObj["data"];
             } else
             {
@@ -303,16 +321,21 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             return calculationParams;
         }
 
-        private static JArray buildCoverages(String token, Policy param)
+        private static JArray buildCoverages(String token, CalculationParams param)
         {
-            JObject value = buildCalculationParams(token, prepareCalculationParams(param));
-            JObject responseObj = NetworkUtils.Post(ApiConsts.API_COVERAGES,value , token);
+            return buildCoverages(token, buildCalculationParams(token, param));
+        }
+
+        private static JArray buildCoverages(String token, JObject param)
+        {
+            JObject responseObj = NetworkUtils.Post(ApiConsts.API_COVERAGES, param, token);
             Boolean result = (Boolean)responseObj["success"];
-            if(result)
+            if (result)
             {
                 return (JArray)responseObj["data"];
 
-            } else
+            }
+            else
             {
                 throw new Exception((String)responseObj["message"]);
             }
@@ -344,7 +367,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
             insured["ext"]["tonnage"] = vehicle["tonnage"];
 
-            insured["coverages"] = buildCoverages(token, param);
+            insured["coverages"] = buildCoverages(token, prepareCalculationParams(param));
 
             return insureds;
         }
