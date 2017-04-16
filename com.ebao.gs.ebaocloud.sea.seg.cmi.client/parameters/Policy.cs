@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace com.ebao.gs.ebaocloud.sea.seg.client.cmi.parameters
+namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 {
 	public class Policy
 	{
@@ -19,7 +20,15 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.cmi.parameters
 		public IndividualPolicyholder indiPolicyholder;
 		public OrganizationPolicyholder orgPolicyhodler;
 		public List<Document> documents;
+		public Payer payer;
 		public Boolean isPayerSameAsPolicyholder;
+	}
+
+	public class Payer
+	{
+		public String name;
+		public InThaiAddress inThaiAddress;
+		public OutThaiAddress outThaiAddress;
 	}
 
 	public class Document
@@ -39,30 +48,23 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.cmi.parameters
 
 	public class Insured
 	{
-		public String vehicleCountry;
-		public String vehicleGarageType;
-		public String vehicleProvince;
-		public String vehicleMake;
-		public String vehicleModel;
-		public String vehicleYear;
-		public int vehicleRegYear;
-		public String vehicleDesc;
-		public String vehicleGroup;
-		public Decimal vehicleMarket;
-		public int vehicleCapacity;
-		public int vehicleNumOfSeats;
-		public int vehicleTonnage;
-		public String vehicleType;
+		public String bodyType;
+		public String subBodyType;
 		public String vehicleCode;
-		public String vehicleUsage;
+
+		public String vehicleMakeName;
+		public int vehicleModelYear;
+		public int vehicleRegistrationYear;
+		public String vehicleModelDescription;
+
+		public int vehicleCapacity;
+		public String vehicleCountry;
+		public String vehicleProvince;
+		public VehicleUsage vehicleUsage;
 		public String vehicleRegistrationNo;
 		public String vehicleChassisNo;
 		public String vehicleColor;
 		public String vehicleEngineNo;
-		public Decimal vehicleAccessaryValue;
-		public Decimal vehicleTotalValue;
-
-
 	}
 
 	public class InThaiAddress
