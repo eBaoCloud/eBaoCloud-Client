@@ -385,14 +385,21 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
 		private static JArray buildPolicyDocument(Policy param, long policyId)
 		{
-			if (policyId == 0L) throw new Exception("Policy id is required");
+			if (policyId == 0) throw new Exception("Policy id is required");
 
 			JArray documents = new JArray();
 			if (param.documents.Count() > 0)
 			{
 				foreach (Document document in param.documents)
 				{
-					//TODO category and name is required
+					if (document.category == 0)
+					{
+						throw new Exception("Document category is required.");
+					}
+					if (document.name == null)
+					{
+						throw new Exception("Document name is required.");
+					}
 					if (!document.file.Exists)
 					{
 						throw new Exception("The file [" + document.file.FullName + "] does not exists.");
@@ -403,7 +410,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 					uploadFileParams.uploadExtraData = new JObject();
 					uploadFileParams.uploadExtraData["policyId"] = policyId;
 					uploadFileParams.uploadExtraData["docName"] = document.name;
-					uploadFileParams.uploadExtraData["docType"] = document.category;
+					uploadFileParams.uploadExtraData["docType"] = (int) document.category;
 					documents.Add(uploadFileParams);
 				}
 			}
