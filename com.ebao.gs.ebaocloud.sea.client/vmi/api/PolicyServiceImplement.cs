@@ -458,5 +458,32 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             }
             return policyholderAddress;
         }
-    }
+
+		private static JArray buildPolicyDocument(Policy param, long policyId)
+		{
+			if (policyId == 0L) throw new Exception("Policy id is required");
+
+			JArray documents = new JArray();
+			if (param.documents.Count() > 0)
+			{
+				foreach (Document document in param.documents)
+				{
+					//TODO category and name is required
+					if (!document.file.Exists)
+					{
+						throw new Exception("The file [" + document.file.FullName + "] does not exists.");
+					}
+					UploadFileParams uploadFileParams = new UploadFileParams();
+					uploadFileParams.fileInfo = document.file;
+
+					uploadFileParams.uploadExtraData = new JObject();
+					uploadFileParams.uploadExtraData["policyId"] = policyId;
+					uploadFileParams.uploadExtraData["docName"] = document.name;
+					uploadFileParams.uploadExtraData["docType"] = document.category;
+					documents.Add(uploadFileParams);
+				}
+			}
+			return documents;
+		}
+	}
 }

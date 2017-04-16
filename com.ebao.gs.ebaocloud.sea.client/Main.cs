@@ -118,9 +118,15 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
 
             IssuedResp hi = service.Issue(resp.token, policyParam);
 
+			//test file upload
+			//UploadFileParams uploadFileParams = new UploadFileParams();
+			//uploadFileParams.fileInfo = new System.IO.FileInfo("./Main.cs");
+			//uploadFileParams.uploadExtraData = new JObject();
+			//uploadFileParams.uploadExtraData["policyId"] = 1;
+			//uploadFileParams.uploadExtraData["docName"] = "test";
+			//uploadFileParams.uploadExtraData["docType"] = "1";
 
-
-            NetworkUtils.UploadFile(ApiConsts.API_DOCS, new System.IO.FileInfo("./Main.cs"));
+			//NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams,resp.token);
 
            // Console.WriteLine("{0}", calcResp);
             Console.ReadKey();
