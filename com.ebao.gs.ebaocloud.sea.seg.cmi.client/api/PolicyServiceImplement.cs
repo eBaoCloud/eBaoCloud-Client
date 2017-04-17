@@ -86,20 +86,29 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			{
 				JObject policy = buildPolicy(token,param);
 
+				//do get product structure
+				JObject structureResult = NetworkUtils.Post(ApiConsts.API_STRUCTURE, policy, token);
+
+				if (!parseResult(issuedResp,structureResult)) {
+					return issuedResp;
+				}
+				policy["ext"]["pd"] = structureResult["data"];
+				policy["ext"]["ui"]["step"] = 1;
 				//do buy operation
 				JObject buyResult = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
 				if (!parseResult(issuedResp, buyResult))
 				{
 					return issuedResp;
 				}
-
+				policy["ext"]["ui"]["step"] = 2;
 				//do bind operation
 				JObject bindResult = NetworkUtils.Post(ApiConsts.API_BIND, buyResult["data"]["policy"], token);
 				if (!parseResult(issuedResp, bindResult))
 				{
 					return issuedResp;
 				}
-
+				
+				policy["ext"]["ui"]["step"] = 3;
 				long policyId = (long)bindResult["data"]["policy"]["policyId"];
 
 				uploadPolicyDocument(param, policyId, token);
@@ -110,14 +119,15 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 				{
 					return issuedResp;
 				}
-
+				policy["ext"]["ui"]["step"] = 4;
+				
 				//do payment operation
 				JObject payResult = NetworkUtils.Post(ApiConsts.API_PAY + policyId, buildPayMode(), token);
 				if (!parseResult(issuedResp, payResult))
 				{
 					return issuedResp;
 				}
-
+			
 				//do issue operation
 				JObject paymentStatusResult = NetworkUtils.Get(ApiConsts.API_PAYMENT_STATUS + policyId, token);
 				if (!parseResult(issuedResp, paymentStatusResult))
@@ -154,6 +164,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 
 			policy["ext"] = new JObject();
 			policy["ext"]["payer"] = buildPayer(param);
+
+			policy["ext"]["ui"] = new JObject();
 
 			policy["insureds"] = buildInsured(token, param);
 			policy["simpleFee"] = buildSimpleFee(token, param);
