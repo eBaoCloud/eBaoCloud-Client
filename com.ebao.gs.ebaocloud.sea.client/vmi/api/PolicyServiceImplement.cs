@@ -220,7 +220,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             policy["newOrRn"] = 1;
 
             policy["policyholder"] = buildPolicyholder(param);
-
+            
             policy["ext"] = new JObject();
             policy["ext"]["planCode"] = param.planCode;
             policy["ext"]["payer"] = buildPayer(param);
@@ -232,6 +232,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
             return policy;
         }
+
+        
 
         private static JObject buildSimpleFee(String token, Policy param)
         {

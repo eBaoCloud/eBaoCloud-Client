@@ -70,14 +70,14 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.isPayerSameAsPolicyholder = true;
 
             policyParam.insured = new Insured();
-            policyParam.insured.vehicleChassisNo = "CN011111244425fff3451";
+            policyParam.insured.vehicleChassisNo = "CN011242344425fff3451";
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
             policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
             policyParam.insured.vehicleGarageType = VehicleGarageType.GARAGE;
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";
-            policyParam.insured.vehicleRegistrationNo = "CN06667724424442fff345F";
+            policyParam.insured.vehicleRegistrationNo = "CN011112523424442fff345F";
             policyParam.insured.vehicleRegistrationYear = 2016;
             policyParam.insured.vehicleUsage = VehicleUsage.PRIVATE;
             policyParam.insured.vehicleModelYear = 2016;
@@ -118,7 +118,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             driver.occupation = "1233333";
 
             IssuedResp hi = service.Issue(resp.token, policyParam);
-
+            Console.WriteLine(hi);
 			//test file upload
 			//UploadFileParams uploadFileParams = new UploadFileParams();
 			//uploadFileParams.fileInfo = new System.IO.FileInfo("./Main.cs");
