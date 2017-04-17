@@ -34,5 +34,20 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.pub
             }
         }
 
-    }
+		public static int ToVehicleUsage(VehicleUsage vehicleUseage)
+		{
+			switch (vehicleUseage)
+			{
+				case VehicleUsage.PRIVATE:
+					return 11;
+				case VehicleUsage.RENT:
+					return 16;
+				case VehicleUsage.PUBLIC_RENT:
+					return 17;
+				default:
+					return 11;
+			}
+		}
+
+	}
 }

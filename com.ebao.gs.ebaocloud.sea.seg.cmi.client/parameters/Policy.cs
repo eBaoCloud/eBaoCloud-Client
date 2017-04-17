@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 {
 	public class Policy
 	{
 		public String productCode;
-		public String planCode;
-
 		public String productVersion;
+
 		public DateTime proposalDate;
 		public DateTime effectiveDate;
 		public DateTime expireDate;
@@ -48,23 +44,33 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 
 	public class Insured
 	{
-		public String bodyType;
-		public String subBodyType;
-		public String vehicleCode;
+		public VehicleType vehicleType;
+		public VehicleSubType vehicleSubType;
 
 		public String vehicleMakeName;
 		public int vehicleModelYear;
-		public int vehicleRegistrationYear;
 		public String vehicleModelDescription;
 
-		public int vehicleCapacity;
+		public int vehicleRegistrationYear;
+		public String vehicleRegistrationNo;
 		public String vehicleCountry;
 		public String vehicleProvince;
 		public VehicleUsage vehicleUsage;
-		public String vehicleRegistrationNo;
 		public String vehicleChassisNo;
+
 		public String vehicleColor;
 		public String vehicleEngineNo;
+	}
+
+	//TODO
+	public enum VehicleType {
+		Sedan = 587,
+	}
+
+	public enum VehicleSubType {
+		Car_Seat_up_to_7_people = 618,
+		Sedan_Powered_by_electricity = 588
+
 	}
 
 	public class InThaiAddress
