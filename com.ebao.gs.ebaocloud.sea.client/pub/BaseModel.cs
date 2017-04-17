@@ -18,15 +18,9 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
             {
                 string name = item.Name;
                 Object value = item.GetValue(this, null);
-                if (String.IsNullOrEmpty(name))
-                {
-                    logText = logText + name + ": " + "woshiarray" + "\n";
-
-                }
-                else
-                {
-                    logText = logText + name + ": " + value + "\n";
-                }
+                
+                logText = logText + name + ": " + value + "\n";
+                
             }
             logText = logText + "\n---------------" + t.Name + "------" + "End--------------\n";
             return logText;

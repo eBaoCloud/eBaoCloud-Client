@@ -23,7 +23,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.response
 
     }
 
-    public class ItemDetail
+    public class ItemDetail : BaseModel
     {
         public String name { get; set; }
         public Decimal amount { get; set; }

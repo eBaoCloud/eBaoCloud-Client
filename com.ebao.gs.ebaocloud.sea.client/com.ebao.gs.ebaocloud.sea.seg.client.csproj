@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>com.ebao.gs.ebaocloud.sea.seg.client</RootNamespace>
     <AssemblyName>com.ebao.gs.ebaocloud.sea.seg.client</AssemblyName>
