@@ -173,11 +173,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
 			insured["ext"]["capacity"] = vehicle["capacity"];
 			insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
+			insured["ext"]["tonnage"] = vehicle["tonnage"];
 
-			insured["ext"]["vehicleCountry"] = String.IsNullOrEmpty(param.insured.vehicleCountry) ? "THA" : param.insured.vehicleCountry;
-			insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
-
-			insured["ext"]["vehicleRegYear"] = param.insured.vehicleRegistrationYear;
 			insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
 
 			insured["ext"]["vehicleType"] = param.insured.vehicleType;
@@ -185,9 +182,23 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			insured["ext"]["vehicleUsage"] = Utils.ToVehicleUsage(param.insured.vehicleUsage);
 			insured["ext"]["vehicleCode"] = Utils.ToVehicleCode(param.insured.vehicleUsage);
 			insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
-			insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
-			insured["ext"]["tonnage"] = vehicle["tonnage"];
 
+			insured["ext"]["vehicleCountry"] = String.IsNullOrEmpty(param.insured.vehicleCountry) ? "THA" : param.insured.vehicleCountry;
+			var regYear = param.insured.vehicleRegistrationYear;
+			if (Convert.ToString(regYear).Equals(DateTime.Now.ToString("yyyy")))
+			{
+				//new vehicle
+				insured["ext"]["newVehicle"] = true;
+				insured["ext"]["vehicleProvince"] = "TBA";
+				insured["ext"]["vehicleRegYear"] = int.Parse(DateTime.Now.ToString("yyyy"));
+				insured["ext"]["vehicleRegNo"] = "TBA";
+			}
+			else {
+				insured["ext"]["newVehicle"] = false;
+				insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
+				insured["ext"]["vehicleRegYear"] = regYear;
+				insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
+			}
 			insured["coverages"] = buildCoverages(token, prepareCalculationParams(param));
 			insureds.Add(insured);
 			return insureds;

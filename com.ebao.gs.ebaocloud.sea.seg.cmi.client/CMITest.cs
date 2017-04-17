@@ -40,6 +40,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client
 
 			policyParam.insured = new Insured();
 			policyParam.insured.vehicleChassisNo = "CN09876777777665";
+			policyParam.insured.vehicleType = Convert.ToString(VehicleType.Sedan);
+			policyParam.insured.vehicleSubType = Convert.ToString(VehicleSubType.Car_Seat_up_to_7_people);
 			policyParam.insured.vehicleColor = "white";
 			policyParam.insured.vehicleCountry = "THA";
 			policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";

@@ -349,10 +349,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"] = new JObject();
             insured["ext"]["vehicleCountry"] = String.IsNullOrEmpty(param.insured.vehicleCountry) ? "THA" : param.insured.vehicleCountry;
             insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.insured.vehicleGarageType);
-            insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
             insured["ext"]["vehicleMake"] = vehicle["makeCode"];
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];
-            insured["ext"]["vehicleRegYear"] = param.insured.vehicleRegistrationYear;
             insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
             insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
             insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
@@ -360,10 +358,26 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["vehicleCode"] = (int)param.insured.vehicleUsage;
             insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
             insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
-            insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
             insured["ext"]["tonnage"] = vehicle["tonnage"];
 
-            insured["coverages"] = buildCoverages(token, prepareCalculationParams(param));
+			var regYear = param.insured.vehicleRegistrationYear;
+			if (Convert.ToString(regYear).Equals(DateTime.Now.ToString("yyyy")))
+			{
+				//new vehicle
+				insured["ext"]["newVehicle"] = true;
+				insured["ext"]["vehicleProvince"] = "TBA";
+				insured["ext"]["vehicleRegYear"] = int.Parse(DateTime.Now.ToString("yyyy"));
+				insured["ext"]["vehicleRegNo"] = "TBA";
+			}
+			else
+			{
+				insured["ext"]["newVehicle"] = false;
+				insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
+				insured["ext"]["vehicleRegYear"] = regYear;
+				insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
+			}
+
+			insured["coverages"] = buildCoverages(token, prepareCalculationParams(param));
 
             return insureds;
         }
