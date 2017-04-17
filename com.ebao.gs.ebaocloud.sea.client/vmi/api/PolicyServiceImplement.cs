@@ -347,7 +347,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             JObject insured = new JObject();
             insureds.Add(insured);
             insured["ext"] = new JObject();
-            insured["ext"]["vehicleCountry"] = String.IsNullOrEmpty(param.insured.vehicleCountry) ? "THA" : param.insured.vehicleCountry;
+            insured["ext"]["vehicleCountry"] = "THA";
             insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.insured.vehicleGarageType);
             insured["ext"]["vehicleMake"] = vehicle["makeCode"];
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];

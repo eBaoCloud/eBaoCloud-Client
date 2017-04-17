@@ -32,5 +32,11 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
             }
         }
 
+        public static Boolean IsArray(object o)
+        {
+            if (null == o) return false;
+            return o.GetType().BaseType == typeof(Array);
+        }
+
     }
 }

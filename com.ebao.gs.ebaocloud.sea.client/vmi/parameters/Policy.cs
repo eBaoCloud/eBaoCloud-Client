@@ -23,6 +23,11 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
         public List<Driver> drivers;
         public Boolean isPayerSameAsPolicyholder;
         public Payer payer;
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 
     public class Driver
