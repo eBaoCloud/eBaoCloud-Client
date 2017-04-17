@@ -20,8 +20,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
         {
             PolicyService service = new PolicyServiceImplement();
            LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
+            Console.WriteLine(resp);
             // ////Resp json = JsonConvert.DeserializeObject<Resp>(response.RawText);         
-            // Console.WriteLine("{0}", resp);
 
 
 
@@ -49,8 +49,9 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             calculationParams.vehicleUsage = VehicleUsage.PRIVATE;
             //calculationParams.vehicleTonnage = 1;
             //calculationParams.vehicleTotalValue = 200000;
+            Console.WriteLine(calculationParams);
             CalculationResp calcResp = service.Calculate(resp.token, calculationParams);
-            
+            Console.WriteLine(calcResp);
 
             Policy policyParam = new Policy();
             List<Document> documents = new List<Document>();
@@ -69,14 +70,14 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.isPayerSameAsPolicyholder = true;
 
             policyParam.insured = new Insured();
-            policyParam.insured.vehicleChassisNo = "CN01111124442223451";
+            policyParam.insured.vehicleChassisNo = "CN011111244425fff3451";
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
             policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
             policyParam.insured.vehicleGarageType = VehicleGarageType.GARAGE;
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";
-            policyParam.insured.vehicleRegistrationNo = "CN066677244422345F";
+            policyParam.insured.vehicleRegistrationNo = "CN06667724424442fff345F";
             policyParam.insured.vehicleRegistrationYear = 2016;
             policyParam.insured.vehicleUsage = VehicleUsage.PRIVATE;
             policyParam.insured.vehicleModelYear = 2016;

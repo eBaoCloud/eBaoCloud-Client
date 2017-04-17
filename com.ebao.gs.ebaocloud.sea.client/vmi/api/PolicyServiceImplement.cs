@@ -21,7 +21,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             {
                 throw new Exception("password is required");
             }
-            
+
             JObject responseObj = NetworkUtils.Post(ApiConsts.API_LOGIN, null, Utils.Base64Encode(username + ":" + password));
 
             LoginResp loginResp = new LoginResp();
@@ -29,7 +29,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             if (loginResp.success)
             {
                 String passwd = (String)responseObj["data"]["user"]["password"];
-                loginResp.token = Utils.Base64Encode(username + ":" + passwd); 
+                loginResp.token = Utils.Base64Encode(username + ":" + passwd);
             }
             return loginResp;
         }
@@ -125,13 +125,13 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             if (param == null) throw new Exception("policy is required");
 
             IssuedResp issuedResp = new IssuedResp();
-            
+
             try
             {
                 JObject policy = buildPolicy(token, param);
 
                 JObject buyResult = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
-                if(!parseResult(issuedResp, buyResult))
+                if (!parseResult(issuedResp, buyResult))
                 {
                     return issuedResp;
                 }
@@ -157,9 +157,9 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
                 if (!parseResult(issuedResp, payResult))
                 {
                     return issuedResp;
-                } 
-            
-                
+                }
+
+
                 JObject paymentStatusResult = NetworkUtils.Get(ApiConsts.API_PAYMENT_STATUS + policyId, token);
                 if (!parseResult(issuedResp, paymentStatusResult))
                 {
@@ -190,14 +190,14 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         private static Boolean parseResult(IssuedResp result, JObject responseObj)
         {
             result.success = (Boolean)responseObj["success"];
-            if(!result.success)
+            if (!result.success)
             {
                 result.message = (String)responseObj["message"];
                 return false;
             } else
             {
                 String processStatus = (String)responseObj["data"]["processStatus"];
-                if("FAIL".Equals(processStatus) || "SUSPENDED".Equals(processStatus))
+                if ("FAIL".Equals(processStatus) || "SUSPENDED".Equals(processStatus))
                 {
                     result.success = false;
                     result.message = (String)responseObj["data"]["messages"][0]["message"];
@@ -222,7 +222,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             policy["policyholder"] = buildPolicyholder(param);
 
             policy["ext"] = new JObject();
-            policy["ext"]["planCode"] = "TIB";
+            policy["ext"]["planCode"] = param.planCode;
             policy["ext"]["payer"] = buildPayer(param);
             policy["ext"]["dirverInfo"] = new JObject();
             policy["ext"]["dirverInfo"]["drivers"] = buildDriver(param);
@@ -285,7 +285,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             JObject responseObj = NetworkUtils.Post(ApiConsts.API_VEHICLE, queryParams, token);
             if ((Boolean)responseObj["success"])
             {
-                if(responseObj["data"] == null)
+                if (responseObj["data"] == null)
                 {
                     throw new Exception("Cannot fetch a vehicle model.");
                 }
@@ -347,7 +347,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             JObject insured = new JObject();
             insureds.Add(insured);
             insured["ext"] = new JObject();
-            insured["ext"]["vehicleCountry"] = "THA";
+            insured["ext"]["vehicleCountry"] = String.IsNullOrEmpty(param.insured.vehicleCountry) ? "THA" : param.insured.vehicleCountry;
             insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.insured.vehicleGarageType);
             insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
             insured["ext"]["vehicleMake"] = vehicle["makeCode"];

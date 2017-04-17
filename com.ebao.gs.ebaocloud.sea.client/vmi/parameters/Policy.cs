@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using com.ebao.gs.ebaocloud.sea.seg.client.pub;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
 {
-    public class Policy
+    public class Policy : BaseModel
     {
         public String productCode;
         public String planCode;
