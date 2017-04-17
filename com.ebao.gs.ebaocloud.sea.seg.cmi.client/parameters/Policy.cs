@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 {
 	public class Policy
 	{
 		public String productCode;
-		public String planCode;
 
 		public String productVersion;
 		public DateTime proposalDate;
@@ -48,9 +44,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 
 	public class Insured
 	{
-		public String bodyType;
-		public String subBodyType;
-		public String vehicleCode;
+		public String vehicleType;
+		public String vehicleSubType;
 
 		public String vehicleMakeName;
 		public int vehicleModelYear;

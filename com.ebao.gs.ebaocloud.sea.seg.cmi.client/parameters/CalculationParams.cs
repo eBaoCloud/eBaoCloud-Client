@@ -13,12 +13,18 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 		public DateTime effectiveDate;
 		public DateTime expireDate;
 
-		public VehicleUsage vehicleUsage;
+		public VehicleUsage vehicleUsage; // as vehicle code
 
 	}
 
 	public enum VehicleUsage
 	{
+		PRIVATE = 11,
+		RENT = 16,
+		PUBLIC_RENT = 17
+	}
+
+	public enum VehicleCode {
 		PRIVATE,
 		RENT,
 		PUBLIC_RENT

@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using EasyHttp.Http;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters;
-using com.ebao.gs.ebaocloud.sea.seg.cmi.client.pub;
 
 /// <summary>
 /// / 网络异常处理，类型处理。
 /// </summary>
-namespace com.ebao.gs.ebaocloud.sea.seg.client.cmi.pub
+namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.pub
 {
     class NetworkUtils
     {
