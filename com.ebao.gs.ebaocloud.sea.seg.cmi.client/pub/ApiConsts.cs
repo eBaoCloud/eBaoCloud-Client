@@ -8,6 +8,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.pub
     class ApiConsts
     {
         public const string API_LOGIN = "/gi/api/users/login";
+		public const string API_STRUCTURE = "/gi/api/b2b/product/structure";
         public const string API_CALCULATE = "/gi/api/std/b2b/policies/calcexternal";
         public const string API_BUY = "/gi/api/std/b2b/policies/buy";
         public const string API_BIND = "/gi/api/std/b2b/policies/bind";
