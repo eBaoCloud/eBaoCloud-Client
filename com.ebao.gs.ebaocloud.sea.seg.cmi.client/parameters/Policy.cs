@@ -44,8 +44,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 
 	public class Insured
 	{
-		public String vehicleType;
-		public String vehicleSubType;
+		public VehicleType vehicleType;
+		public VehicleSubType vehicleSubType;
 
 		public String vehicleMakeName;
 		public int vehicleModelYear;
@@ -64,7 +64,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters
 
 	//TODO
 	public enum VehicleType {
-		Sedan = 587
+		Sedan = 587,
 	}
 
 	public enum VehicleSubType {

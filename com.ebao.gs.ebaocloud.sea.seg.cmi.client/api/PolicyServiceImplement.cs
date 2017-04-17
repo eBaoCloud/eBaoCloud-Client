@@ -104,19 +104,21 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 
 				uploadPolicyDocument(param, policyId, token);
 
+				//do confirm operation
 				JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
 				if (!parseResult(issuedResp, confirmResult))
 				{
 					return issuedResp;
 				}
 
+				//do payment operation
 				JObject payResult = NetworkUtils.Post(ApiConsts.API_PAY + policyId, buildPayMode(), token);
 				if (!parseResult(issuedResp, payResult))
 				{
 					return issuedResp;
 				}
 
-
+				//do issue operation
 				JObject paymentStatusResult = NetworkUtils.Get(ApiConsts.API_PAYMENT_STATUS + policyId, token);
 				if (!parseResult(issuedResp, paymentStatusResult))
 				{
@@ -177,8 +179,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 
 			insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
 
-			insured["ext"]["vehicleType"] = param.insured.vehicleType;
-			insured["ext"]["vehicleSubType"] = param.insured.vehicleSubType;
+			insured["ext"]["vehicleType"] = Convert.ToString((int)param.insured.vehicleType);
+			insured["ext"]["vehicleSubType"] = Convert.ToString((int)param.insured.vehicleSubType);
 			insured["ext"]["vehicleUsage"] = Utils.ToVehicleUsage(param.insured.vehicleUsage);
 			insured["ext"]["vehicleCode"] = Utils.ToVehicleCode(param.insured.vehicleUsage);
 			insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
