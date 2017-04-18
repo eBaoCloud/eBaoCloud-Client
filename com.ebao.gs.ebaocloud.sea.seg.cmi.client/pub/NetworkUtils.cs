@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters;
+using System.Net.Mime;
 
 /// <summary>
 /// / 网络异常处理，类型处理。
@@ -115,6 +116,32 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.pub
 
             return postDataStream;
         }
+
+		public static void download(string urlPath,string filePath,string token) {
+			FileStream stream = null;
+			try
+			{
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host + urlPath);
+				request.Method = "GET";
+				request.Headers.Add("Authorization", "Basic " + token);
+				WebResponse response = request.GetResponse();
+				ContentDisposition contentDisposition = new ContentDisposition(response.Headers["Content-Disposition"]);
+				string newFileName = contentDisposition.FileName;
+				stream = File.Create(filePath + Path.DirectorySeparatorChar + newFileName);
+				response.GetResponseStream().CopyTo(stream);
+			}
+			catch (Exception e)
+			{
+				throw e;
+			}
+			finally {
+				if (stream != null)
+				{
+					stream.Close();
+				}
+			}
+			
+		}
 
         static private void requestSuccess(HttpResponse resp)
         {
