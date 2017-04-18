@@ -5,6 +5,7 @@ using System.Linq;
 using com.ebao.gs.ebaocloud.sea.seg.cmi.client.parameters;
 using com.ebao.gs.ebaocloud.sea.seg.cmi.client.response;
 using com.ebao.gs.ebaocloud.sea.seg.cmi.client.pub;
+using System.IO;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 {
@@ -462,6 +463,34 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 					uploadFileParams.uploadExtraData["docType"] = (int)document.category;
 
 					NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams, token);
+				}
+			}
+		}
+
+		public void Download(string token,string policyNo, string filePath)
+		{
+			if (String.IsNullOrEmpty(policyNo)) throw new Exception("Policy No. is required");
+			FileInfo fileInfo = new FileInfo(filePath);
+			if (fileInfo.Attributes != FileAttributes.Directory) {
+				//check it is directory
+				throw new Exception("The path [" + filePath + " must be directory.]");
+			}if (!Directory.Exists(filePath)) {
+				Directory.CreateDirectory(filePath); //if file does not exists, then create
+			}
+
+			JObject responseObj = NetworkUtils.Get(ApiConsts.API_GET_PRINTED_FILES + "/" + policyNo + "/CMI",token);
+			JArray printedFileList = (JArray)responseObj["data"];
+			if (responseObj["data"] != null)
+			{
+				foreach (string fileName in printedFileList)
+				{
+					try
+					{
+						NetworkUtils.download(ApiConsts.API_DOWNLOAD_PRINTED_FILE + "/?fileName=" + fileName, filePath, token);
+					}
+					catch (Exception e) {
+						throw e;
+					}
 				}
 			}
 		}
