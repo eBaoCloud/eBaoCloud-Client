@@ -17,6 +17,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
         public const string API_DOCS = "/gi/api/std/b2b/policies/docs";
         public const string API_COVERAGES = "/gi/api/std/b2b/policies/coverageexternal";
         public const string API_VEHICLE = "/gi/api/thai/smart/vehicle";
+        public const string API_STRUCTURE = "/gi/api/b2b/product/structure";
 
     }
 }

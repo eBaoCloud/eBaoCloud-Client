@@ -23,8 +23,6 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             Console.WriteLine(resp);
             // ////Resp json = JsonConvert.DeserializeObject<Resp>(response.RawText);         
 
-
-
             var calculationParams = new CalculationParams();
             calculationParams.effectiveDate = DateTime.Now.ToLocalTime();
             calculationParams.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
@@ -61,29 +59,29 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             doc.file = new System.IO.FileInfo("./Main.cs");
             documents.Add(doc);
             policyParam.documents = documents;
+
             policyParam.effectiveDate = DateTime.Now.ToLocalTime();
             policyParam.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
             policyParam.proposalDate = DateTime.Now.ToLocalTime();
             policyParam.productCode = "VMI";
             policyParam.planCode = "TIB";
-            policyParam.productVersion = "v1";
-            policyParam.isPayerSameAsPolicyholder = true;
+            //policyParam.productVersion = "v1";
+            policyParam.isPayerSameAsPolicyholder = false;
 
+            String randomStr = new Random(DateTime.Now.Millisecond).Next().ToString();
             policyParam.insured = new Insured();
-            policyParam.insured.vehicleChassisNo = "CN011242344425fff3451";
+            //policyParam.insured.vehicleChassisNo = "CNNN" + randomStr;
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
             policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
             policyParam.insured.vehicleGarageType = VehicleGarageType.GARAGE;
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";
-            policyParam.insured.vehicleRegistrationNo = "CN011112523424442fff345F";
-            policyParam.insured.vehicleRegistrationYear = 2016;
+            policyParam.insured.vehicleRegistrationNo = "RNNNM" + randomStr;
+            policyParam.insured.vehicleRegistrationYear = 2017;
             policyParam.insured.vehicleUsage = VehicleUsage.PRIVATE;
             policyParam.insured.vehicleModelYear = 2016;
-        
-           
-           
+
             policyParam.payer = new Payer();
             policyParam.payer.inThaiAddress = new InThaiAddress();
             policyParam.payer.inThaiAddress.district = "1001";
@@ -93,6 +91,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.payer.inThaiAddress.subDistrict = "100101";
             policyParam.payer.name = "leon luo";
 
+            
             policyParam.indiPolicyholder = new IndividualPolicyholder();
             policyParam.indiPolicyholder.idNo = "123456";
             policyParam.indiPolicyholder.idType = "1";
@@ -108,8 +107,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.indiPolicyholder.taxNo = "10000";
             policyParam.indiPolicyholder.title = IndividualPrefix.Khun;
 
-
-            policyParam.drivers = new List<Driver>(1);
+            policyParam.drivers = new List<Driver>();
             Driver driver = new Driver();
             policyParam.drivers.Add(driver);
             driver.birthday = DateTime.Now;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using com.ebao.gs.ebaocloud.sea.seg.client.pub;
+using System.Reflection;
 
 namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
 {
@@ -13,19 +14,46 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
         public DateTime proposalDate { get; set; }
         public DateTime effectiveDate { get; set; }
         public DateTime expireDate { get; set; }
-
         public String vehicleMakeName { get; set; }
         public int vehicleModelYear { get; set; }
         public String vehicleModelDescription { get; set; }
         public int vehicleRegistrationYear { get; set; }
-        public Decimal vehicleAccessaryValue { get; set; }
-        public Decimal vehicleTotalValue { get; set; }
         public VehicleUsage vehicleUsage { get; set; }
         public VehicleGarageType vehicleGarageType { get; set; }
+
+        public Decimal vehicleAccessaryValue { get; set; }
+        public Decimal vehicleTotalValue { get; set; }
 
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        public void validate()
+        {
+            Type type = this.GetType();
+            PropertyInfo[] propList = type.GetProperties();
+            foreach (PropertyInfo item in propList)
+            {
+                String name = item.Name;
+                Object value = item.GetValue(this, null);
+                if (name != "vehicleAccessaryValue" && name != "vehicleTotalValue")
+                {
+                    if (typeof(int).IsInstanceOfType(value) || typeof(VehicleGarageType).IsInstanceOfType(value) || typeof(VehicleUsage).IsInstanceOfType(value))
+                    {
+                        if ((int)value == 0)
+                        {
+                            throw new Exception(name + " is required");
+                        }
+                    } else
+                    {
+                        if (value == null)
+                        {
+                            throw new Exception(name + " is required");
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -37,7 +65,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
 
     public enum VehicleGarageType
     {
-        GARAGE,
+        GARAGE = 1,
         DEALER
     }
 

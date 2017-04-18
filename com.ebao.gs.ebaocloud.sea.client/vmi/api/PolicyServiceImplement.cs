@@ -36,6 +36,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
         CalculationResp PolicyService.Calculate(string token, CalculationParams param)
         {
+            param.validate();
             if (String.IsNullOrEmpty(token)) throw new Exception("token is required");
             if (param == null) throw new Exception("parameter is required");
             JObject calculationParams = buildCalculationParams(token, param);
@@ -92,26 +93,29 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
             map["ext"] = new JObject();
             map["ext"]["planCode"] = param.planCode;
+            map["ext"]["uploadInfo"] = new JObject();
+            map["ext"]["uploadInfo"]["premMappingCode"] = "TC";
 
-            JObject vehicle = getVechileModel(token, param.vehicleMakeName, param.vehicleModelYear, param.vehicleModelDescription);
+            JObject vehicle = getVehicleModel(token, param.vehicleMakeName, param.vehicleModelYear, param.vehicleModelDescription);
 
             JArray insureds = new JArray();
             map["insureds"] = insureds;
             JObject insured = new JObject();
             insureds.Add(insured);
             insured["ext"] = new JObject();
-            //insured["ext"]["vehicleCountry"] = "THA";
+            insured["ext"]["vehicleCountry"] = "THA";
             insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.vehicleGarageType);
             insured["ext"]["vehicleYear"] = param.vehicleModelYear;
             insured["ext"]["vehicleMake"] = param.vehicleMakeName;
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];
             insured["ext"]["vehicleRegYear"] = param.vehicleRegistrationYear;
-            insured["ext"]["vehicleDesc"] = param.vehicleModelDescription;
             insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
             insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
             insured["ext"]["capacity"] = vehicle["capacity"];
             insured["ext"]["vehicleCode"] = (int)param.vehicleUsage;
             insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
+
+            map["ext"]["uploadInfo"]["sumInsured"] = vehicle["marketPrice"];
 
             JArray coverages = buildCoverages(token, map);
 
@@ -123,6 +127,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         {
             if (String.IsNullOrEmpty(token)) throw new Exception("token is required");
             if (param == null) throw new Exception("policy is required");
+            param.Validate();
 
             IssuedResp issuedResp = new IssuedResp();
 
@@ -130,12 +135,16 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             {
                 JObject policy = buildPolicy(token, param);
 
+                policy["ext"]["ui"]["stepIdx"] = 3;
                 JObject buyResult = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
                 if (!parseResult(issuedResp, buyResult))
                 {
                     return issuedResp;
                 }
 
+
+
+                policy["ext"]["ui"]["stepIdx"] = 4;
                 JObject bindResult = NetworkUtils.Post(ApiConsts.API_BIND, buyResult["data"]["policy"], token);
                 if (!parseResult(issuedResp, bindResult))
                 {
@@ -145,14 +154,17 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 
                 long policyId = (long)bindResult["data"]["policy"]["policyId"];
 
-                uploadPolicyDocument(param, policyId, token);
+                // uploadPolicyDocument(param, policyId, token);
 
+                policy["ext"]["ui"]["stepIdx"] = 5;
                 JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
                 if (!parseResult(issuedResp, confirmResult))
                 {
                     return issuedResp;
                 }
 
+
+                policy["ext"]["ui"]["stepIdx"] = 6;
                 JObject payResult = NetworkUtils.Post(ApiConsts.API_PAY + policyId, buildPayMode(), token);
                 if (!parseResult(issuedResp, payResult))
                 {
@@ -201,6 +213,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
                 {
                     result.success = false;
                     result.message = (String)responseObj["data"]["messages"][0]["message"];
+                    return false;
                 }
             }
             return true;
@@ -214,7 +227,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             policy["effDate"] = Utils.FormatDate(param.effectiveDate);
             policy["expDate"] = Utils.FormatDate(param.expireDate);
             policy["prdtCode"] = param.productCode;
-            policy["prdtVersion"] = param.productVersion;
+            //policy["prdtVersion"] = param.productVersion;
             policy["policySource"] = 1;
             policy["proposalDate"] = Utils.FormatDate(param.proposalDate);
             policy["newOrRn"] = 1;
@@ -222,18 +235,37 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             policy["policyholder"] = buildPolicyholder(param);
             
             policy["ext"] = new JObject();
+            policy["ext"]["ui"] = new JObject();
             policy["ext"]["planCode"] = param.planCode;
             policy["ext"]["payer"] = buildPayer(param);
-            policy["ext"]["dirverInfo"] = new JObject();
-            policy["ext"]["dirverInfo"]["drivers"] = buildDriver(param);
+            policy["ext"]["driverInfo"] = new JObject();
+            policy["ext"]["driverInfo"]["drivers"] = buildDriver(param);
 
             policy["insureds"] = buildInsured(token, param);
+            // policy["ext"]["pd"] = getProductStructure(token, policy);
+
             policy["simpleFee"] = buildSimpleFee(token, param);
 
             return policy;
         }
 
-        
+        private static JObject getProductStructure(string token, JObject policy)
+        {
+            JObject responseObj = NetworkUtils.Post(ApiConsts.API_STRUCTURE, policy, token);
+
+            if ((Boolean)responseObj["success"])
+            {
+                if (responseObj["data"] == null)
+                {
+                    throw new Exception("Cannot get product structure.");
+                }
+                return (JObject)responseObj["data"];
+            }
+            else
+            {
+                throw new Exception("Cannot get product structure.");
+            }
+        }
 
         private static JObject buildSimpleFee(String token, Policy param)
         {
@@ -272,11 +304,10 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             return simpleFee;
         }
 
-        private static JObject getVechileModel(String token, String makeName, int modelYear, String modelDescription)
+        private static JObject getVehicleModel(String token, String makeName, int modelYear, String modelDescription)
         {
             if (String.IsNullOrEmpty(token)) throw new Exception("Token is required");
             if (String.IsNullOrEmpty(makeName)) throw new Exception("Vehicle make name is required");
-            if (modelYear == 0) throw new Exception("Vehicle model year is required");
             if (String.IsNullOrEmpty(modelDescription)) throw new Exception("Vehicle model description is required");
 
             JObject queryParams = new JObject();
@@ -287,7 +318,8 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             JObject responseObj = NetworkUtils.Post(ApiConsts.API_VEHICLE, queryParams, token);
             if ((Boolean)responseObj["success"])
             {
-                if (responseObj["data"] == null)
+                Object obj = responseObj["data"].GetType();
+                if (responseObj["data"].GetType().Name == "JValue")
                 {
                     throw new Exception("Cannot fetch a vehicle model.");
                 }
@@ -343,7 +375,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
         {
             if (param == null) throw new Exception("param is required");
 
-            JObject vehicle = getVechileModel(token, param.insured.vehicleMakeName, param.insured.vehicleModelYear, param.insured.vehicleModelDescription);
+            JObject vehicle = getVehicleModel(token, param.insured.vehicleMakeName, param.insured.vehicleModelYear, param.insured.vehicleModelDescription);
 
             JArray insureds = new JArray();
             JObject insured = new JObject();
@@ -361,8 +393,13 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
             insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
             insured["ext"]["tonnage"] = vehicle["tonnage"];
+            insured["ext"]["vehicleType"] = vehicle["vehicleType"];
+            insured["ext"]["vehicleUsage"] = (int)param.insured.vehicleUsage;
+            insured["ext"]["newVehicle"] = param.insured.vehicleRegistrationYear == DateTime.Now.Year;
+            insured["ext"]["vehicleDesc"] = vehicle["vehicleKey"];
+            insured["ext"]["vehicleInfo"] = vehicle["vehicleKey"];
 
-			var regYear = param.insured.vehicleRegistrationYear;
+            var regYear = param.insured.vehicleRegistrationYear;
 			if (Convert.ToString(regYear).Equals(DateTime.Now.ToString("yyyy")))
 			{
 				//new vehicle
@@ -414,22 +451,28 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             payer["ext"] = new JObject();
             payer["ext"]["sameAsPolicyholder"] = param.isPayerSameAsPolicyholder;
             payer["ext"]["address"] = new JObject();
-            if (param.payer.inThaiAddress != null)
+            if (param.isPayerSameAsPolicyholder)
             {
-                payer["ext"]["address"]["addressType"] = 1;
-                payer["ext"]["address"]["street"] = param.payer.inThaiAddress.street;
-                payer["ext"]["address"]["province"] = param.payer.inThaiAddress.province;
-                payer["ext"]["address"]["district"] = param.payer.inThaiAddress.district;
-                payer["ext"]["address"]["subDistrict"] = param.payer.inThaiAddress.subDistrict;
-                payer["ext"]["address"]["postalCode"] = param.payer.inThaiAddress.postalCode;
-                payer["ext"]["address"]["cascadeAddress"] = param.payer.inThaiAddress.subDistrict;
-            }
-            if (param.payer.outThaiAddress != null)
+                payer["ext"]["address"] = buildPolicyholderAddress(param);
+            } else
             {
-                payer["ext"]["address"]["addressType"] = 0;
-                payer["ext"]["address"]["address"] = param.payer.outThaiAddress.address;
-                payer["ext"]["address"]["city"] = param.payer.outThaiAddress.city;
-                payer["ext"]["address"]["country"] = param.payer.outThaiAddress.country;
+                if (param.payer.inThaiAddress != null)
+                {
+                    payer["ext"]["address"]["addressType"] = 1;
+                    payer["ext"]["address"]["street"] = param.payer.inThaiAddress.street;
+                    payer["ext"]["address"]["province"] = param.payer.inThaiAddress.province;
+                    payer["ext"]["address"]["district"] = param.payer.inThaiAddress.district;
+                    payer["ext"]["address"]["subDistrict"] = param.payer.inThaiAddress.subDistrict;
+                    payer["ext"]["address"]["postalCode"] = param.payer.inThaiAddress.postalCode;
+                    payer["ext"]["address"]["cascadeAddress"] = param.payer.inThaiAddress.subDistrict;
+                }
+                if (param.payer.outThaiAddress != null)
+                {
+                    payer["ext"]["address"]["addressType"] = 0;
+                    payer["ext"]["address"]["address"] = param.payer.outThaiAddress.address;
+                    payer["ext"]["address"]["city"] = param.payer.outThaiAddress.city;
+                    payer["ext"]["address"]["country"] = param.payer.outThaiAddress.country;
+                }
             }
             return payer;
         }

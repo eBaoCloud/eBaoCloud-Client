@@ -83,72 +83,78 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			if (param == null) throw new Exception("policy is required");
 			IssuedResp issuedResp = new IssuedResp();
 			try
-			{
-				JObject policy = buildPolicy(token,param);
+            {
+                JObject policy = buildPolicy(token, param);
+                
+                policy["ext"]["ui"]["step"] = 1;
+                JObject buyResult = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
+                if (!parseResult(issuedResp, buyResult))
+                {
+                    return issuedResp;
+                }
+                policy["ext"]["ui"]["step"] = 2;
+                JObject bindResult = NetworkUtils.Post(ApiConsts.API_BIND, buyResult["data"]["policy"], token);
+                if (!parseResult(issuedResp, bindResult))
+                {
+                    return issuedResp;
+                }
 
-				//do get product structure
-				JObject structureResult = NetworkUtils.Post(ApiConsts.API_STRUCTURE, policy, token);
+                policy["ext"]["ui"]["step"] = 3;
+                long policyId = (long)bindResult["data"]["policy"]["policyId"];
 
-				if (!parseResult(issuedResp,structureResult)) {
-					return issuedResp;
-				}
-				policy["ext"]["pd"] = structureResult["data"];
-				policy["ext"]["ui"]["step"] = 1;
-				//do buy operation
-				JObject buyResult = NetworkUtils.Post(ApiConsts.API_BUY, policy, token);
-				if (!parseResult(issuedResp, buyResult))
-				{
-					return issuedResp;
-				}
-				policy["ext"]["ui"]["step"] = 2;
-				//do bind operation
-				JObject bindResult = NetworkUtils.Post(ApiConsts.API_BIND, buyResult["data"]["policy"], token);
-				if (!parseResult(issuedResp, bindResult))
-				{
-					return issuedResp;
-				}
-				
-				policy["ext"]["ui"]["step"] = 3;
-				long policyId = (long)bindResult["data"]["policy"]["policyId"];
+                uploadPolicyDocument(param, policyId, token);
 
-				uploadPolicyDocument(param, policyId, token);
+                JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
+                if (!parseResult(issuedResp, confirmResult))
+                {
+                    return issuedResp;
+                }
 
-				//do confirm operation
-				JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
-				if (!parseResult(issuedResp, confirmResult))
-				{
-					return issuedResp;
-				}
-				policy["ext"]["ui"]["step"] = 4;
-				
-				//do payment operation
-				JObject payResult = NetworkUtils.Post(ApiConsts.API_PAY + policyId, buildPayMode(), token);
-				if (!parseResult(issuedResp, payResult))
-				{
-					return issuedResp;
-				}
-			
-				//do issue operation
-				JObject paymentStatusResult = NetworkUtils.Get(ApiConsts.API_PAYMENT_STATUS + policyId, token);
-				if (!parseResult(issuedResp, paymentStatusResult))
-				{
-					return issuedResp;
-				}
-				else
-				{
-					issuedResp.policyNo = (String)paymentStatusResult["data"]["policyNos"]["CMI"];
-					return issuedResp;
-				}
-			}
-			catch (Exception e) {
+                policy["ext"]["ui"]["step"] = 4;
+                JObject payResult = NetworkUtils.Post(ApiConsts.API_PAY + policyId, buildPayMode(), token);
+                if (!parseResult(issuedResp, payResult))
+                {
+                    return issuedResp;
+                }
+
+                JObject paymentStatusResult = NetworkUtils.Get(ApiConsts.API_PAYMENT_STATUS + policyId, token);
+                if (!parseResult(issuedResp, paymentStatusResult))
+                {
+                    return issuedResp;
+                }
+                else
+                {
+                    issuedResp.policyNo = (String)paymentStatusResult["data"]["policyNos"]["CMI"];
+                    return issuedResp;
+                }
+            }
+            catch (Exception e) {
 				issuedResp.success = false;
 				issuedResp.message = e.Message;
 			}
 			return issuedResp;
 		}
 
-		//build policy basic info
-		private static JObject buildPolicy(string token,Policy param) {
+        private static JObject getProductStructure(string token, JObject policy)
+        {
+            JObject responseObj =  NetworkUtils.Post(ApiConsts.API_STRUCTURE, policy, token);
+
+            if ((Boolean)responseObj["success"])
+            {
+                if (responseObj["data"] == null)
+                {
+                    throw new Exception("Cannot get product structure.");
+                }
+                return (JObject)responseObj["data"];
+            }
+            else
+            {
+                throw new Exception("Cannot get product structure.");
+            }
+        }
+
+        //build policy basic info
+        private static JObject buildPolicy(string token,Policy param) {
 			JObject policy = new JObject();
 			if (param == null) throw new Exception("param is required");
 			policy["insurerTenantCode"] = "SEG_TH";
@@ -159,16 +165,13 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			policy["policySource"] = 1;
 			policy["proposalDate"] = Utils.FormatDate(param.proposalDate);
 			policy["newOrRn"] = 1;
-
 			policy["policyholder"] = buildPolicyholder(param);
-
 			policy["ext"] = new JObject();
-			policy["ext"]["payer"] = buildPayer(param);
-
+            policy["ext"]["payer"] = buildPayer(param);
 			policy["ext"]["ui"] = new JObject();
-
 			policy["insureds"] = buildInsured(token, param);
-			policy["simpleFee"] = buildSimpleFee(token, param);
+            //policy["ext"]["pd"] = getProductStructure(token, policy);
+            policy["simpleFee"] = buildSimpleFee(token, param);
 			return policy;
 		}
 
@@ -188,8 +191,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			insured["ext"]["capacity"] = vehicle["capacity"];
 			insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
 			insured["ext"]["tonnage"] = vehicle["tonnage"];
-
-			insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
+            insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
 
 			insured["ext"]["vehicleType"] = Convert.ToString((int)param.insured.vehicleType);
 			insured["ext"]["vehicleSubType"] = Convert.ToString((int)param.insured.vehicleSubType);
@@ -481,6 +483,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 				{
 					result.success = false;
 					result.message = (String)responseObj["data"]["messages"][0]["message"];
+                    return false;
 				}
 			}
 			return true;

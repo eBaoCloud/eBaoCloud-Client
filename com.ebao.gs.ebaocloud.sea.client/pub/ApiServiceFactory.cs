@@ -7,7 +7,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
 {
     public class ApiServiceFactory
     {
-        private static string host = "https://th.ebaocloud.com";
+        private static string host = "https://thuat.ebaocloud.com";
         public static string getCurrentHost()
         {
 #if DEBUG
@@ -15,7 +15,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
 #endif
 
 #if (!DEBUG)
-            host = "https://th.ebaocloud.com"
+            host = "https://thuat.ebaocloud.com"
 #endif
             return host;
         }
