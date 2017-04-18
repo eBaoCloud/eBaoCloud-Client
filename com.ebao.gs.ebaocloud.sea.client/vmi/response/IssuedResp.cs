@@ -12,4 +12,5 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.response
         public string message { get; set; }
         public string policyNo { get; set; }
     }
+
 }

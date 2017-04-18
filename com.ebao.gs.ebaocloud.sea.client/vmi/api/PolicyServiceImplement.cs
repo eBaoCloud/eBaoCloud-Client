@@ -387,6 +387,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.insured.vehicleGarageType);
             insured["ext"]["vehicleMake"] = vehicle["makeCode"];
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];
+            insured["ext"]["vehicleYear"] = param.insured.vehicleModelYear;
             insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
             insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
             insured["ext"]["capacity"] = vehicle["capacity"];
@@ -399,22 +400,21 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["newVehicle"] = param.insured.vehicleRegistrationYear == DateTime.Now.Year;
             insured["ext"]["vehicleDesc"] = vehicle["vehicleKey"];
             insured["ext"]["vehicleInfo"] = vehicle["vehicleKey"];
+            insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
 
             var regYear = param.insured.vehicleRegistrationYear;
-			if (Convert.ToString(regYear).Equals(DateTime.Now.ToString("yyyy")))
+			if (regYear == DateTime.Now.Year)
 			{
 				//new vehicle
 				insured["ext"]["newVehicle"] = true;
 				insured["ext"]["vehicleProvince"] = "TBA";
-				insured["ext"]["vehicleRegYear"] = int.Parse(DateTime.Now.ToString("yyyy"));
-				insured["ext"]["vehicleRegNo"] = "TBA";
+				insured["ext"]["vehicleRegYear"] = DateTime.Now.Year;
 			}
 			else
 			{
 				insured["ext"]["newVehicle"] = false;
 				insured["ext"]["vehicleProvince"] = param.insured.vehicleProvince;
 				insured["ext"]["vehicleRegYear"] = regYear;
-				insured["ext"]["vehicleRegNo"] = param.insured.vehicleRegistrationNo;
 			}
 
 			insured["coverages"] = buildCoverages(token, prepareCalculationParams(param));

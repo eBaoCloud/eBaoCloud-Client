@@ -45,7 +45,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
                 else if (typeof(List<Document>).IsInstanceOfType(value))
                 {
                     List<Document> docList = (List<Document>)value;
-                    if (docList.Count() > 0)
+                    if (docList.Count > 0)
                     {
                         int index = 0;
                         foreach (Document doc in docList)
@@ -58,7 +58,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
                 else if (typeof(List<Driver>).IsInstanceOfType(value))
                 {
                     List<Driver> driverList = (List<Driver>)value;
-                    if (driverList.Count() > 0)
+                    if (driverList.Count > 0)
                     {
                         int index = 0;
                         foreach (Driver driver in driverList)
@@ -166,7 +166,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
             {
                 throw new Exception("In payer name is required");
             }
-            if (this.inThaiAddress == null && outThaiAddress == null)
+            if (this.inThaiAddress == null && this.outThaiAddress == null)
             {
                 throw new Exception("In payer inThaiAddress or outThaiAddress is required");
             }

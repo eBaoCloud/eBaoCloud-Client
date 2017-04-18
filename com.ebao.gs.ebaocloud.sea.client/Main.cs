@@ -78,7 +78,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";
             policyParam.insured.vehicleRegistrationNo = "RNNNM" + randomStr;
-            policyParam.insured.vehicleRegistrationYear = 2017;
+            policyParam.insured.vehicleRegistrationYear = 2016;
             policyParam.insured.vehicleUsage = VehicleUsage.PRIVATE;
             policyParam.insured.vehicleModelYear = 2016;
 

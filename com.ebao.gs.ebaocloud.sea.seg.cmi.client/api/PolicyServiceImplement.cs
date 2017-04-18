@@ -38,6 +38,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 		{
 			if (String.IsNullOrEmpty(token)) throw new Exception("token is required");
 			if (param == null) throw new Exception("parameter is required");
+            param.Validate();
 			JObject calculationParams = buildCalculationParams(token, param);
 
 			JObject responseObj = NetworkUtils.Post(ApiConsts.API_CALCULATE, calculationParams, token);
@@ -82,6 +83,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 		{
 			if (String.IsNullOrEmpty(token)) throw new Exception("token is required");
 			if (param == null) throw new Exception("policy is required");
+            param.Validate();
 			IssuedResp issuedResp = new IssuedResp();
 			try
             {
