@@ -471,7 +471,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			}
 		}
 
-		public void Download(string token,string policyNo, string filePath)
+		public void Download(string token, string policyNo, string filePath)
 		{
 			if (String.IsNullOrEmpty(policyNo)) throw new Exception("Policy No. is required");
 			FileInfo fileInfo = new FileInfo(filePath);

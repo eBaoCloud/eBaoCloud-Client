@@ -11,30 +11,37 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 	public interface PolicyService
 	{
 		/// <summary>
-		/// 登陆，必须登陆成功取到token后才能进行其它API调用
+		/// Login
 		/// </summary>
 		/// <param name="username"></param>
 		/// <param name="password"></param>
-		/// <returns></returns>
+		/// <returns>LoginResp</returns>
 		LoginResp Login(string username, string password);
 
-		/// <summary>
-		/// calculate
-		/// </summary>
-		/// <param name="token"></param>
-		/// <param name="param"></param>
-		/// <returns></returns>
-		CalculationResp Calculate(string token, CalculationParams param);
+        /// <summary>
+        /// Calculate
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="param"></param>
+        /// <returns>CalculationResp</returns>
+        CalculationResp Calculate(string token, CalculationParams param);
 
 
-		/// <summary>
-		/// issue
-		/// </summary>
-		/// <param name="token"></param>
-		/// <param name="policy"></param>
-		/// <returns></returns>
-		IssuedResp Issue(string token, Policy policy);
+        /// <summary>
+        /// Issue
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="policy"></param>
+        /// <returns>IssuedResp</returns>
+        IssuedResp Issue(string token, Policy policy);
 
-		void Download(string token, string policyId, string filePath);
+
+        /// <summary>
+        /// Download file
+        /// </summary>
+        /// <param name="token">login success response token</param>
+        /// <param name="policyNo">issue success response policyNo</param>
+        /// <param name="filePath">Specify the download path</param>
+		void Download(string token, string policyNo, string filePath);
 	}
 }
