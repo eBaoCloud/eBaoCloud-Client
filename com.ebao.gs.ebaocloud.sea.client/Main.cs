@@ -28,7 +28,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             calculationParams.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
             calculationParams.proposalDate = DateTime.Now.ToLocalTime();
 
-            calculationParams.planCode = "TIB";
+            calculationParams.planCode = "SCGG";
             calculationParams.productCode = "VMI";
             //calculationParams.productVersion = "v1";
             calculationParams.vehicleAccessaryValue = 1000;
@@ -39,7 +39,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             // calculationParams.vehicleGroup = "";
             calculationParams.vehicleMakeName = "TOYOTA";
             //calculationParams.vehicleMarketValue = 1569000;
-            calculationParams.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
+            calculationParams.vehicleModelDescription = "Sedan 4dr Altis G CVT 7sp FWD 1.6i 2016";
             // calculationParams.vehicleModelDescription = "";
             calculationParams.vehicleModelYear = 2016;
             //calculationParams.vehicleNumOfSeats = 5;
@@ -64,16 +64,16 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client
             policyParam.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
             policyParam.proposalDate = DateTime.Now.ToLocalTime();
             policyParam.productCode = "VMI";
-            policyParam.planCode = "TIB";
+            policyParam.planCode = "SCGG";
             //policyParam.productVersion = "v1";
             policyParam.isPayerSameAsPolicyholder = false;
 
             String randomStr = new Random(DateTime.Now.Millisecond).Next().ToString();
             policyParam.insured = new Insured();
-            //policyParam.insured.vehicleChassisNo = "CNNN" + randomStr;
-            policyParam.insured.vehicleColor = "white";
+            policyParam.insured.vehicleChassisNo = "CNNN" + randomStr;
+           // policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
-            policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
+            policyParam.insured.vehicleModelDescription = "Sedan 4dr Altis G CVT 7sp FWD 1.6i 2016";
             policyParam.insured.vehicleGarageType = VehicleGarageType.GARAGE;
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";

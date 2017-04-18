@@ -5,6 +5,7 @@ using com.ebao.gs.ebaocloud.sea.seg.client.pub;
 using com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters;
 using com.ebao.gs.ebaocloud.sea.seg.client.vmi.response;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 
 namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
@@ -106,7 +107,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["vehicleCountry"] = "THA";
             insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.vehicleGarageType);
             insured["ext"]["vehicleYear"] = param.vehicleModelYear;
-            insured["ext"]["vehicleMake"] = param.vehicleMakeName;
+            insured["ext"]["vehicleMake"] = vehicle["makeCode"];
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];
             insured["ext"]["vehicleRegYear"] = param.vehicleRegistrationYear;
             insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
@@ -114,6 +115,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["capacity"] = vehicle["capacity"];
             insured["ext"]["vehicleCode"] = (int)param.vehicleUsage;
             insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
+            insured["ext"]["tonnage"] = vehicle["tonnage"];
 
             map["ext"]["uploadInfo"]["sumInsured"] = vehicle["marketPrice"];
 
@@ -385,7 +387,6 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
             insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.insured.vehicleGarageType);
             insured["ext"]["vehicleMake"] = vehicle["makeCode"];
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];
-            insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
             insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
             insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
             insured["ext"]["capacity"] = vehicle["capacity"];
@@ -563,5 +564,30 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.api
 				}
 			}
 		}
-	}
+
+        public void Download(string token, string policyNo, string filePath)
+        {
+            if (String.IsNullOrEmpty(policyNo)) throw new Exception("Policy No. is required");
+            FileInfo fileInfo = new FileInfo(filePath);
+            if (fileInfo.Attributes != FileAttributes.Directory)
+            {
+                //check it is directory
+                throw new Exception("The path [" + filePath + " must be directory.]");
+            }
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath); //if file does not exists, then create
+            }
+
+            JObject responseObj = NetworkUtils.Get(ApiConsts.API_GET_PRINTED_FILES + "/" + policyNo + "/CMI", token);
+            JArray printedFileList = (JArray)responseObj["data"];
+            if (responseObj["data"] != null)
+            {
+                foreach (string fileName in printedFileList)
+                {
+                    NetworkUtils.download(ApiConsts.API_DOWNLOAD_PRINTED_FILE + "/?fileName=" + fileName, filePath, token);
+                }
+            }
+        }
+    }
 }

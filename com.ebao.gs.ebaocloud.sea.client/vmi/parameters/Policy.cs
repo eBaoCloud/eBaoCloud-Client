@@ -67,11 +67,27 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
                             index++;
                         }
                     }
-                } else if (typeof(Insured).IsInstanceOfType(value))
+                }
+                else if (typeof(Insured).IsInstanceOfType(value))
                 {
                     Insured insured = (Insured)value;
-                    insured.validate();
-                } else
+                    insured.Validate();
+                }
+                else if (typeof(IndividualPolicyholder).IsInstanceOfType(value))
+                {
+                    IndividualPolicyholder policyHolder = (IndividualPolicyholder)value;
+                    policyHolder.Validate();
+                }
+                else if (typeof(OrganizationPolicyholder).IsInstanceOfType(value))
+                {
+                    OrganizationPolicyholder policyHolder = (OrganizationPolicyholder)value;
+                    policyHolder.Validate();
+                } else if (typeof(Payer).IsInstanceOfType(value))
+                {
+                    Payer payer = (Payer)value;
+                    payer.Validate();
+                }
+                else
                 {
                     if (value == null)
                     {
@@ -100,7 +116,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
                             {
                                 throw new Exception("If you do not want to set up 'payer', you have to set 'isPayerSameAsPolicyholder' flag to 'true'. Otherwise, you must provide 'payer' info");
                             }
-                            continue ;
+                            continue;
                         }
 
                         throw new Exception(name + " is required");
@@ -110,19 +126,15 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
             }
         }
 
-        private Object GetValueOfProperty(string propName) {
-            Type type = this.GetType();
-            PropertyInfo propInfo = type.GetProperty(propName);
-            return propInfo.GetValue(this, null);
-        }
+        
     }
 
     public class Driver
     {
-        public String firstName;
-        public String lastName;
-        public DateTime birthday;
-        public String occupation;
+        public String firstName { get; set; }
+        public String lastName { get; set; }
+        public DateTime birthday { get; set; }
+        public String occupation { get; set; }
 
         public void Validate(int index = -1)
         {
@@ -147,6 +159,26 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
         public String name;
         public InThaiAddress inThaiAddress;
         public OutThaiAddress outThaiAddress;
+
+        public void Validate()
+        {
+            if (String.IsNullOrEmpty(this.name))
+            {
+                throw new Exception("In payer name is required");
+            }
+            if (this.inThaiAddress == null && outThaiAddress == null)
+            {
+                throw new Exception("In payer inThaiAddress or outThaiAddress is required");
+            }
+            if (this.inThaiAddress != null)
+            {
+                this.inThaiAddress.Validate();
+            }
+            if (this.outThaiAddress != null)
+            {
+                this.outThaiAddress.Validate();
+            }
+        }
     }
 
     public class Document
@@ -187,24 +219,24 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
     public class Insured
     {
         // optional
-        public String vehicleCountry;
-        public String vehicleProvince;
-        public String vehicleColor;
-        public Decimal vehicleAccessaryValue;
-        public Decimal vehicleTotalValue;
+        public String vehicleCountry { get; set; }
+        public String vehicleProvince { get; set; }
+        public String vehicleColor { get; set; }
+        public Decimal vehicleAccessaryValue { get; set; }
+        public Decimal vehicleTotalValue { get; set; }
+        public String vehicleEngineNo { get; set; }
 
         // required
-        public VehicleGarageType vehicleGarageType;
-        public String vehicleMakeName;
-        public int vehicleModelYear;
-        public int vehicleRegistrationYear;
-        public String vehicleModelDescription;
-        public VehicleUsage vehicleUsage;
-        public String vehicleRegistrationNo;
-        public String vehicleChassisNo;
-        public String vehicleEngineNo;
-        
-        public void validate()
+        public VehicleGarageType vehicleGarageType { get; set; }
+        public String vehicleMakeName { get; set; }
+        public int vehicleModelYear { get; set; }
+        public int vehicleRegistrationYear { get; set; }
+        public String vehicleModelDescription { get; set; }
+        public VehicleUsage vehicleUsage { get; set; }
+        public String vehicleRegistrationNo { get; set; }
+        public String vehicleChassisNo { get; set; }
+
+        public void Validate()
         {
             Type type = this.GetType();
             PropertyInfo[] propList = type.GetProperties();
@@ -213,7 +245,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
             {
                 String name = item.Name;
                 Object value = item.GetValue(this, null);
-                if (name == "vehicleCountry" || name == "vehicleProvince" || name == "vehicleColor" || name == "vehicleAccessaryValue" || name == "vehicleTotalValue")
+                if (name == "vehicleCountry" || name == "vehicleProvince" || name == "vehicleColor" || name == "vehicleAccessaryValue" || name == "vehicleTotalValue" || name == "vehicleEngineNo")
                 {
                     continue;
                 }
@@ -230,60 +262,188 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.vmi.parameters
                         continue;
                     }
                 }
-                throw new Exception(String.Format("In [{0}], ", type.Name) + name + " is required");
+                throw new Exception(String.Format("In [ {0} ], ", type.Name) + name + " is required.");
             }
         }
     }
 
     public class InThaiAddress
     {
-        public String street;
-        public String province;
-        public String district;
-        public String subDistrict;
-        public String postalCode;
+        public String street { get; set; }
+        public String province { get; set; }
+        public String district { get; set; }
+        public String subDistrict { get; set; }
+        public String postalCode { get; set; }
+
+        public void Validate()
+        {
+            Type type = this.GetType();
+            PropertyInfo[] propertyList = type.GetProperties();
+            foreach (PropertyInfo item in propertyList)
+            {
+                String name = item.Name;
+                Object value = item.GetValue(this, null);
+                if (value == null)
+                {
+                    throw new Exception(String.Format("In [ {0} {1} is required] ", type.Name, name));
+                }
+            }
+        }
     }
 
     public class OutThaiAddress
     {
-        public String address;
-        public String city;
-        public String country;
+        public String address { get; set; }
+        public String city { get; set; }
+        public String country { get; set; }
+
+        public void Validate()
+        {
+            Type type = this.GetType();
+            PropertyInfo[] propertyList = type.GetProperties();
+            foreach (PropertyInfo item in propertyList)
+            {
+                String name = item.Name;
+                Object value = item.GetValue(this, null);
+                if (value == null)
+                {
+                    throw new Exception(String.Format("In [ {0} {1} is required] ", type.Name, name));
+                }
+            }
+        }
     }
   
 
-    public class IndividualPolicyholder
+    public class IndividualPolicyholder : BaseModel
     {
-        public String taxNo;
-        public IndividualPrefix title;
-        public String firstName;
-        public String lastName;
-        public String idType;
-        public String idNo;
-        //String email;
-        public String mobile;
-        //String officeTel;
-        //String homeTel;
-       // public String occupation;
-        //public String nationality;
-        // PolicyholderProfile profile;
-        public InThaiAddress inThaiAddress;
-        public OutThaiAddress outThaiAddress;
+        public String taxNo { get; set; }
+        public IndividualPrefix title { get; set; }
+        public String firstName { get; set; }
+        public String lastName { get; set; }
+        public String idType { get; set; }
+        public String idNo { get; set; }
+        public String mobile { get; set; }
+        public InThaiAddress inThaiAddress { get; set; }
+        public OutThaiAddress outThaiAddress { get; set; }
+
+        public void Validate()
+        {
+            Type type = this.GetType();
+            PropertyInfo[] propList = type.GetProperties();
+            foreach (PropertyInfo item in propList)
+            {
+                String name = item.Name;
+                Object value = item.GetValue(this, null);
+                if (typeof(IndividualPrefix).IsInstanceOfType(value))
+                {
+                    if ((int)value != 0)
+                    {
+                        continue;
+                    }
+                } else
+                {
+                    if (value == null)
+                    {
+                        if (name == "inThaiAddress")
+                        {
+                            Object outThaiAddress = GetValueOfProperty("outThaiAddress");
+                            if (outThaiAddress == null)
+                            {
+                                throw new Exception("In individualPolicyholder inThaiAddress or outThaiAddress is required");
+                            }
+                            OutThaiAddress outThaiAddr = (OutThaiAddress)outThaiAddress;
+                            outThaiAddr.Validate();
+                            continue;
+                        }
+
+                        if (name == "outThaiAddress")
+                        {
+                            Object inThaiAddress = GetValueOfProperty("inThaiAddress");
+                            if (inThaiAddress == null)
+                            {
+                                throw new Exception("In individualPolicyholder inThaiAddress or outThaiAddress is required");
+                            }
+                            InThaiAddress inThaiAddr = (InThaiAddress)inThaiAddress;
+                            inThaiAddr.Validate();
+                            continue;
+                        }
+                    } else
+                    {
+                        continue;
+                    }
+                }
+                throw new Exception(String.Format("In [ {0} ], ", type.Name) + name + " is required.");
+            }
+        }
     }
 
-    public class OrganizationPolicyholder
+    public class OrganizationPolicyholder : BaseModel
     {
-        public OrganizationPrefix title;
-        public String companyName;
-        public String registrationNo;
-        public String taxNo;
-        public String branch;
-        public DateTime registrationDate;
-        public String industryCategory;
-        public String contactPerson;
-        public String contactPhoneNo;
-        public InThaiAddress inThaiAddress;
-        public OutThaiAddress outThaiAddress;
+        public OrganizationPrefix title { get; set; }
+        public String companyName { get; set; }
+        public String registrationNo { get; set; }
+        public String taxNo { get; set; }
+        public String branch { get; set; }
+
+        public DateTime registrationDate { get; set; }
+        public String industryCategory { get; set; }
+        public String contactPerson { get; set; }
+        public String contactPhoneNo { get; set; }
+
+        public InThaiAddress inThaiAddress { get; set; }
+        public OutThaiAddress outThaiAddress { get; set; }
+
+        public void Validate()
+        {
+            Type type = this.GetType();
+            PropertyInfo[] propList = type.GetProperties();
+            foreach (PropertyInfo item in propList)
+            {
+                String name = item.Name;
+                Object value = item.GetValue(this, null);
+                if (name == "registrationDate" || name == "industryCategory" || name == "contactPerson" || name == "contactPhoneNo") continue;
+                if (typeof(OrganizationPrefix).IsInstanceOfType(value))
+                {
+                    if ((int)value != 0)
+                    {
+                        continue;
+                    }
+                } else
+                {
+                    if (value == null)
+                    {
+                        if (name == "inThaiAddress")
+                        {
+                            Object outThaiAddress = GetValueOfProperty("outThaiAddress");
+                            if (outThaiAddress == null)
+                            {
+                                throw new Exception("In OrganizationPolicyholder inThaiAddress or outThaiAddress is required");
+                            }
+                            OutThaiAddress outThaiAddr = (OutThaiAddress)outThaiAddress;
+                            outThaiAddr.Validate();
+                            continue;
+                        }
+
+                        if (name == "outThaiAddress")
+                        {
+                            Object inThaiAddress = GetValueOfProperty("inThaiAddress");
+                            if (inThaiAddress == null)
+                            {
+                                throw new Exception("In OrganizationPolicyholder inThaiAddress or outThaiAddress is required");
+                            }
+                            InThaiAddress inThaiAddr = (InThaiAddress)inThaiAddress;
+                            inThaiAddr.Validate();
+                            continue;
+                        }
+                    } else
+                    {
+                        continue;
+                    }
+                    
+                }
+                throw new Exception(String.Format("In [ {0} ], ", type.Name) + name + " is required.");
+            }
+        }
     }  
 
     public enum IndividualPrefix

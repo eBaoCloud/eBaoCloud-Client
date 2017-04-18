@@ -35,6 +35,6 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 		/// <returns></returns>
 		IssuedResp Issue(string token, Policy policy);
 
-		void Download(string token,string policyId, string filePath);
+		void Download(string token, string policyId, string filePath);
 	}
 }

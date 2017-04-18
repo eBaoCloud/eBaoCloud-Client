@@ -86,18 +86,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="Model\MessageModel.cs" />
-    <Compile Include="Model\Params\Product\BaseMotorParam.cs" />
-    <Compile Include="Model\Params\Product\CMIParam.cs" />
-    <Compile Include="Model\Params\Product\VMIParam.cs" />
-    <Compile Include="Model\PolicyModel\CMIPolicy.cs" />
-    <Compile Include="Model\PolicyModel\Coverage.cs" />
-    <Compile Include="Model\PolicyModel\Insured.cs" />
-    <Compile Include="Model\PolicyModel\Interest.cs" />
-    <Compile Include="Model\PolicyModel\Policy.cs" />
-    <Compile Include="Model\PolicyModel\VMIPolicy.cs" />
-    <Compile Include="Model\PremCalcResultModel\PremCalcResult.cs" />
-    <Compile Include="Model\ProductModel\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="pub\ApiConsts.cs" />
     <Compile Include="pub\ApiServiceFactory.cs" />

@@ -26,7 +26,12 @@ namespace com.ebao.gs.ebaocloud.sea.seg.client.pub
             return logText;
         }
 
-
+        public Object GetValueOfProperty(string propName)
+        {
+            Type type = this.GetType();
+            PropertyInfo propInfo = type.GetProperty(propName);
+            return propInfo.GetValue(this, null);
+        }
 
     }
 }
