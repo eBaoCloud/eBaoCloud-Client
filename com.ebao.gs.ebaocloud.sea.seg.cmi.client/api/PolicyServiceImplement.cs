@@ -484,13 +484,7 @@ namespace com.ebao.gs.ebaocloud.sea.seg.cmi.client.api
 			{
 				foreach (string fileName in printedFileList)
 				{
-					try
-					{
-						NetworkUtils.download(ApiConsts.API_DOWNLOAD_PRINTED_FILE + "/?fileName=" + fileName, filePath, token);
-					}
-					catch (Exception e) {
-						throw e;
-					}
+					NetworkUtils.download(ApiConsts.API_DOWNLOAD_PRINTED_FILE + "/?fileName=" + fileName, filePath, token);
 				}
 			}
 		}
