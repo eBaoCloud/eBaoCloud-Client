@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.ebao.gs.ebaocloud.sea.seg.client", "com.ebao.gs.ebaocloud.sea.client\com.ebao.gs.ebaocloud.sea.seg.client.csproj", "{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.ebaocloud.client.thai.seg.vmi", "com.ebaocloud.client.thai.seg.vmi\com.ebaocloud.client.thai.seg.vmi.csproj", "{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.ebao.gs.ebaocloud.sea.seg.clientTests", "com.ebao.gs.ebaocloud.sea.seg.clientTests\com.ebao.gs.ebaocloud.sea.seg.clientTests.csproj", "{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.ebao.gs.ebaocloud.sea.seg.cmi.client", "com.ebao.gs.ebaocloud.sea.seg.cmi.client\com.ebao.gs.ebaocloud.sea.seg.cmi.client.csproj", "{7F1A128C-59DA-4EB5-9348-B95F0ECD3C43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.ebaocloud.client.thai.seg.cmi", "com.ebaocloud.client.thai.seg.cmi\com.ebaocloud.client.thai.seg.cmi.csproj", "{7F1A128C-59DA-4EB5-9348-B95F0ECD3C43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +23,6 @@ Global
 		{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}.Test|Any CPU.Build.0 = Test|Any CPU
 		{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}.UAT|Any CPU.ActiveCfg = UAT|Any CPU
 		{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}.UAT|Any CPU.Build.0 = UAT|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.Test|Any CPU.Build.0 = Test|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.UAT|Any CPU.ActiveCfg = UAT|Any CPU
-		{C266BB41-D7D9-4C25-878C-EBE5BD57B0B5}.UAT|Any CPU.Build.0 = UAT|Any CPU
 		{7F1A128C-59DA-4EB5-9348-B95F0ECD3C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F1A128C-59DA-4EB5-9348-B95F0ECD3C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F1A128C-59DA-4EB5-9348-B95F0ECD3C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
