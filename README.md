@@ -1,3 +1,3 @@
 # eBaoCloud-SEA-Client
 
-FOR SEG VMI
+FOR SEG VMI & CMI
