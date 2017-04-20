@@ -15,7 +15,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.pub
 #endif
 
 #if (!DEBUG)
-            host = "https://thuat.ebaocloud.com"
+            host = "https://thuat.ebaocloud.com";
 #endif
             return host;
         }
