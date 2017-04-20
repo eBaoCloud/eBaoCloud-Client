@@ -380,7 +380,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             JObject vehicle = getVehicleModel(token, param.insured.vehicleMakeName, param.insured.vehicleModelYear, param.insured.vehicleModelDescription);
 
             JArray insureds = new JArray();
-            JObject insured = new JObject();u
+            JObject insured = new JObject();
             insureds.Add(insured);
             insured["ext"] = new JObject();
             insured["ext"]["vehicleCountry"] = "THA";
