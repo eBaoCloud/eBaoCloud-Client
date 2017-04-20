@@ -13,8 +13,8 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
         /// <summary>
         /// If the login is successful you will recieve a token, normally you need to cache it to call the other APIs.
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
+        /// <param name="username">name</param>
+        /// <param name="password">password</param>
         /// <returns>LoginResp</returns>
         LoginResp Login(string username, string password);
 

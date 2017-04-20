@@ -156,7 +156,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
 
                 long policyId = (long)bindResult["data"]["policy"]["policyId"];
 
-                // uploadPolicyDocument(param, policyId, token);
+                uploadPolicyDocument(param, policyId, token);
 
                 //policy["ext"]["ui"]["stepIdx"] = 5;
                 JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
@@ -380,7 +380,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             JObject vehicle = getVehicleModel(token, param.insured.vehicleMakeName, param.insured.vehicleModelYear, param.insured.vehicleModelDescription);
 
             JArray insureds = new JArray();
-            JObject insured = new JObject();
+            JObject insured = new JObject();u
             insureds.Add(insured);
             insured["ext"] = new JObject();
             insured["ext"]["vehicleCountry"] = "THA";
