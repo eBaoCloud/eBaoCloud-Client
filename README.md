@@ -1,6 +1,6 @@
 # eBaoCloud-dotNet-Client
 This project is aimed to provide an alternative way to easily
-integrate with eBaoCloud Thailand. If you are building your
+integrate to eBaoCloud Thailand. If you are building your
 application on Microsoft DotNet platform
 and don't want to consume eBaoCloud Thailand's restful API,
 it will be your right choice.
