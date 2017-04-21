@@ -17,7 +17,7 @@ Licensed under the Apache License 2.0.
 
 In VS Code:
 ```
-nuget-install eBaoCloud-Client
+Install-Package eBaoCloud-Client
 ```
 
 ### Usage
@@ -127,6 +127,12 @@ By doing this, the performance will be much better.
 The stored token should be updated with new one regularly, the recommended frequency is one day.
 
 The detailed samples please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-DoNet-Client-Demo)
+
+### In Other Programming Languages
+
+- Java: in progress
+- PHP: in progress
+- Ruby: in progress
 
 ### Recent Releases
 
