@@ -126,7 +126,7 @@ By doing this, the performance will be much better.
 
 The stored token should be updated with new one regularly, the recommended frequency is one day.
 
-The detailed samples please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
+Looking for more samples with details? Please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
 
 ### In Other Programming Languages
 
