@@ -23,6 +23,8 @@ Install-Package eBaoCloud-Client
 ### Usage
 
 Calculate Premium:
+
+```C#```
 ```
 PolicyService service = new PolicyServiceImpl();
 LoginResp resp = service.Login(Login.sampleUserName, Login.samplePassword);
@@ -47,6 +49,8 @@ else
 
 
 Issue Policy:
+
+```C#```
 ```
 PolicyService service = new PolicyServiceImpl();
 LoginResp resp = service.Login(Login.sampleUserName, Login.samplePassword);
