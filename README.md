@@ -1,11 +1,11 @@
-# eBaoCloud-DotNet-Client
+# eBaoCloud-dotNet-Client
 This project is aimed to provide an alternative way to easily
 integrate with eBaoCloud Thailand. If you are building your
 application on Microsoft DotNet platform
 and don't want to consume eBaoCloud Thailand's restful API,
 it will be your right choice.
 
-Checkout [Demo project](https://github.com/eBaoCloud/eBaoCloud-DoNet-Client-Demo)
+Checkout [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
 
 Licensed under the Apache License 2.0.
 
@@ -126,7 +126,7 @@ By doing this, the performance will be much better.
 
 The stored token should be updated with new one regularly, the recommended frequency is one day.
 
-The detailed samples please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-DoNet-Client-Demo)
+The detailed samples please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
 
 ### In Other Programming Languages
 
