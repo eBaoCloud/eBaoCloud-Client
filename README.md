@@ -1,4 +1,4 @@
-# eBaoCloud-dotNet-Client
+# eBaoCloud-sdk-dotNet
 This project is aimed to provide an alternative way to easily
 integrate to eBaoCloud Thailand. If you are building your
 application on Microsoft DotNet platform
@@ -17,7 +17,7 @@ Licensed under the Apache License 2.0.
 
 In VS Code:
 ```
-Install-Package eBaoCloud-Client
+Install-Package eBaoCloud-sdk
 ```
 
 ### Usage
