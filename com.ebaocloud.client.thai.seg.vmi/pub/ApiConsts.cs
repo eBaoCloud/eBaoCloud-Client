@@ -22,5 +22,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.pub
         public const string API_GET_PRINTED_FILES = "/gi/api/std/b2b/policies/printexternal";
         public const string API_DOWNLOAD_PRINTED_FILE = "/gi/api/std/b2b/policies/print/download";
 
+        public const string API_ADDRESS_MATCHING = "/gi/api/misc/address/smartmatching";
+
     }
 }

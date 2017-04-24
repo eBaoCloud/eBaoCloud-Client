@@ -18,7 +18,9 @@ Licensed under the Apache License 2.0.
 To install with **nuget**, run the following command in the *Package Manager Console*:
 
 ```
-Install-Package eBaoCloud-sdk
+Install-Package com.ebaocloud.client.thai.seg.vmi
+Install-Package com.ebaocloud.client.thai.seg.cmi
+...
 ```
 
 ### Usage

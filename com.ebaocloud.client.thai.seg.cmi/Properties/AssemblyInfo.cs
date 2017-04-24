@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("eBaoCloud-Client-SEG-CMI")]
-[assembly: AssemblyDescription("eBaoCloud Client")]
+[assembly: AssemblyDescription("This project is aimed to provide an alternative way to easily integrate to eBaoCloud Thailand. If you are building your application on Microsoft DotNet platform and don't want to consume eBaoCloud Thailand's restful API, it will be your right choice.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("eBaoTech")]
 [assembly: AssemblyProduct("eBaoCloud.sdk.seg.cmi")]
@@ -32,5 +32,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.1.1.0")]
