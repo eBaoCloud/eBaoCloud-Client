@@ -5,7 +5,7 @@ application on Microsoft DotNet platform
 and don't want to consume eBaoCloud Thailand's restful API,
 it will be your right choice.
 
-Checkout [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
+Checkout [Demo project](https://github.com/eBaoCloud/eBaoCloud-sdk-dotNet-demo)
 
 Licensed under the Apache License 2.0.
 
@@ -130,7 +130,7 @@ By doing this, the performance will be much better.
 
 The stored token should be updated with new one regularly, the recommended frequency is one day.
 
-Looking for more samples with details? Please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
+Looking for more samples with details? Please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-sdk-dotNet-demo)
 
 ### In Other Programming Languages
 
