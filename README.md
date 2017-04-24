@@ -15,7 +15,8 @@ Licensed under the Apache License 2.0.
 
 ### Installation
 
-In VS Code:
+To install with **nuget**, run the following command in the *Package Manager Console*:
+
 ```
 Install-Package eBaoCloud-Client
 ```
@@ -143,3 +144,5 @@ Looking for more samples with details? Please refer to [Demo project](https://gi
 21 Apr 2017, 0.1 released
 
 Feature - add SEG VMI/CMI/VMI(buy CMI together) support
+
+
