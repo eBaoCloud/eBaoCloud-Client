@@ -125,7 +125,7 @@ In the above samples, there is a optional step called "Login", please be note th
 before you can make a successful call, Login is the must, 
 but it's not necessary to do it every time, once you have called Login API, a token
 will be returned, actually your system could keep it somewhere with safety,
-cloud be memory or database, next time, you can using the token to make other API calls.
+could be memory or database, next time, you can using the token to make other API calls.
 By doing this, the performance will be much better.
 
 The stored token should be updated with new one regularly, the recommended frequency is one day.
