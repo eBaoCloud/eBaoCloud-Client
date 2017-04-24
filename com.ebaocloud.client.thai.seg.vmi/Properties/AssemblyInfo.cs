@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("eBaoCloud Client")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("eBaoTech")]
-[assembly: AssemblyProduct("com.ebaocloud.client.thai.seg.vmi")]
+[assembly: AssemblyProduct("eBaoCloud.sdk.seg.vmi")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
