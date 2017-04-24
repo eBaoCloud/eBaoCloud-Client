@@ -1,11 +1,11 @@
-# eBaoCloud-dotNet-Client
+# eBaoCloud-sdk-dotNet
 This project is aimed to provide an alternative way to easily
 integrate to eBaoCloud Thailand. If you are building your
 application on Microsoft DotNet platform
 and don't want to consume eBaoCloud Thailand's restful API,
 it will be your right choice.
 
-Checkout [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
+Checkout [Demo project](https://github.com/eBaoCloud/eBaoCloud-sdk-dotNet-demo)
 
 Licensed under the Apache License 2.0.
 
@@ -18,7 +18,7 @@ Licensed under the Apache License 2.0.
 To install with **nuget**, run the following command in the *Package Manager Console*:
 
 ```
-Install-Package eBaoCloud-Client
+Install-Package eBaoCloud-sdk
 ```
 
 ### Usage
@@ -126,12 +126,12 @@ In the above samples, there is a optional step called "Login", please be note th
 before you can make a successful call, Login is the must, 
 but it's not necessary to do it every time, once you have called Login API, a token
 will be returned, actually your system could keep it somewhere with safety,
-cloud be memory or database, next time, you can using the token to make other API calls.
+could be memory or database, next time, you can using the token to make other API calls.
 By doing this, the performance will be much better.
 
 The stored token should be updated with new one regularly, the recommended frequency is one day.
 
-Looking for more samples with details? Please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-dotNet-Client-Demo)
+Looking for more samples with details? Please refer to [Demo project](https://github.com/eBaoCloud/eBaoCloud-sdk-dotNet-demo)
 
 ### In Other Programming Languages
 
