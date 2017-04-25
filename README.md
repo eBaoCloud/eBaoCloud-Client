@@ -17,7 +17,7 @@ Licensed under the Apache License 2.0.
 
 To install with **nuget**, run the following command in the *Package Manager Console*:
 
-```
+```#Bash
 PM> Install-Package com.ebaocloud.client.thai.seg.vmi
 PM> Install-Package com.ebaocloud.client.thai.seg.cmi
 ...
@@ -54,7 +54,7 @@ else
 - Issue Policy:
 
 
-```
+```C#
 PolicyService service = new PolicyServiceImpl();
 LoginResp resp = service.Login(Login.sampleUserName, Login.samplePassword);
 
@@ -63,7 +63,7 @@ List<Document> documents = new List<Document>();
 Document doc = new Document();
 doc.category = DocumentCategory.DRIVING_LICENSE;
 doc.name = "test";
-doc.file = new System.IO.FileInfo("./Main.cs");
+doc.file = new System.IO.FileInfo("../../UploadSample.txt");
 documents.Add(doc);
 policyParam.documents = documents;
 
@@ -102,6 +102,7 @@ policyParam.indiPolicyholder = new IndividualPolicyholder();
 policyParam.indiPolicyholder.idNo = "123456";
 policyParam.indiPolicyholder.idType = "1";
 policyParam.indiPolicyholder.inThaiAddress = new InThaiAddress();
+            policyParam.indiPolicyholder.inThaiAddress.fullAddress = "24 (318 เดิ�? �?อุดมสุ�?0 แย�? �?อุดมสุ�?แขวงบางน�?เขตบางน�?กท�? 10260";
 policyParam.indiPolicyholder.inThaiAddress.district = "1001";
 policyParam.indiPolicyholder.inThaiAddress.postalCode = "10200";
 policyParam.indiPolicyholder.inThaiAddress.province = "10";
@@ -114,7 +115,7 @@ policyParam.indiPolicyholder.taxNo = "10000";
 policyParam.indiPolicyholder.title = IndividualPrefix.Khun;
 
 IssuedResp issueResp = service.Issue(resp.token, policyParam);
- if (issueResp.success)
+if (issueResp.success)
 {
     Console.WriteLine("Issued succcess: true" + "\nPolicyNo:" + issueResp.policyNo);
 } else
