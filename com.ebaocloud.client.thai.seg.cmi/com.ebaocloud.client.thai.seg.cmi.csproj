@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7F1A128C-59DA-4EB5-9348-B95F0ECD3C43}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>com.ebaocloud.client.thai.seg.cmi</RootNamespace>
     <AssemblyName>com.ebaocloud.client.thai.seg.cmi</AssemblyName>

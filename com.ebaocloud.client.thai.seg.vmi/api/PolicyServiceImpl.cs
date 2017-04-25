@@ -156,7 +156,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
 
                 long policyId = (long)bindResult["data"]["policy"]["policyId"];
 
-                //uploadPolicyDocument(param, policyId, token);
+                uploadPolicyDocument(param, policyId, token);
 
                 //policy["ext"]["ui"]["stepIdx"] = 5;
                 JObject confirmResult = NetworkUtils.Get(ApiConsts.API_CONFRIM + policyId, token);
