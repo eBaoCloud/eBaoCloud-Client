@@ -18,17 +18,17 @@ Licensed under the Apache License 2.0.
 To install with **nuget**, run the following command in the *Package Manager Console*:
 
 ```
-PM> Install-Package com.ebaocloud.client.thai.seg.vmi // To install vmi sdk
-PM> Install-Package com.ebaocloud.client.thai.seg.cmi // To install cmi sdk
+PM> Install-Package com.ebaocloud.client.thai.seg.vmi
+PM> Install-Package com.ebaocloud.client.thai.seg.cmi
 ...
 ```
 
-### Usage
+### Usage (C#)
 
-Calculate Premium:
+- Calculate Premium:
 
-```C#```
-```
+
+```C#
 PolicyService service = new PolicyServiceImpl();
 LoginResp resp = service.Login(Login.sampleUserName, Login.samplePassword);
 
@@ -42,7 +42,7 @@ calculationParams.vehicleUsage = VehicleUsage.PRIVATE;
 CalculationResp calcResp = service.Calculate(resp.token, calculationParams);
 if (calcResp.success)
 {
-    Console.WriteLine("Calculate succcess: true");
+   Console.WriteLine("Calculate succcess: true");
 }
 else
 {
@@ -51,9 +51,9 @@ else
 ```
 
 
-Issue Policy:
+- Issue Policy:
 
-```C#```
+
 ```
 PolicyService service = new PolicyServiceImpl();
 LoginResp resp = service.Login(Login.sampleUserName, Login.samplePassword);
@@ -146,5 +146,7 @@ Looking for more samples with details? Please refer to [Demo project](https://gi
 21 Apr 2017, 0.1 released
 
 Feature - add SEG VMI/CMI/VMI(buy CMI together) support
+
+
 
 
