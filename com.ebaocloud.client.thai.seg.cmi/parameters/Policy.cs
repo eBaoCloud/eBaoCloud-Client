@@ -231,6 +231,8 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
         public String district { get; set; }
         public String subDistrict { get; set; }
         public String postalCode { get; set; }
+        public Boolean smartlyMatchAddress = true;
+        public String fullAddress;
 
         public void Validate()
         {

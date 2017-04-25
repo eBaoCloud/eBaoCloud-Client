@@ -11,6 +11,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.pub
         public static string getCurrentHost()
         {
 #if DEBUG
+            //host = "http://172.18.24.28:8888";
             host = "http://172.18.49.49:8888";
 #endif
 

@@ -15,6 +15,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
         public DateTime effectiveDate { get; set; }
         public DateTime expireDate { get; set; }
         public String vehicleMakeName { get; set; }
+        public String vehicleModelName { get; set; }
         public int vehicleModelYear { get; set; }
         public String vehicleModelDescription { get; set; }
         public int vehicleRegistrationYear { get; set; }

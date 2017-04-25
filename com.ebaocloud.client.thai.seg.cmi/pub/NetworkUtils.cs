@@ -108,7 +108,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.pub
                 postDataStream.Write(buffer, 0, bytesRead);
             }
             fileStream.Close();
-            byte[] endBoundaryBytes = System.Text.Encoding.UTF8.GetBytes("--" + boundary + "--");
+            byte[] endBoundaryBytes = System.Text.Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
             postDataStream.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);
 
             return postDataStream;

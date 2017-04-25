@@ -166,18 +166,20 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
             {
                 throw new Exception("In payer name is required");
             }
-            if (this.inThaiAddress == null && this.outThaiAddress == null)
-            {
-                throw new Exception("In payer inThaiAddress or outThaiAddress is required");
-            }
-            if (this.inThaiAddress != null)
-            {
-                this.inThaiAddress.Validate();
-            }
-            if (this.outThaiAddress != null)
-            {
-                this.outThaiAddress.Validate();
-            }
+            
+                if (this.inThaiAddress == null && this.outThaiAddress == null)
+                {
+                    throw new Exception("In payer inThaiAddress or outThaiAddress is required");
+                }
+                if (this.inThaiAddress != null)
+                {
+                    this.inThaiAddress.Validate();
+                }
+                if (this.outThaiAddress != null)
+                {
+                    this.outThaiAddress.Validate();
+                }
+            
         }
     }
 
@@ -229,6 +231,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
         // required
         public VehicleGarageType vehicleGarageType { get; set; }
         public String vehicleMakeName { get; set; }
+        public String vehicleModelName { get; set; }
         public int vehicleModelYear { get; set; }
         public int vehicleRegistrationYear { get; set; }
         public String vehicleModelDescription { get; set; }
@@ -274,6 +277,8 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
         public String district { get; set; }
         public String subDistrict { get; set; }
         public String postalCode { get; set; }
+        public Boolean smartlyMatchAddress = true;
+        public String fullAddress;
 
         public void Validate()
         {
@@ -347,24 +352,24 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
                         if (name == "inThaiAddress")
                         {
                             Object outThaiAddress = GetValueOfProperty("outThaiAddress");
-                            if (outThaiAddress == null)
+                            if (outThaiAddress != null)
                             {
-                                throw new Exception("In individualPolicyholder inThaiAddress or outThaiAddress is required");
+                                //throw new Exception("In individualPolicyholder inThaiAddress or outThaiAddress is required");
+                                OutThaiAddress outThaiAddr = (OutThaiAddress)outThaiAddress;
+                                outThaiAddr.Validate();
                             }
-                            OutThaiAddress outThaiAddr = (OutThaiAddress)outThaiAddress;
-                            outThaiAddr.Validate();
                             continue;
                         }
 
                         if (name == "outThaiAddress")
                         {
                             Object inThaiAddress = GetValueOfProperty("inThaiAddress");
-                            if (inThaiAddress == null)
+                            if (inThaiAddress != null)
                             {
-                                throw new Exception("In individualPolicyholder inThaiAddress or outThaiAddress is required");
+                                //throw new Exception("In individualPolicyholder inThaiAddress or outThaiAddress is required");
+                                InThaiAddress inThaiAddr = (InThaiAddress)inThaiAddress;
+                                inThaiAddr.Validate();
                             }
-                            InThaiAddress inThaiAddr = (InThaiAddress)inThaiAddress;
-                            inThaiAddr.Validate();
                             continue;
                         }
                     } else
@@ -415,24 +420,25 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
                         if (name == "inThaiAddress")
                         {
                             Object outThaiAddress = GetValueOfProperty("outThaiAddress");
-                            if (outThaiAddress == null)
+                            if (outThaiAddress != null)
                             {
-                                throw new Exception("In OrganizationPolicyholder inThaiAddress or outThaiAddress is required");
+                                // throw new Exception("In OrganizationPolicyholder inThaiAddress or outThaiAddress is required");
+                                OutThaiAddress outThaiAddr = (OutThaiAddress)outThaiAddress;
+                                outThaiAddr.Validate();
                             }
-                            OutThaiAddress outThaiAddr = (OutThaiAddress)outThaiAddress;
-                            outThaiAddr.Validate();
+                            
                             continue;
                         }
 
                         if (name == "outThaiAddress")
                         {
                             Object inThaiAddress = GetValueOfProperty("inThaiAddress");
-                            if (inThaiAddress == null)
+                            if (inThaiAddress != null)
                             {
-                                throw new Exception("In OrganizationPolicyholder inThaiAddress or outThaiAddress is required");
+                                //throw new Exception("In OrganizationPolicyholder inThaiAddress or outThaiAddress is required");
+                                InThaiAddress inThaiAddr = (InThaiAddress)inThaiAddress;
+                                inThaiAddr.Validate();
                             }
-                            InThaiAddress inThaiAddr = (InThaiAddress)inThaiAddress;
-                            inThaiAddr.Validate();
                             continue;
                         }
                     } else

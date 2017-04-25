@@ -161,16 +161,20 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 			JObject policy = new JObject();
 			if (param == null) throw new Exception("param is required");
 			policy["insurerTenantCode"] = "SEG_TH";
-			policy["effDate"] = Utils.FormatDate(param.effectiveDate);
+            policy["newOrRn"] = 1;
+            policy["bizType"] = 1;
+            policy["bizCate"] = 1;
+            policy["deriveType"] = 4;
+            policy["effDate"] = Utils.FormatDate(param.effectiveDate);
 			policy["expDate"] = Utils.FormatDate(param.expireDate);
 			policy["prdtCode"] = param.productCode;
 			policy["prdtVersion"] = param.productVersion;
 			policy["policySource"] = 1;
 			policy["proposalDate"] = Utils.FormatDate(param.proposalDate);
 			policy["newOrRn"] = 1;
-			policy["policyholder"] = buildPolicyholder(param);
+			policy["policyholder"] = buildPolicyholder(param, token);
 			policy["ext"] = new JObject();
-            policy["ext"]["payer"] = buildPayer(param);
+            policy["ext"]["payer"] = buildPayer(param, token);
 			//policy["ext"]["ui"] = new JObject();
 			policy["insureds"] = buildInsured(token, param);
             //policy["ext"]["pd"] = getProductStructure(token, policy);
@@ -280,7 +284,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 			return simpleFee;
 		}
 
-		private static JObject buildPolicyholder(Policy param)
+		private static JObject buildPolicyholder(Policy param, String token)
 		{
 			if (param == null) throw new Exception("param is required");
 			JObject policyholder = new JObject();
@@ -300,7 +304,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 				policyholder["profile"]["contactMobile"] = param.indiPolicyholder.mobile;
 
 				policyholder["ext"] = new JObject();
-				policyholder["ext"]["address"] = buildPolicyholderAddress(param);
+				policyholder["ext"]["address"] = buildPolicyholderAddress(param, true, token);
 			}
 			if (param.orgPolicyhodler != null)
 			{
@@ -312,67 +316,177 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 
 				policyholder["ext"] = new JObject();
 				policyholder["ext"]["branch"] = param.orgPolicyhodler.branch;
-				policyholder["ext"]["address"] = buildPolicyholderAddress(param);
+				policyholder["ext"]["address"] = buildPolicyholderAddress(param, false, token);
 			}
 			return policyholder;
 		}
 
-		private static JObject buildPolicyholderAddress(Policy param)
-		{
-			if (param == null) throw new Exception("param is required");
-			JObject policyholderAddress = new JObject();
-			if (param.indiPolicyholder.inThaiAddress == null && param.indiPolicyholder.outThaiAddress == null) throw new Exception("[Policyholder] InThaiAddress or OutThaiAddress is required");
-			if (param.indiPolicyholder.inThaiAddress != null)
-			{
-				policyholderAddress["addressType"] = 1;
-				policyholderAddress["street"] = param.indiPolicyholder.inThaiAddress.street;
-				policyholderAddress["province"] = param.indiPolicyholder.inThaiAddress.province;
-				policyholderAddress["district"] = param.indiPolicyholder.inThaiAddress.district;
-				policyholderAddress["subDistrict"] = param.indiPolicyholder.inThaiAddress.subDistrict;
-				policyholderAddress["postalCode"] = param.indiPolicyholder.inThaiAddress.postalCode;
-				policyholderAddress["cascadeAddress"] = param.indiPolicyholder.inThaiAddress.subDistrict;
-			}
-			if (param.indiPolicyholder.outThaiAddress != null)
-			{
-				policyholderAddress["addressType"] = 0;
-				policyholderAddress["address"] = param.orgPolicyhodler.outThaiAddress.address;
-				policyholderAddress["city"] = param.orgPolicyhodler.outThaiAddress.city;
-				policyholderAddress["country"] = param.orgPolicyhodler.outThaiAddress.country;
-			}
-			return policyholderAddress;
-		}
+        private static JObject buildPolicyholderAddress(Policy param, Boolean isIndiPolicyholder, String token)
+        {
+            if (param == null) throw new Exception("param is required");
+            JObject policyholderAddress = new JObject();
+            if (isIndiPolicyholder)
+            {
+                IndividualPolicyholder indiPolicyholder = param.indiPolicyholder;
+                if (indiPolicyholder.inThaiAddress == null && indiPolicyholder.outThaiAddress == null) throw new Exception("[Policyholder] InThaiAddress or OutThaiAddress is required");
+                if (indiPolicyholder.inThaiAddress != null)
+                {
+                    if (indiPolicyholder.inThaiAddress.smartlyMatchAddress)
+                    {
+                        if (!String.IsNullOrEmpty(indiPolicyholder.inThaiAddress.fullAddress))
+                        {
+                            policyholderAddress = buildInThaiAddressWithSmartMatch(token, indiPolicyholder.inThaiAddress.fullAddress);
+                        }
+                        else
+                        {
+                            throw new Exception("[IndividualPolicyholder] If you set 'smartlyMatchAddress' to 'true'(default is true), 'fullAddress' is required. ");
+                        }
+                    }
+                    else
+                    {
+                        policyholderAddress["addressType"] = 1;
+                        policyholderAddress["street"] = indiPolicyholder.inThaiAddress.street;
+                        policyholderAddress["province"] = indiPolicyholder.inThaiAddress.province;
+                        policyholderAddress["district"] = indiPolicyholder.inThaiAddress.district;
+                        policyholderAddress["subDistrict"] = indiPolicyholder.inThaiAddress.subDistrict;
+                        policyholderAddress["postalCode"] = indiPolicyholder.inThaiAddress.postalCode;
+                        policyholderAddress["cascadeAddress"] = indiPolicyholder.inThaiAddress.subDistrict;
+                    }
+                }
+                if (param.indiPolicyholder.outThaiAddress != null)
+                {
+                    policyholderAddress["addressType"] = 0;
+                    policyholderAddress["address"] = indiPolicyholder.outThaiAddress.address;
+                    policyholderAddress["city"] = indiPolicyholder.outThaiAddress.city;
+                    policyholderAddress["country"] = indiPolicyholder.outThaiAddress.country;
+                }
+            }
+            else
+            {
+                OrganizationPolicyholder orgPolicyhodler = param.orgPolicyhodler;
+                if (orgPolicyhodler.inThaiAddress == null && orgPolicyhodler.outThaiAddress == null) throw new Exception("[Policyholder] InThaiAddress or OutThaiAddress is required");
+                if (orgPolicyhodler.inThaiAddress != null)
+                {
+                    if (orgPolicyhodler.inThaiAddress.smartlyMatchAddress)
+                    {
+                        if (!String.IsNullOrEmpty(orgPolicyhodler.inThaiAddress.fullAddress))
+                        {
+                            policyholderAddress = buildInThaiAddressWithSmartMatch(token, orgPolicyhodler.inThaiAddress.fullAddress);
+                        }
+                        else
+                        {
+                            throw new Exception("[OrganizationPolicyholder] If you set 'smartlyMatchAddress' to 'true'(default is true), 'fullAddress' is required. ");
+                        }
+                    }
+                    else
+                    {
+                        policyholderAddress["addressType"] = 1;
+                        policyholderAddress["street"] = orgPolicyhodler.inThaiAddress.street;
+                        policyholderAddress["province"] = orgPolicyhodler.inThaiAddress.province;
+                        policyholderAddress["district"] = orgPolicyhodler.inThaiAddress.district;
+                        policyholderAddress["subDistrict"] = orgPolicyhodler.inThaiAddress.subDistrict;
+                        policyholderAddress["postalCode"] = orgPolicyhodler.inThaiAddress.postalCode;
+                        policyholderAddress["cascadeAddress"] = orgPolicyhodler.inThaiAddress.subDistrict;
+                    }
+                }
+                if (param.indiPolicyholder.outThaiAddress != null)
+                {
+                    policyholderAddress["addressType"] = 0;
+                    policyholderAddress["address"] = orgPolicyhodler.outThaiAddress.address;
+                    policyholderAddress["city"] = orgPolicyhodler.outThaiAddress.city;
+                    policyholderAddress["country"] = orgPolicyhodler.outThaiAddress.country;
+                }
+            }
+            return policyholderAddress;
+        }
 
-		private static JObject buildPayer(Policy param)
-		{
-			// TODO - isPayerSameAsPolicyholder
-			if (param == null) throw new Exception("param is required");
-			JObject payer = new JObject();
-			payer["name1"] = param.payer.name;
-			payer["indiOrOrg"] = 1;
-			payer["ext"] = new JObject();
-			payer["ext"]["sameAsPolicyholder"] = param.isPayerSameAsPolicyholder;
-			payer["ext"]["address"] = new JObject();
-			if (param.payer.inThaiAddress != null)
-			{
-				payer["ext"]["address"]["addressType"] = 1;
-				payer["ext"]["address"]["street"] = param.payer.inThaiAddress.street;
-				payer["ext"]["address"]["province"] = param.payer.inThaiAddress.province;
-				payer["ext"]["address"]["district"] = param.payer.inThaiAddress.district;
-				payer["ext"]["address"]["subDistrict"] = param.payer.inThaiAddress.subDistrict;
-				payer["ext"]["address"]["postalCode"] = param.payer.inThaiAddress.postalCode;
-				payer["ext"]["address"]["cascadeAddress"] = param.payer.inThaiAddress.subDistrict;
-			}
-			if (param.payer.outThaiAddress != null)
-			{
-				payer["ext"]["address"]["addressType"] = 0;
-				payer["ext"]["address"]["address"] = param.payer.outThaiAddress.address;
-				payer["ext"]["address"]["city"] = param.payer.outThaiAddress.city;
-				payer["ext"]["address"]["country"] = param.payer.outThaiAddress.country;
-			}
-			return payer;
-		}
+        private static JObject buildPayer(Policy param, String token)
+        {
+            if (param == null) throw new Exception("param is required");
+            JObject payer = new JObject();
+            payer["name1"] = param.payer.name;
+            payer["indiOrOrg"] = 1;
+            payer["ext"] = new JObject();
+            payer["ext"]["sameAsPolicyholder"] = param.isPayerSameAsPolicyholder;
+            payer["ext"]["address"] = buildPayerAddress(param, token);
 
-		private static JObject buildCalculationParams(String token, CalculationParams param)
+            return payer;
+        }
+
+        private static JObject buildPayerAddress(Policy param, String token)
+        {
+            if (param == null) throw new Exception("param is required");
+            JObject payerAddress = new JObject();
+            if (param.isPayerSameAsPolicyholder)
+            {
+                if (param.indiPolicyholder != null)
+                {
+                    payerAddress = buildPolicyholderAddress(param, true, token);
+                }
+                else
+                {
+                    payerAddress = buildPolicyholderAddress(param, false, token);
+                }
+            }
+            else
+            {
+                if (param.payer.inThaiAddress != null)
+                {
+                    if (param.payer.inThaiAddress.smartlyMatchAddress)
+                    {
+                        if (String.IsNullOrEmpty(param.payer.inThaiAddress.fullAddress))
+                        {
+                            throw new Exception("[payer] If you set 'smartlyMatchAddress' to 'true'(default is true), 'fullAddress' is required. ");
+                        }
+                        else
+                        {
+                            payerAddress = buildInThaiAddressWithSmartMatch(token, param.payer.inThaiAddress.fullAddress);
+                        }
+                    }
+                    payerAddress["addressType"] = 1;
+                    payerAddress["street"] = param.payer.inThaiAddress.street;
+                    payerAddress["province"] = param.payer.inThaiAddress.province;
+                    payerAddress["district"] = param.payer.inThaiAddress.district;
+                    payerAddress["subDistrict"] = param.payer.inThaiAddress.subDistrict;
+                    payerAddress["postalCode"] = param.payer.inThaiAddress.postalCode;
+                    payerAddress["cascadeAddress"] = param.payer.inThaiAddress.subDistrict;
+                }
+                if (param.payer.outThaiAddress != null)
+                {
+                    payerAddress["addressType"] = 0;
+                    payerAddress["address"] = param.payer.outThaiAddress.address;
+                    payerAddress["city"] = param.payer.outThaiAddress.city;
+                    payerAddress["country"] = param.payer.outThaiAddress.country;
+                }
+            }
+            return payerAddress;
+        }
+
+        private static JObject buildInThaiAddressWithSmartMatch(String token, String address)
+        {
+            JObject parameter = new JObject();
+            parameter["address"] = address;
+            JObject addressResponse = NetworkUtils.Post(ApiConsts.API_ADDRESS_MATCHING, parameter, token);
+            if (!(Boolean)addressResponse["success"])
+            {
+                throw new Exception("Address Smart Matching failed. - request failed");
+            }
+            if (addressResponse["data"] == null)
+            {
+                throw new Exception("Address Smart Matching failed. - data is null");
+            }
+            JObject policyholderAddress = new JObject();
+            policyholderAddress["addressType"] = 1;
+            policyholderAddress["street"] = addressResponse["data"]["streetLine"];
+            policyholderAddress["province"] = addressResponse["data"]["provinceCode"];
+            policyholderAddress["district"] = addressResponse["data"]["districtCode"];
+            policyholderAddress["subDistrict"] = addressResponse["data"]["subDistrictCode"];
+            policyholderAddress["postalCode"] = addressResponse["data"]["postalCode"];
+            policyholderAddress["cascadeAddress"] = addressResponse["data"]["subDistrictCode"];
+            return policyholderAddress;
+        }
+
+        private static JObject buildCalculationParams(String token, CalculationParams param)
 		{
 			JObject map = new JObject();
 			map["insurerTenantCode"] = "SEG_TH";
