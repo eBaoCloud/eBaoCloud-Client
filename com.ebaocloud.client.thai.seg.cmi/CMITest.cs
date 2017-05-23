@@ -11,7 +11,7 @@ namespace com.ebaocloud.client.thai.seg.cmi
 		public static void Main(String[] args)
 		{
 			PolicyService service = new PolicyServiceImpl();
-			LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
+            LoginResp resp = service.Login("TIB_01", "Seg@1234");
 
             var calculationParams = new CalculationParams();
             calculationParams.effectiveDate = DateTime.Now.ToLocalTime();
@@ -26,7 +26,7 @@ namespace com.ebaocloud.client.thai.seg.cmi
             Document doc = new Document();
             doc.category = DocumentCategory.DRIVING_LICENSE;
             doc.name = "test";
-            doc.file = new System.IO.FileInfo("./Main.cs");
+            doc.file = new System.IO.FileInfo("D:/eBaoCloud-SEA/designtime/tenant_logo/SEG_TH/SEG_TH_md.png");
             documents.Add(doc);
             policyParam.documents = documents;
             policyParam.effectiveDate = DateTime.Now.ToLocalTime();
@@ -80,7 +80,8 @@ namespace com.ebaocloud.client.thai.seg.cmi
             IssuedResp issueResp = service.Issue(resp.token, policyParam);
             Console.WriteLine(issueResp);
             // service.Download(resp.token, "00000252", "D:/Private");
-            Console.WriteLine();
+            Console.WriteLine("test");
+            Console.ReadKey();
         }
 	}
 }

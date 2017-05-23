@@ -16,10 +16,49 @@ namespace com.ebaocloud.client.thai.seg.vmi
 {
     public class TestNetwork
     {
-        public static void Main(string[] args)
-        {
+
+        public void testCalc() {
             PolicyService service = new PolicyServiceImpl();
-           LoginResp resp = service.Login("TIB_01", "Seg@1234");
+            // Login request
+            // You should record the TOKEN after login in order to call the other APIs.
+            LoginResp resp = service.Login("TIB_01", "Seg@1234");
+
+            // Prepare request parameters.
+            var calculationParams = new CalculationParams();
+
+            // Required properties
+            calculationParams.effectiveDate = DateTime.Now.ToLocalTime();
+            calculationParams.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
+            calculationParams.proposalDate = DateTime.Now.ToLocalTime();
+            calculationParams.planCode = "SCDG";
+            calculationParams.productCode = "VMI";
+            calculationParams.vehicleGarageType = VehicleGarageType.DEALER;
+            calculationParams.vehicleMakeName = "TOYOTA";
+            calculationParams.vehicleModelName = "COROLLA";
+            calculationParams.vehicleModelDescription = "TOYO20160104";
+            calculationParams.vehicleModelYear = 2016;
+            calculationParams.vehicleRegistrationYear = 2016;
+            calculationParams.vehicleUsage = VehicleUsage.PRIVATE;
+            // Optional properties
+            calculationParams.vehicleAccessaryValue = 1000;
+
+            // Invoke service method to get result.
+            CalculationResp calcResp = service.Calculate(resp.token, calculationParams);
+
+            if (calcResp.success)
+            {
+                Console.WriteLine(calcResp);
+            }
+            else
+            {
+                Console.WriteLine("Calculate succcess: false" + "\nMessage:" + calcResp.errorMessage);
+            }
+        }
+
+        public void testIssue() {
+
+            PolicyService service = new PolicyServiceImpl();
+            LoginResp resp = service.Login("TIB_01", "Seg@1234");
             Console.WriteLine(resp);
 
             var calculationParams = new CalculationParams();
@@ -46,7 +85,7 @@ namespace com.ebaocloud.client.thai.seg.vmi
             Document doc = new Document();
             doc.category = DocumentCategory.DRIVING_LICENSE;
             doc.name = "test";
-            doc.file = new System.IO.FileInfo("./Main.cs");
+            doc.file = new System.IO.FileInfo("D:/eBaoCloud-SEA/designtime/tenant_logo/SEG_TH/SEG_TH_md.png");
             documents.Add(doc);
             policyParam.documents = documents;
 
@@ -61,7 +100,7 @@ namespace com.ebaocloud.client.thai.seg.vmi
             String randomStr = new Random(DateTime.Now.Millisecond).Next().ToString();
             policyParam.insured = new Insured();
             policyParam.insured.vehicleChassisNo = "CNNN" + randomStr;
-           // policyParam.insured.vehicleColor = "white";
+            // policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
             policyParam.insured.vehicleModelDescription = "TOYO20160104";
             policyParam.insured.vehicleGarageType = VehicleGarageType.DEALER;
@@ -83,7 +122,7 @@ namespace com.ebaocloud.client.thai.seg.vmi
             policyParam.payer.inThaiAddress.fullAddress = "24 (318 เดิม) ซ.อุดมสุข30 แยก2 ถ.อุดมสุข แขวงบางนา เขตบางนา กทม. 10260";
             policyParam.payer.name = "leon luo";
 
-            
+
             policyParam.indiPolicyholder = new IndividualPolicyholder();
             policyParam.indiPolicyholder.idNo = "123456";
             policyParam.indiPolicyholder.idType = "1";
@@ -110,17 +149,12 @@ namespace com.ebaocloud.client.thai.seg.vmi
 
             IssuedResp hi = service.Issue(resp.token, policyParam);
             Console.WriteLine(hi);
-			//test file upload
-			//UploadFileParams uploadFileParams = new UploadFileParams();
-			//uploadFileParams.fileInfo = new System.IO.FileInfo("./Main.cs");
-			//uploadFileParams.uploadExtraData = new JObject();
-			//uploadFileParams.uploadExtraData["policyId"] = 1;
-			//uploadFileParams.uploadExtraData["docName"] = "test";
-			//uploadFileParams.uploadExtraData["docType"] = "1";
+        }
 
-			//NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams,resp.token);
-
-           // Console.WriteLine("{0}", calcResp);
+        public static void Main(string[] args)
+        {
+           // new TestNetwork().testCalc();
+            new TestNetwork().testIssue();
             Console.ReadKey();
 
         }

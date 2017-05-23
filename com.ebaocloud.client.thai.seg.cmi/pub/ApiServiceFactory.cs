@@ -12,11 +12,11 @@ namespace com.ebaocloud.client.thai.seg.cmi.pub
         {
 #if DEBUG
             // host = "http://172.18.29.224:8888";
-            host = "http://172.18.49.49:8888";
+            host = "https://thtst.ebaocloud.com";
 #endif
 
 #if (!DEBUG)
-            host = "https://thuat.ebaocloud.com";
+            host = "https://thtst.ebaocloud.com";
 #endif
             return host;
         }
