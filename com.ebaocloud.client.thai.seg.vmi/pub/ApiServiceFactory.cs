@@ -12,8 +12,6 @@ namespace com.ebaocloud.client.thai.seg.vmi.pub
         {
 #if DEBUG
             //host = "http://172.18.24.28:8888";
-            //host = "http://172.18.49.49:8888";
-            // host = "https://thuat.ebaocloud.com";
             host = "https://thtst.ebaocloud.com";
 #endif
 

@@ -92,7 +92,7 @@ policyParam.insured.vehicleModelYear = 2016;
 policyParam.payer = new Payer();
 policyParam.payer.inThaiAddress = new InThaiAddress();
 policyParam.payer.inThaiAddress.smartlyMatchAddress = true;
-policyParam.payer.inThaiAddress.fullAddress = "™—Èπ 24 Õ“§“√ “∏√´‘µ’È∑“«‡«Õ√Ï 175 ∑ÿËß¡À“‡¡¶  “∑√ °√ÿß‡∑æœ 10120";
+policyParam.payer.inThaiAddress.fullAddress = "24 (318 ‡πÄ‡∏î‡∏¥‡∏°) ‡∏ã.‡∏≠‡∏∏‡∏î‡∏°‡∏™‡∏∏‡∏Ç30 ‡πÅ‡∏¢‡∏Å2 ‡∏ñ.‡∏≠‡∏∏‡∏î‡∏°‡∏™‡∏∏‡∏Ç ‡πÅ‡∏Ç‡∏ß‡∏á‡∏ö‡∏≤‡∏á‡∏ô‡∏≤ ‡πÄ‡∏Ç‡∏ï‡∏ö‡∏≤‡∏á‡∏ô‡∏≤ ‡∏Å‡∏ó‡∏°. 10260";
 policyParam.payer.name = "Jacky Cheng";
 
 policyParam.indiPolicyholder = new IndividualPolicyholder();
@@ -100,7 +100,7 @@ policyParam.indiPolicyholder.idNo = "123456";
 policyParam.indiPolicyholder.idType = "1";
 policyParam.indiPolicyholder.inThaiAddress = new InThaiAddress();
 policyParam.indiPolicyholder.inThaiAddress.smartlyMatchAddress = true;
-policyParam.indiPolicyholder.inThaiAddress.fullAddress = "24 (318 ‡¥‘¡) ´.Õÿ¥¡ ÿ¢30 ·¬°2 ∂.Õÿ¥¡ ÿ¢ ·¢«ß∫“ßπ“ ‡¢µ∫“ßπ“ °∑¡. 10260";
+policyParam.indiPolicyholder.inThaiAddress.fullAddress = "24 (318 ‡πÄ‡∏î‡∏¥‡∏°) ‡∏ã.‡∏≠‡∏∏‡∏î‡∏°‡∏™‡∏∏‡∏Ç30 ‡πÅ‡∏¢‡∏Å2 ‡∏ñ.‡∏≠‡∏∏‡∏î‡∏°‡∏™‡∏∏‡∏Ç ‡πÅ‡∏Ç‡∏ß‡∏á‡∏ö‡∏≤‡∏á‡∏ô‡∏≤ ‡πÄ‡∏Ç‡∏ï‡∏ö‡∏≤‡∏á‡∏ô‡∏≤ ‡∏Å‡∏ó‡∏°. 10260";
 policyParam.indiPolicyholder.lastName = "Cheng";
 policyParam.indiPolicyholder.firstName = "Jacky";
 policyParam.indiPolicyholder.mobile = "1234999";
