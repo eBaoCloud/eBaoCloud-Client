@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>com.ebaocloud.client.thai.seg.vmi</RootNamespace>
     <AssemblyName>com.ebaocloud.client.thai.seg.vmi</AssemblyName>
@@ -70,6 +70,9 @@
     <Reference Include="EasyHttp, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EasyHttp.1.7.0\lib\net40\EasyHttp.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
       <HintPath>..\packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
     </Reference>
@@ -106,6 +109,7 @@
     <Compile Include="response\CalculationResp.cs" />
     <Compile Include="response\IssuedResp.cs" />
     <Compile Include="response\LoginResp.cs" />
+    <Compile Include="validator\CalculationValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

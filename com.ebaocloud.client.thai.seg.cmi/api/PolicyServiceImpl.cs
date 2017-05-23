@@ -169,8 +169,10 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 			policy["expDate"] = Utils.FormatDate(param.expireDate);
 			policy["prdtCode"] = param.productCode;
 			policy["prdtVersion"] = param.productVersion;
-			policy["policySource"] = 1;
-			policy["proposalDate"] = Utils.FormatDate(param.proposalDate);
+            policy["bizType"] = 1;
+            policy["bizCate"] = 1;
+            policy["deriveType"] = 4;
+            policy["proposalDate"] = Utils.FormatDate(param.proposalDate);
 			policy["newOrRn"] = 1;
 			policy["policyholder"] = buildPolicyholder(param, token);
 			policy["ext"] = new JObject();
@@ -493,8 +495,10 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 			map["effDate"] = Utils.FormatDate(param.effectiveDate);
 			map["expDate"] = Utils.FormatDate(param.expireDate);
 			map["prdtCode"] = param.productCode;
-			map["policySource"] = 1;
-			map["proposalDate"] = Utils.FormatDate(param.proposalDate);
+            map["bizType"] = 1;
+            map["bizCate"] = 1;
+            map["deriveType"] = 4;
+            map["proposalDate"] = Utils.FormatDate(param.proposalDate);
 			map["newOrRn"] = 1;
 
 			JArray insureds = new JArray();
