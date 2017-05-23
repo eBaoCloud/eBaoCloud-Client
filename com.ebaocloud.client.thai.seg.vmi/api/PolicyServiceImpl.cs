@@ -88,7 +88,9 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             map["expDate"] = Utils.FormatDate(param.expireDate);
             map["prdtCode"] = param.productCode;
             //map["prdtVersion"] = param.productVersion;
-            map["policySource"] = 1;
+            map["bizType"] = 1;
+            map["bizCate"] = 1;
+            map["deriveType"] = 4;
             map["proposalDate"] = Utils.FormatDate(param.proposalDate);
             map["newOrRn"] = 1;
 
@@ -230,7 +232,9 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             policy["expDate"] = Utils.FormatDate(param.expireDate);
             policy["prdtCode"] = param.productCode;
             //policy["prdtVersion"] = param.productVersion;
-            policy["policySource"] = 1;
+            policy["bizType"] = 1;
+            policy["bizCate"] = 1;
+            policy["deriveType"] = 4;
             policy["proposalDate"] = Utils.FormatDate(param.proposalDate);
             policy["newOrRn"] = 1;
             policy["bizType"] = 1;

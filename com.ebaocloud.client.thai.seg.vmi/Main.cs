@@ -19,7 +19,7 @@ namespace com.ebaocloud.client.thai.seg.vmi
         public static void Main(string[] args)
         {
             PolicyService service = new PolicyServiceImpl();
-           LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
+           LoginResp resp = service.Login("TIB_01", "Seg@1234");
             Console.WriteLine(resp);
 
             var calculationParams = new CalculationParams();
