@@ -674,29 +674,41 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
 			}
 		}
 
-        public void Download(string token, string policyNo, string filePath)
+        public void DownloadPolicyForms(string token, string policyNo, DirectoryInfo destinationFolder)
         {
             if (String.IsNullOrEmpty(policyNo)) throw new Exception("Policy No. is required");
-            FileInfo fileInfo = new FileInfo(filePath);
-            if (fileInfo.Attributes != FileAttributes.Directory)
+
+            if (destinationFolder == null)
+            {
+                throw new Exception("Destination folder must be specified.");
+            }
+            if (destinationFolder.Attributes != FileAttributes.Directory)
             {
                 //check it is directory
-                throw new Exception("The path [" + filePath + " must be directory.]");
+                throw new Exception("The path [" + destinationFolder.FullName  + " must be directory.]");
             }
-            if (!Directory.Exists(filePath))
+            if (!destinationFolder.Exists)
             {
-                Directory.CreateDirectory(filePath); //if file does not exists, then create
+                destinationFolder.Create();  //if file does not exists, then create
+
             }
 
-            JObject responseObj = NetworkUtils.Get(ApiConsts.API_GET_PRINTED_FILES + "/" + policyNo + "/CMI", token);
-            JArray printedFileList = (JArray)responseObj["data"];
-            if (responseObj["data"] != null)
+            JObject responseObj = NetworkUtils.Get(ApiConsts.API_GET_PRINTED_FILES + "/" + policyNo + "/VMI", token);
+            if ((Boolean)responseObj["success"])
             {
-                foreach (string fileName in printedFileList)
+                JArray printedFileList = (JArray)responseObj["data"];
+                if (responseObj["data"] != null)
                 {
-                    NetworkUtils.download(ApiConsts.API_DOWNLOAD_PRINTED_FILE + "/?fileName=" + fileName, filePath, token);
+                    foreach (string fileName in printedFileList)
+                    {
+                        NetworkUtils.download(ApiConsts.API_DOWNLOAD_PRINTED_FILE + "/?fileName=" + fileName, destinationFolder.FullName, token);
+                    }
                 }
+            } else
+            {
+                throw new Exception("download failed");
             }
+            
         }
     }
 }

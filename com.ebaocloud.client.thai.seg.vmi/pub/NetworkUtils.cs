@@ -96,14 +96,29 @@ namespace com.ebaocloud.client.thai.seg.vmi.pub
                 request.Method = "GET";
                 request.Headers.Add("Authorization", "Basic " + token);
                 WebResponse response = request.GetResponse();
-                ContentDisposition contentDisposition = new ContentDisposition(response.Headers["Content-Disposition"]);
-                string newFileName = contentDisposition.FileName;
+                string resp = response.Headers["Content-Disposition"];
+                Array temp = resp.Split(';');
+                String newFileName = null;
+                foreach (String str in temp)
+                {
+                    if (str.IndexOf("filename") != -1)
+                    {
+                        newFileName =  str.Split('=')[1];
+                    }
+                }
+                //ContentDisposition contentDisposition = new ContentDisposition(response.Headers["Content-Disposition"]);
+               // string newFileName = contentDisposition.FileName;
                 stream = File.Create(filePath + Path.DirectorySeparatorChar + newFileName);
+                Stream responseStream = response.GetResponseStream();
                 response.GetResponseStream().CopyTo(stream);
+            }
+            catch (FormatException fe)
+            {
+                throw fe;
             }
             catch (Exception e)
             {
-                throw new Exception("Upload file error, " + e.Message);
+                throw new Exception("download file error, " + e.Message);
             }
             finally
             {

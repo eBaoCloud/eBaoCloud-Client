@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using com.ebaocloud.client.thai.seg.cmi.parameters;
+﻿using com.ebaocloud.client.thai.seg.cmi.parameters;
 using com.ebaocloud.client.thai.seg.cmi.response;
+using System.IO;
 
 namespace com.ebaocloud.client.thai.seg.cmi.api
 {
@@ -41,7 +37,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
         /// </summary>
         /// <param name="token">login success response token</param>
         /// <param name="policyNo">issue success response policyNo</param>
-        /// <param name="filePath">Specify the download path</param>
-		void Download(string token, string policyNo, string filePath);
+        /// <param name="destinationFolder">Specify the download path</param>
+		void DownloadPolicyForms(string token, string policyNo, DirectoryInfo destinationFolder);
 	}
 }

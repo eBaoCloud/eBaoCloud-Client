@@ -32,6 +32,19 @@ namespace com.ebaocloud.client.thai.seg.vmi.pub
             }
         }
 
+        public static string ToPolicyForm(PolicyForm policyForm)
+        {
+            switch (policyForm)
+            {
+                case PolicyForm.BILL_PAYMENT:
+                    return "BillPayment";
+                case PolicyForm.POLICY_SCHEDULE:
+                    return "PoliySchedule";
+                default:
+                    return "PoliySchedule";
+            }
+        }
+
         public static Boolean IsArray(object o)
         {
             if (null == o) return false;

@@ -19,7 +19,7 @@ namespace com.ebaocloud.client.thai.seg.vmi
         public static void Main(string[] args)
         {
             PolicyService service = new PolicyServiceImpl();
-           LoginResp resp = service.Login("TIB_01", "Seg@1234");
+           LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
             Console.WriteLine(resp);
 
             var calculationParams = new CalculationParams();
@@ -135,17 +135,20 @@ namespace com.ebaocloud.client.thai.seg.vmi
                Console.WriteLine("Issued succcess: false" + "\nMessage:" + issueResp.message);
             }
 
-			//test file upload
-			//UploadFileParams uploadFileParams = new UploadFileParams();
-			//uploadFileParams.fileInfo = new System.IO.FileInfo("./Main.cs");
-			//uploadFileParams.uploadExtraData = new JObject();
-			//uploadFileParams.uploadExtraData["policyId"] = 1;
-			//uploadFileParams.uploadExtraData["docName"] = "test";
-			//uploadFileParams.uploadExtraData["docType"] = "1";
+            //test file upload
+            //UploadFileParams uploadFileParams = new UploadFileParams();
+            //uploadFileParams.fileInfo = new System.IO.FileInfo("./Main.cs");
+            //uploadFileParams.uploadExtraData = new JObject();
+            //uploadFileParams.uploadExtraData["policyId"] = 1;
+            //uploadFileParams.uploadExtraData["docName"] = "test";
+            //uploadFileParams.uploadExtraData["docType"] = "1";
 
-			//NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams,resp.token);
+            //NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams,resp.token);
 
-           // Console.WriteLine("{0}", calcResp);
+            // Console.WriteLine("{0}", calcResp);
+
+            service.DownloadPolicyForms(resp.token, issueResp.policyNo, new System.IO.DirectoryInfo("C:/OutputFiles"));
+            
             Console.ReadKey();
 
         }

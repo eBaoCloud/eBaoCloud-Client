@@ -71,8 +71,8 @@ namespace com.ebaocloud.client.thai.seg.cmi
             policyParam.indiPolicyholder.inThaiAddress.street = "songhu rd.";
             policyParam.indiPolicyholder.inThaiAddress.subDistrict = "100101";
             policyParam.indiPolicyholder.inThaiAddress.fullAddress = "24 (318 เดิม) ซ.อุดมสุข30 แยก2 ถ.อุดมสุข แขวงบางนา เขตบางนา กทม. 10260";
-            policyParam.indiPolicyholder.lastName = "Cheng";
-            policyParam.indiPolicyholder.firstName = "Jacky";
+            policyParam.indiPolicyholder.lastName = "luo";
+            policyParam.indiPolicyholder.firstName = "leon";
             policyParam.indiPolicyholder.mobile = "1234999";
             policyParam.indiPolicyholder.taxNo = "10000";
             policyParam.indiPolicyholder.title = IndividualPrefix.Khun;
@@ -81,6 +81,8 @@ namespace com.ebaocloud.client.thai.seg.cmi
             Console.WriteLine(issueResp);
             // service.Download(resp.token, "00000252", "D:/Private");
             Console.WriteLine();
+
+            service.DownloadPolicyForms(resp.token, issueResp.policyNo, new System.IO.DirectoryInfo("C:/OutputFiles"));
         }
 	}
 }
