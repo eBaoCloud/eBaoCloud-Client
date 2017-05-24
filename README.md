@@ -117,6 +117,20 @@ if (issueResp.success)
 }
 ```
 
+- Download File
+
+```
+PolicyService service = new PolicyServiceImpl();
+service.DownloadPolicyForms(<token>, <policyNo>, new DirectoryInfo("C:/OutputFiles"));
+```
+
+- Get Master Data
+
+```C#
+MasterDataService masterDataService = new MasterDataServiceImpl();
+List<KeyValue> garageTypes = masterDataService.GetVehicleGarageType();List<KeyValue> vehicleType = masterDataService.GetVehicleType();List<KeyValue> usages = masterDataService.GetVehicleUsage(vehicleType[0].key);
+...
+```
 
 In the above samples, there is a optional step called "Login", please be note that
 before you can make a successful call, Login is the must, 
@@ -140,6 +154,8 @@ Looking for more samples with details? Please refer to [Demo project](https://gi
 21 Apr 2017, 0.1 released
 
 Feature - add SEG VMI/CMI/VMI(buy CMI together) support
+
+
 
 
 
