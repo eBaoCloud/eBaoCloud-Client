@@ -167,7 +167,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.pub
             if (resp.StatusCode != System.Net.HttpStatusCode.OK)
             {
 
-                throw new Exception(resp.StatusDescription);
+               throw new Exception(resp.StatusDescription);
             }
         }
     }

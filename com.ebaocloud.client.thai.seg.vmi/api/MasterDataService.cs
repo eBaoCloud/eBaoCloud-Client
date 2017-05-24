@@ -29,6 +29,8 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
         List<CascadeValue> GetAddressProvince();
         List<CascadeValue> GetDistrict(string provinceKey);
         List<Address> GetSubDistrict(string provinceKey, string districtKey);
+
+        List<KeyValue> GetUploadDocumentType();
     }
 
     public enum PrefixType

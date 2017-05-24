@@ -181,6 +181,12 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
             return result;
         }
 
+        public List<KeyValue> GetUploadDocumentType()
+        {
+            return GetMasterDataWithCodeTable("uploadDocType");
+        }
+
+
         private static Dictionary<string, string> GenerateVehicleParams(string codeTableName)
         {
             Dictionary<string, string> parameter = new Dictionary<string, string>();
