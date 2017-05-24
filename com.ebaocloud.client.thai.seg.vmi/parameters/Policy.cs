@@ -185,7 +185,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
 
     public class Document
     {
-        public DocumentCategory category;
+        public String documentType;
         public String name;
         public FileInfo file;
 
@@ -197,13 +197,13 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
             {
                 extExceptionStr = String.Format(" at document list index [{0}]", index);
             }
-            if ((int)this.category == 0)
+            if (this.documentType == null)
             {
-                exceptionStr = "Document name is required";
+                exceptionStr = "Document type is required";
                 
                 throw new Exception(exceptionStr + extExceptionStr);
             }
-            if (this.file == null)
+            if (this.file == null || !file.Exists)
             {
                 exceptionStr = "Document file is required";
                 throw new Exception(exceptionStr + extExceptionStr);
@@ -229,13 +229,13 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
         public String vehicleEngineNo { get; set; }
 
         // required
-        public VehicleGarageType vehicleGarageType { get; set; }
+        public String vehicleGarageType { get; set; }
         public String vehicleMakeName { get; set; }
         public String vehicleModelName { get; set; }
         public int vehicleModelYear { get; set; }
         public int vehicleRegistrationYear { get; set; }
         public String vehicleModelDescription { get; set; }
-        public VehicleUsage vehicleUsage { get; set; }
+        public String vehicleUsage { get; set; }
         public String vehicleRegistrationNo { get; set; }
         public String vehicleChassisNo { get; set; }
 

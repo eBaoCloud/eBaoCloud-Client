@@ -131,7 +131,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
 
 	public class Document
 	{
-		public DocumentCategory category { get; set; }
+		public String documentType { get; set; }
         public String name { get; set; }
         public FileInfo file { get; set; }
 
@@ -143,13 +143,13 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
             {
                 extExceptionStr = String.Format(" at document list index [{0}]", index);
             }
-            if ((int)this.category == 0)
+            if (this.documentType == null)
             {
-                exceptionStr = "Document name is required";
+                exceptionStr = "Document type is required";
 
                 throw new Exception(exceptionStr + extExceptionStr);
             }
-            if (this.file == null)
+            if (this.file == null || !file.Exists)
             {
                 exceptionStr = "Document file is required";
                 throw new Exception(exceptionStr + extExceptionStr);
@@ -167,8 +167,8 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
 
 	public class Insured
 	{
-		public VehicleType vehicleType { get; set; }
-        public VehicleSubType vehicleSubType { get; set; }
+		public String vehicleType { get; set; }
+        public String vehicleSubType { get; set; }
 
         public String vehicleMakeName { get; set; }
         public int vehicleModelYear { get; set; }
@@ -177,7 +177,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
         public String vehicleRegistrationNo { get; set; }
         public String vehicleCountry { get; set; }
         public String vehicleProvince { get; set; }
-        public VehicleUsage vehicleUsage { get; set; }
+        public String vehicleUsage { get; set; }
         public String vehicleChassisNo { get; set; }
 
         public String vehicleColor { get; set; }
@@ -195,7 +195,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
                 {
                     continue;
                 }
-                if (typeof(int).IsInstanceOfType(value) || typeof(VehicleType).IsInstanceOfType(value) || typeof(VehicleSubType).IsInstanceOfType(value) || typeof(VehicleUsage).IsInstanceOfType(value))
+                if (typeof(int).IsInstanceOfType(value))
                 {
                     if ((int)value != 0)
                     {
@@ -212,17 +212,6 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
             }
         }
     }
-
-	//TODO
-	public enum VehicleType {
-		Sedan = 587,
-	}
-
-	public enum VehicleSubType {
-		Car_Seat_up_to_7_people = 618,
-		Sedan_Powered_by_electricity = 588
-
-	}
 
 	public class InThaiAddress
 	{

@@ -11,7 +11,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
         public DateTime effectiveDate { get; set; }
         public DateTime expireDate { get; set; }
 
-        public VehicleUsage vehicleUsage { get; set; }
+        public String vehicleUsage { get; set; }
 
         public void Validate()
         {
@@ -21,13 +21,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
             {
                 string name = item.Name;
                 Object value = item.GetValue(this, null);
-                if (typeof(VehicleUsage).IsInstanceOfType(value))
-                {
-                    if ((int)value == 0)
-                    {
-                        throw new Exception(String.Format("In {0} {1} is required.", type.Name, name));
-                    }
-                } else if (typeof(DateTime).IsInstanceOfType(value))
+                 if (typeof(DateTime).IsInstanceOfType(value))
                 {
                     DateTime date = (DateTime)value;
                     
@@ -43,10 +37,4 @@ namespace com.ebaocloud.client.thai.seg.cmi.parameters
         }
     }
 
-	public enum VehicleUsage
-	{
-		PRIVATE = 1,
-		RENT,
-		PUBLIC_RENT
-	}
 }

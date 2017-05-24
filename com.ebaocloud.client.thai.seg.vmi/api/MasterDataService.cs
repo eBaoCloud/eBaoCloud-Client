@@ -14,6 +14,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
         List<CascadeValue> GetVehicleModelYears(string makeKey, string modelKey);
         List<VehicleModel> GetVehicleModelInfo(string makeKey, string modelKey, string modelYear);
 
+        List<KeyValue> GetVehicleType();
         List<KeyValue> GetVehicleUsage(string vehicleType);
         List<KeyValue> GetVehicleGarageType();
         List<KeyValue> GetVehicleCountry();

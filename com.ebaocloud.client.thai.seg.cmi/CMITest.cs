@@ -13,18 +13,23 @@ namespace com.ebaocloud.client.thai.seg.cmi
             PolicyService service = new PolicyServiceImpl();
             LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
 
+            MasterDataService masterDataService = new MasterDataServiceImpl();
+            List<KeyValue> vehicleTypes = masterDataService.GetVehicleType();
+            List<CascadeValue> vehicleSubTypes = masterDataService.GetVehicleSubType(vehicleTypes[0].key);
+            List<KeyValue> vehicleUsages = masterDataService.GetVehicleUsage(vehicleSubTypes[0].key);
+
             var calculationParams = new CalculationParams();
             calculationParams.effectiveDate = DateTime.Now.ToLocalTime();
             calculationParams.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
             calculationParams.proposalDate = DateTime.Now.ToLocalTime();
             calculationParams.productCode = "CMI";
-            calculationParams.vehicleUsage = VehicleUsage.PRIVATE;
+            calculationParams.vehicleUsage = vehicleUsages[0].key;
             CalculationResp calcResp = service.Calculate(resp.token, calculationParams);
 
             Policy policyParam = new Policy();
             List<Document> documents = new List<Document>();
             Document doc = new Document();
-            doc.category = DocumentCategory.DRIVING_LICENSE;
+            doc.documentType = "2";
             doc.name = "test";
             doc.file = new System.IO.FileInfo("./Main.cs");
             documents.Add(doc);
@@ -40,15 +45,20 @@ namespace com.ebaocloud.client.thai.seg.cmi
             policyParam.insured = new Insured();
             policyParam.insured.vehicleChassisNo = "CN" + randomStr;
             policyParam.insured.vehicleRegistrationNo = "CN" + randomStr;
-            policyParam.insured.vehicleType = VehicleType.Sedan;
-            policyParam.insured.vehicleSubType = VehicleSubType.Car_Seat_up_to_7_people;
+
+            List<CascadeValue> subTypes = masterDataService.GetVehicleSubType(vehicleTypes[0].key);
+            policyParam.insured.vehicleType = vehicleTypes[0].key;
+            policyParam.insured.vehicleSubType = subTypes[0].key;
+
+
+
             policyParam.insured.vehicleColor = "white";
             policyParam.insured.vehicleCountry = "THA";
             policyParam.insured.vehicleModelDescription = "Sedan 4dr G  6sp FWD 2.5 2016";
             policyParam.insured.vehicleMakeName = "TOYOTA";
             policyParam.insured.vehicleProvince = "THA";
             policyParam.insured.vehicleRegistrationYear = 2016;
-            policyParam.insured.vehicleUsage = VehicleUsage.PRIVATE;
+            policyParam.insured.vehicleUsage = vehicleUsages[0].key;
             policyParam.insured.vehicleModelYear = 2016;
 
             policyParam.payer = new Payer();

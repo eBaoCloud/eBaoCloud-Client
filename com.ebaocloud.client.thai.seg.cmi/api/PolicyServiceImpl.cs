@@ -202,10 +202,10 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 			insured["ext"]["tonnage"] = vehicle["tonnage"];
             insured["ext"]["vehicleDesc"] = param.insured.vehicleModelDescription;
 
-			insured["ext"]["vehicleType"] = Convert.ToString((int)param.insured.vehicleType);
-			insured["ext"]["vehicleSubType"] = Convert.ToString((int)param.insured.vehicleSubType);
-			insured["ext"]["vehicleUsage"] = Utils.ToVehicleUsage(param.insured.vehicleUsage);
-			insured["ext"]["vehicleCode"] = Utils.ToVehicleCode(param.insured.vehicleUsage);
+			insured["ext"]["vehicleType"] = param.insured.vehicleType;
+			insured["ext"]["vehicleSubType"] = param.insured.vehicleSubType;
+			insured["ext"]["vehicleUsage"] = param.insured.vehicleUsage;
+			insured["ext"]["vehicleCode"] = param.insured.vehicleUsage;
 			insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
 
 			insured["ext"]["vehicleCountry"] = String.IsNullOrEmpty(param.insured.vehicleCountry) ? "THA" : param.insured.vehicleCountry;
@@ -254,7 +254,10 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 
 			PolicyService service = new PolicyServiceImpl();
 			CalculationResp calcResp = service.Calculate(token, prepareCalculationParams(param));
-
+            if (!calcResp.success)
+            {
+                throw new Exception(calcResp.errorMessage);
+            }
 			JObject simpleFee = new JObject();
 			simpleFee["agp"] = calcResp.netPremium;
 			simpleFee["snp"] = calcResp.netPremium;
@@ -506,7 +509,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 			JObject insured = new JObject();
 			insureds.Add(insured);
 			insured["ext"] = new JObject();
-			insured["ext"]["vehicleCode"] = Utils.ToVehicleCode(param.vehicleUsage);
+			insured["ext"]["vehicleCode"] = param.vehicleUsage;
 			return map;
 		}
 
@@ -569,7 +572,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 					{
 						throw new Exception("The file [" + document.file.FullName + "] does not exists.");
 					}
-					if (document.category == 0)
+					if (document.documentType == null)
 					{
 						throw new Exception("Document cate is required.");
 					}
@@ -582,7 +585,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
 					uploadFileParams.uploadExtraData = new JObject();
 					uploadFileParams.uploadExtraData["policyId"] = policyId;
 					uploadFileParams.uploadExtraData["docName"] = document.name;
-					uploadFileParams.uploadExtraData["docType"] = (int)document.category;
+					uploadFileParams.uploadExtraData["docType"] = document.documentType;
 
 					NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams, token);
 				}

@@ -65,26 +65,57 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
             return result;
         }
 
-        public List<KeyValue> GetVehicleUsage(string vehicleType)
+        public List<KeyValue> GetVehicleUsage(string vehicleSubType)
+        {
+            if (vehicleSubType == null)
+            {
+                throw new Exception("[GetVehicleUsage] VehicleType is required.");
+            }
+
+            Dictionary<string, string> parameter = GenerateVehicleParams("cmiVehicleUsage");
+            List<KeyValue> result = new List<KeyValue>();
+            JObject response = NetworkUtils.Post(ApiConsts.API_MISC_MASTER_DATA, parameter);
+            JArray data = (JArray)response["data"];
+            foreach (JObject obj in data)
+            {
+                String p = (string)obj["parent"];
+                if (p.Equals(vehicleSubType))
+                {
+                    KeyValue keyValue = new KeyValue();
+                    keyValue.key = (string)obj["vehicleCode"];
+                    keyValue.value = (string)obj["text"];
+                    result.Add(keyValue);
+                }
+            }
+            return result;
+        }
+
+        public List<KeyValue> GetVehicleType()
+        {
+            return GetMasterDataWithCodeTable("cmiVehicleType");
+        }
+
+        public List<CascadeValue> GetVehicleSubType(string vehicleType)
         {
             if (vehicleType == null)
             {
                 throw new Exception("[GetVehicleUsage] VehicleType is required.");
             }
 
-            Dictionary<string, string> parameter = GenerateVehicleParams("vmiVehicleUsage");
-            List<KeyValue> result = new List<KeyValue>();
+            Dictionary<string, string> parameter = GenerateVehicleParams("cmiVehicleSubType");
+            List<CascadeValue> result = new List<CascadeValue>();
             JObject response = NetworkUtils.Post(ApiConsts.API_MISC_MASTER_DATA, parameter);
             JArray data = (JArray)response["data"];
             foreach (JObject obj in data)
             {
-                String p = (string)obj["p"];
+                String p = (string)obj["parent"];
                 if (p.Equals(vehicleType))
                 {
-                    KeyValue keyValue = new KeyValue();
-                    keyValue.key = (string)obj["id"];
-                    keyValue.value = (string)obj["text"];
-                    result.Add(keyValue);
+                    CascadeValue cascadeValue = new CascadeValue();
+                    cascadeValue.key = (string)obj["id"];
+                    cascadeValue.value = (string)obj["text"];
+                    cascadeValue.parentKey = (string)obj["parent"];
+                    result.Add(cascadeValue);
                 }
             }
             return result;
@@ -191,7 +222,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.api
         {
             Dictionary<string, string> parameter = new Dictionary<string, string>();
             parameter.Add("insurerTenantCode", "SEG_TH");
-            parameter.Add("prdtCode", "VMI");
+            parameter.Add("prdtCode", "CMI");
             parameter.Add("prdtVersion", "v1");
             parameter.Add("codeTableName", codeTableName);
             return parameter;

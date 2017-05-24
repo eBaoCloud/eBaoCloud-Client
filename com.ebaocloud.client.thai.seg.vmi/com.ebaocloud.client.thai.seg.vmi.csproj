@@ -116,6 +116,7 @@
     <Compile Include="response\Address.cs" />
     <Compile Include="response\CalculationResp.cs" />
     <Compile Include="response\CascadeValue.cs" />
+    <Compile Include="response\DownloadResp.cs" />
     <Compile Include="response\IssuedResp.cs" />
     <Compile Include="response\KeyValue.cs" />
     <Compile Include="response\LoginResp.cs" />

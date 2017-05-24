@@ -107,7 +107,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             insureds.Add(insured);
             insured["ext"] = new JObject();
             insured["ext"]["vehicleCountry"] = "THA";
-            insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.vehicleGarageType);
+            insured["ext"]["vehicleGarageType"] = param.vehicleGarageType;
             insured["ext"]["vehicleYear"] = param.vehicleModelYear;
             insured["ext"]["vehicleMake"] = vehicle["makeCode"];
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];
@@ -115,7 +115,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
             insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
             insured["ext"]["capacity"] = vehicle["capacity"];
-            insured["ext"]["vehicleCode"] = (int)param.vehicleUsage;
+            insured["ext"]["vehicleCode"] = param.vehicleUsage;
             insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
             insured["ext"]["tonnage"] = vehicle["tonnage"];
 
@@ -393,19 +393,19 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             insureds.Add(insured);
             insured["ext"] = new JObject();
             insured["ext"]["vehicleCountry"] = "THA";
-            insured["ext"]["vehicleGarageType"] = Utils.ToVehicleGarageType(param.insured.vehicleGarageType);
+            insured["ext"]["vehicleGarageType"] = param.insured.vehicleGarageType;
             insured["ext"]["vehicleMake"] = vehicle["makeCode"];
             insured["ext"]["vehicleModel"] = vehicle["modelCode"];
             insured["ext"]["vehicleYear"] = param.insured.vehicleModelYear;
             insured["ext"]["vehicleGroup"] = vehicle["vehicleGroup"];
             insured["ext"]["vehicleMarket"] = vehicle["marketPrice"];
             insured["ext"]["capacity"] = vehicle["capacity"];
-            insured["ext"]["vehicleCode"] = (int)param.insured.vehicleUsage;
+            insured["ext"]["vehicleCode"] = param.insured.vehicleUsage;
             insured["ext"]["numOfSeats"] = vehicle["numOfSeat"];
             insured["ext"]["vehicleChassisNo"] = param.insured.vehicleChassisNo;
             insured["ext"]["tonnage"] = vehicle["tonnage"];
             insured["ext"]["vehicleType"] = vehicle["vehicleType"];
-            insured["ext"]["vehicleUsage"] = (int)param.insured.vehicleUsage;
+            insured["ext"]["vehicleUsage"] = param.insured.vehicleUsage;
             insured["ext"]["newVehicle"] = param.insured.vehicleRegistrationYear == DateTime.Now.Year;
             insured["ext"]["vehicleDesc"] = vehicle["vehicleKey"];
             insured["ext"]["vehicleInfo"] = vehicle["vehicleKey"];
@@ -667,7 +667,7 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
 					uploadFileParams.uploadExtraData = new JObject();
 					uploadFileParams.uploadExtraData["policyId"] = policyId;
 					uploadFileParams.uploadExtraData["docName"] = document.name;
-					uploadFileParams.uploadExtraData["docType"] = (int)document.category;
+					uploadFileParams.uploadExtraData["docType"] = document.documentType;
 
 					NetworkUtils.UploadFile(ApiConsts.API_DOCS, uploadFileParams, token);
 				}

@@ -19,8 +19,8 @@ namespace com.ebaocloud.client.thai.seg.vmi.parameters
         public int vehicleModelYear { get; set; }
         public String vehicleModelDescription { get; set; }
         public int vehicleRegistrationYear { get; set; }
-        public VehicleUsage vehicleUsage { get; set; }
-        public VehicleGarageType vehicleGarageType { get; set; }
+        public String vehicleUsage { get; set; }
+        public String vehicleGarageType { get; set; }
 
         public Decimal vehicleAccessaryValue { get; set; }
         public Decimal vehicleTotalValue { get; set; }

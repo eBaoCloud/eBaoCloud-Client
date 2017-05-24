@@ -24,6 +24,10 @@ namespace com.ebaocloud.client.thai.seg.cmi
 
         //    List<KeyValue> vehicleUsages = service.GetVehicleUsage(((VehicleModel)modelInfos[0]).vehicleType);
 
+        //    List<KeyValue> vehicleTypes = service.GetVehicleType();
+        //    KeyValue firstVehicleType = (KeyValue)vehicleTypes[0];
+        //    List<CascadeValue> vehicleSubTypes = service.GetVehicleSubType(firstVehicleType.key);
+
         //    List<KeyValue> vehicleGarageTypes = service.GetVehicleGarageType();
         //    List<KeyValue> vehicleCountries = service.GetVehicleCountry();
         //    List<KeyValue> vehicleColors = service.GetVehicleColor();
@@ -37,9 +41,6 @@ namespace com.ebaocloud.client.thai.seg.cmi
         //    List<KeyValue> idTypes = service.GetIdType();
 
 
-        //    //List<CascadeValue> GetAddressProvince();
-        //    //List<CascadeValue> GetDistrict(string provinceKey);
-        //    //List<Address> GetSubDistrict(string provinceKey, string districtKey);
 
         //    List<CascadeValue> provinces = service.GetAddressProvince();
         //    CascadeValue firstProvince = provinces[1];

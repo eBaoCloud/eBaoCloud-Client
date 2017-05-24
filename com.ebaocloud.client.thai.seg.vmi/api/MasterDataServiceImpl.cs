@@ -90,6 +90,12 @@ namespace com.ebaocloud.client.thai.seg.vmi.api
             return result;
         }
 
+        public List<KeyValue> GetVehicleType()
+        {
+            return GetMasterDataWithCodeTable("vmiVehicleType");
+        }
+
+
         public List<KeyValue> GetVehicleGarageType()
         {
             return GetMasterDataWithCodeTable("garageType");

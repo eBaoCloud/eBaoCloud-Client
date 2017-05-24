@@ -19,35 +19,6 @@ namespace com.ebaocloud.client.thai.seg.cmi.pub
             return time.ToString("dd/MM/yyyyTHH:mm:ss.fff");
         }
 
-        public static string ToVehicleCode(VehicleUsage vehicleUseage)
-        {
-            switch (vehicleUseage)
-            {
-                case VehicleUsage.PRIVATE:
-                    return "1.10";
-                case VehicleUsage.RENT:
-                    return "2.10";
-				case VehicleUsage.PUBLIC_RENT:
-					return "3.10";
-                default:
-                    return "1.10";
-            }
-        }
-
-		public static int ToVehicleUsage(VehicleUsage vehicleUseage)
-		{
-			switch (vehicleUseage)
-			{
-				case VehicleUsage.PRIVATE:
-					return 11;
-				case VehicleUsage.RENT:
-					return 16;
-				case VehicleUsage.PUBLIC_RENT:
-					return 17;
-				default:
-					return 11;
-			}
-		}
 
 	}
 }
