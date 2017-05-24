@@ -6,12 +6,12 @@ using com.ebaocloud.client.thai.seg.cmi.response;
 
 namespace com.ebaocloud.client.thai.seg.cmi
 {
-	public class CMITest
-	{
-		public static void Main(String[] args)
-		{
-			PolicyService service = new PolicyServiceImpl();
-			LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
+    public class CMITest
+    {
+        public static void Main(String[] args)
+        {
+            PolicyService service = new PolicyServiceImpl();
+            LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
 
             var calculationParams = new CalculationParams();
             calculationParams.effectiveDate = DateTime.Now.ToLocalTime();
@@ -84,5 +84,5 @@ namespace com.ebaocloud.client.thai.seg.cmi
 
             service.DownloadPolicyForms(resp.token, issueResp.policyNo, new System.IO.DirectoryInfo("C:/OutputFiles"));
         }
-	}
+    }
 }

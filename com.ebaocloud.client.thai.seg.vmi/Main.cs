@@ -19,7 +19,7 @@ namespace com.ebaocloud.client.thai.seg.vmi
         public static void Main(string[] args)
         {
             PolicyService service = new PolicyServiceImpl();
-           LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
+            LoginResp resp = service.Login("SEG_TIB_01", "eBao1234");
             Console.WriteLine(resp);
 
             var calculationParams = new CalculationParams();
@@ -27,11 +27,11 @@ namespace com.ebaocloud.client.thai.seg.vmi
             calculationParams.expireDate = DateTime.Now.AddYears(1).ToLocalTime();
             calculationParams.proposalDate = DateTime.Now.ToLocalTime();
 
-           calculationParams.planCode = "SCDG";
+            calculationParams.planCode = "SCDG";
             calculationParams.productCode = "VMI";
             calculationParams.vehicleAccessaryValue = 1000;
             calculationParams.vehicleGarageType = VehicleGarageType.DEALER;
-           calculationParams.vehicleMakeName = "TOYOTA";
+            calculationParams.vehicleMakeName = "TOYOTA";
             calculationParams.vehicleModelName = "COROLLA";
             calculationParams.vehicleModelDescription = "TOYO20160104";
             calculationParams.vehicleModelYear = 2016;
@@ -128,11 +128,11 @@ namespace com.ebaocloud.client.thai.seg.vmi
             IssuedResp issueResp = service.Issue(resp.token, policyParam);
             if (issueResp.success)
             {
-               Console.WriteLine("Issued succcess: true" + "\nPolicyNo:" + issueResp.policyNo);
+                Console.WriteLine("Issued succcess: true" + "\nPolicyNo:" + issueResp.policyNo);
             }
             else
             {
-               Console.WriteLine("Issued succcess: false" + "\nMessage:" + issueResp.message);
+                Console.WriteLine("Issued succcess: false" + "\nMessage:" + issueResp.message);
             }
 
             //test file upload
@@ -148,7 +148,7 @@ namespace com.ebaocloud.client.thai.seg.vmi
             // Console.WriteLine("{0}", calcResp);
 
             service.DownloadPolicyForms(resp.token, issueResp.policyNo, new System.IO.DirectoryInfo("C:/OutputFiles"));
-            
+
             Console.ReadKey();
 
         }

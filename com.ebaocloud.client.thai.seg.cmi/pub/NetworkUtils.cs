@@ -18,6 +18,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.pub
             HttpClient httpClient = new HttpClient(host);
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
             httpClient.Request.AddExtraHeader("Authorization", "Basic " + token);
+            httpClient.Request.AddExtraHeader("lang", "th_TH");
             HttpResponse httpResponse;
             try
             {
@@ -37,6 +38,7 @@ namespace com.ebaocloud.client.thai.seg.cmi.pub
             HttpClient httpClient = new HttpClient(host);
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
             httpClient.Request.AddExtraHeader("Authorization", "Basic " + token);
+            httpClient.Request.AddExtraHeader("lang", "th_TH");
             HttpResponse httpResponse;
             try
             {

@@ -25,5 +25,18 @@ namespace com.ebaocloud.client.thai.seg.vmi.pub
 
         public const string API_ADDRESS_MATCHING = "/gi/api/misc/address/smartmatching";
 
+    
+        public const string API_MISC_VEHICLE_MAKE = "/gi/api/misc/thai/SEG_TH/motor/makes";
+        public const string API_MISC_VEHICLE_MAKE_MODEL = "/gi/api/misc/thai/SEG_TH/motor/models/";
+        public const string API_MISC_VEHICLE_MODEL_YEAR = "/gi/api/misc/thai/SEG_TH/motor/modelyears/";
+        public const string API_MISC_VEHICLE_MODEL_INFO = "/gi/api/misc/thai/SEG_TH/motor/submodels/";
+
+        public const string API_MISC_ADDRESS_PROVINCE = "/gi/api/misc/address/provinces";
+        public const string API_MISC_ADDRESS_DISTRICT = "/gi/api/misc/address/districts/";
+        public const string API_MISC_ADDRESS_SUB_DISTRICT = "/gi/api/misc/address/subdistricts/";
+
+
+        public const string API_MISC_MASTER_DATA = "/gi/api/misc/mastertab";
+
     }
 }

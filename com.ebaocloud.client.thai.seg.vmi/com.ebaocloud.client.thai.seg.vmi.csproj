@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{74253A0F-0504-4ACD-A75B-D91CAB2BEB41}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>com.ebaocloud.client.thai.seg.vmi</RootNamespace>
     <AssemblyName>com.ebaocloud.client.thai.seg.vmi</AssemblyName>
@@ -92,6 +92,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="api\MasterDataServiceImpl.cs" />
+    <Compile Include="api\MasterDataService.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="parameters\PolicyForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,9 +113,14 @@
     <Compile Include="parameters\CalculationParams.cs" />
     <Compile Include="parameters\Policy.cs" />
     <Compile Include="parameters\UploadFileParams.cs" />
+    <Compile Include="response\Address.cs" />
     <Compile Include="response\CalculationResp.cs" />
+    <Compile Include="response\CascadeValue.cs" />
     <Compile Include="response\IssuedResp.cs" />
+    <Compile Include="response\KeyValue.cs" />
     <Compile Include="response\LoginResp.cs" />
+    <Compile Include="response\VehicleModel.cs" />
+    <Compile Include="TestMasterData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
